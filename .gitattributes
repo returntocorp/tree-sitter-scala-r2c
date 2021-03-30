@@ -1,2 +1,7 @@
 /src/** linguist-vendored
 /examples/* linguist-vendored
+src/parser.c binary
+src/grammar.json binary
+src/binding.cc binary
+src/tree_sitter/* binary
+src/node-types.json binary

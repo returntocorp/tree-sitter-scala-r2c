@@ -144,7 +144,7 @@ class A(b: B) extends C(b || ok) {
     (extends_clause
       (type_identifier)
       (arguments
-        (infix_expression (identifier) (operator_identifier) (identifier))))
+        (infix_expression (identifier) (identifier) (identifier))))
     (template_body)))
 
 =======================================
@@ -167,23 +167,40 @@ class Point(val x: Int, val y: Int)(implicit coord: Coord)
 =======================================
 Modifiers
 =======================================
-
 implicit final sealed class Point {
   private override def getX() = 1
+  protected[this] def getY(): Int = 2
 }
 
 ---
-
 (compilation_unit
   (class_definition
-    (modifiers)
-    (identifier)
-    (template_body
-      (function_definition
-        (modifiers)
-        (identifier)
-        (parameters)
-        (number)))))
+    (modifiers (local_modifier) (local_modifier) (local_modifier)) (identifier)
+      (template_body
+        (function_definition
+          (modifiers (access_modifier))
+          (identifier)
+          (parameters)
+          (number))
+        (function_definition
+          (modifiers (access_modifier (access_qualifier)))
+          (identifier)
+          (parameters)
+          (type_identifier)
+          (number)))))
+
+
+
+=======================================
+Multiple variable declarations
+=======================================
+var x, y, z: Int = _
+// TODO fix parsed syntax, which is not correct
+---
+(compilation_unit (var_declaration (identifier) (identifier) (identifier)
+(infix_type (type_identifier) (identifier) (type_identifier)))
+(comment))
+
 
 =======================================
 Trait definitions
@@ -402,7 +419,7 @@ class A(val x: Int, val y: Int) {
       (class_parameter (identifier) (type_identifier)))
     (template_body
       (call_expression (identifier)
-        (arguments (infix_expression (identifier) (operator_identifier) (number)))))))
+        (arguments (infix_expression (identifier) (identifier) (number)))))))
 
 =======================================
 Optional parameters
@@ -417,6 +434,6 @@ def mkLines(header: String, indented: Boolean = false, embraced: Boolean = false
     (identifier)
     (parameters
       (parameter (identifier) (type_identifier))
-      (parameter (identifier) (type_identifier) (identifier))
-      (parameter (identifier) (type_identifier) (identifier)))
+      (parameter (identifier) (type_identifier) (boolean_literal))
+      (parameter (identifier) (type_identifier) (boolean_literal)))
     (type_identifier) (block)))
