@@ -2,10 +2,15 @@
 Scratch
 ==========================
 object Foo {
-  foo map { x => x + 1}
+  foo.map { x => x + 1 }
 }
------
-(compilation_unit (object_definition (identifier) (template_body
-(infix_expression (identifier) (identifier) (block (infix_expression
-(identifier) (identifier) (infix_expression (identifier) (identifier)
-(number))))))))
+--------------------------
+(SourceFile (TemplateStat (Def (TmplDef (ObjectDef (TemplateBody (TemplateStat
+(Expr (Expr1 (PostfixExpr (InfixExpr (PrefixExpr (SimpleExpr (SimpleExpr1
+(SimpleExpr1 (SimpleExpr (SimpleExpr1 (Path (StableId))))) (ArgumentExprs
+(BlockExpr (Block (BlockStat (Expr1 (PostfixExpr (InfixExpr (InfixExpr
+(PrefixExpr (SimpleExpr (SimpleExpr1 (Path (StableId)))))) (InfixExpr
+(PrefixExpr (SimpleExpr (SimpleExpr1 (Path (StableId)))))))))) (ResultExpr
+(Expr1 (PostfixExpr (InfixExpr (PrefixExpr (SimpleExpr (SimpleExpr1
+(Literal))))))))))))))))))) (TemplateStat)))))))
+

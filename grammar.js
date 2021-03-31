@@ -2,49 +2,49 @@
 
 /*
  * inline constants: 
- * charEscapeSeq            := \\[btnfr"'\\]
- * charNoBQOrNL             := [\u0020-\u005f\u0061-\u007f]
- * decimal_numeral          := [0-9]+
- * escapeSeq                := ($unicodeEscape|$charEscapeSeq)
+ * ClassParamClauses   := <10(ClassParamClause* (nl? ImplicitClassParams?))
+ * ClassTemplateOpt    := 'extends' ClassTemplate | ('extends'? TemplateBody)?
+ * ParamClauses        := ParamClause* (nl? '(' 'implicit' Params ')')?
+ * TraitTemplateOpt    := 'extends' TraitTemplate | ('extends'? TemplateBody)?
+ * charEscapeSeq       := \\[btnfr"'\\]
+ * charNoBQOrNL        := [\u0020-\u005f\u0061-\u007f]
+ * decimalNumeral      := [0-9]+
+ * escapeSeq           := ($unicodeEscape|$charEscapeSeq)
  *     ((\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))
- * exponentPart             := ([Ee][+-]?$decimal_numeral)
+ * exponentPart        := ([Ee][+-]?$decimalNumeral)
  *     (([Ee][+-]?[0-9]+))
- * floatType                := [FfDd]
- * floating_point_literal   := /-?($fp_lit_1|$fp_lit_2|$fp_lit_3|$fp_lit_4)/
- *     (/-?([0-9]+[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[0-9]+([Ee][+-]?[0-9]+)?[FfDd]|[0-9]+([Ee][+-]?[0-9]+)[FfDd]?)/)
- * fp_lit_1                 := $decimal_numeral[.]$decimal_numeral$exponentPart?$floatType?
+ * floatType           := [FfDd]
+ * fpLit1              := $decimalNumeral[.]$decimalNumeral$exponentPart?$floatType?
  *     ([0-9]+[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?)
- * fp_lit_2                 := [.]$decimal_numeral$exponentPart?$floatType?
+ * fpLit2              := [.]$decimalNumeral$exponentPart?$floatType?
  *     ([.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?)
- * fp_lit_3                 := $decimal_numeral$exponentPart?$floatType
+ * fpLit3              := $decimalNumeral$exponentPart?$floatType
  *     ([0-9]+([Ee][+-]?[0-9]+)?[FfDd])
- * fp_lit_4                 := $decimal_numeral$exponentPart$floatType?
+ * fpLit4              := $decimalNumeral$exponentPart$floatType?
  *     ([0-9]+([Ee][+-]?[0-9]+)[FfDd]?)
- * hexDigit                 := [0-9a-fA-F]
- * hex_numeral              := 0[xX]$hexDigit+
+ * hexDigit            := [0-9a-fA-F]
+ * hexNumeral          := 0[xX]$hexDigit+
  *     (0[xX][0-9a-fA-F]+)
- * idRegex                  := $plainid|[`]($charNoBQOrNL|$escapeSeq)*[`]
+ * idRegex             := $plainid|[`]($charNoBQOrNL|$escapeSeq)*[`]
  *     (([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)|[`]([\u0020-\u005f\u0061-\u007f]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*[`])
- * idrest                   := [$(letter)0-9]*(_$opchar+)?
+ * idrest              := [$(letter)0-9]*(_$opchar+)?
  *     ([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?)
- * integer_literal          := /-?($decimal_numeral|$hex_numeral)[Ll]?/
- *     (/-?([0-9]+|0[xX][0-9a-fA-F]+)[Ll]?/)
- * letter                   := $upperChars$lowerChars
+ * letter              := $upperChars$lowerChars
  *     (\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F)
- * lowerChars               := $lowerChars1$lowerChars2$lowerChars3
+ * lowerChars          := $lowerChars1$lowerChars2$lowerChars3
  *     (\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F)
- * lowerChars1              := \p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4
- * lowerChars2              := \u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C
- * lowerChars3              := \u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F
- * opchar                   := [\-!#%&*+/\\:<=>?@\u005e\u007c~]
- * plainid                  := ($upper$idrest|$varidRegex|$opchar+)
+ * lowerChars1         := \p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4
+ * lowerChars2         := \u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C
+ * lowerChars3         := \u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F
+ * opchar              := [\-!#%&*+/\\:<=>?@\u005e\u007c~]
+ * plainid             := ($upper$idrest|$varidRegex|$opchar+)
  *     (([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+))
- * unicodeEscape            := \\u+$hexDigit$hexDigit$hexDigit$hexDigit
+ * unicodeEscape       := \\u+$hexDigit$hexDigit$hexDigit$hexDigit
  *     (\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])
- * upper                    := [$upperChars]
+ * upper               := [$upperChars]
  *     ([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$])
- * upperChars               := \p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$
- * varidRegex               := [$(lowerChars)_]$idrest
+ * upperChars          := \p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$
+ * varidRegex          := [$(lowerChars)_]$idrest
  *     ([\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?)
  */
 
@@ -53,939 +53,1154 @@ module.exports = grammar({
 
   /*
    * scalar2c.ebnf:1
-   * extras     ::= { /\s/ comment }
-   */
-  extras: $ => [/\s/, $.comment],
-  /*
-   * scalar2c.ebnf:3
-   * supertypes ::= { _expression _definition _pattern }
-   */
-  supertypes: $ => [$._expression, $._definition, $._pattern],
-  /*
-   * scalar2c.ebnf:5-13
-   * externals  ::= {
-   *                _automatic_semicolon
-   *                _simple_string
-   *                _simple_multiline_string
-   *                _interpolated_string_middle
-   *                _interpolated_string_end
-   *                _interpolated_multiline_string_middle
-   *                _interpolated_multiline_string_end
-   *                }
+   * externals ::= { _multiComment _automaticSemicolon _val _var _def1 interpStart _openMultiComment _empty _trailingComma }
    */
   externals: $ => [
-                    $._automatic_semicolon,
-                    $._simple_string,
-                    $._simple_multiline_string,
-                    $._interpolated_string_middle,
-                    $._interpolated_string_end,
-                    $._interpolated_multiline_string_middle,
-                    $._interpolated_multiline_string_end
+                    $._multiComment,
+                    $._automaticSemicolon,
+                    $._val,
+                    $._var,
+                    $._def1,
+                    $.interpStart,
+                    $._openMultiComment,
+                    $._empty,
+                    $._trailingComma
                   ],
   /*
-   * scalar2c.ebnf:15
-   * inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
+   * scalar2c.ebnf:3
+   * extras    ::= { whiteSpace comment }
    */
-  inline: $ => [$._pattern, $._semicolon, $._definition, $._type_identifier, $._param_type],
+  extras: $ => [$._whiteSpace, $._comment],
   /*
-   * scalar2c.ebnf:17
-   * conflicts  ::= { { tuple_type parameter_types } }
+   * scalar2c.ebnf:5
+   * word      ::= identifier
    */
-  conflicts: $ => [[$.tuple_type, $.parameter_types]],
+  word: $ => $._identifier,
   /*
-   * scalar2c.ebnf:19
-   * word       ::= identifier
+   * scalar2c.ebnf:7-43
+   * conflicts ::= { { SimpleExpr }
+   *               { Def EarlyDef }
+   *               { Path SimpleType }
+   *               { Path ImportExpr }
+   *               { Path SelfType }
+   *               { IfExpression }
+   *               { SimpleExpr1 Binding }
+   *               { SimpleExpr1 SimpleExpr }
+   *               { AnnotType SimpleType }
+   *               { ClassDef }
+   *               { ObjectDef }
+   *               { TraitDef }
+   *               { Exprs }
+   *               { InfixType }
+   *               { CompoundType }
+   *               { Block }
+   *               { Constr }
+   *               { ClassTemplate }
+   *               { TraitTemplate }
+   *               { Generator }
+   *               { TemplateBody }
+   *               { BlockStat LocalModifier }
+   *               { ImplicitClassParams LocalModifier }
+   *               { InfixExpr }
+   *               { Annotation }
+   *               { Patterns }
+   *               { SimpleType Annotation }
+   *               { SimplePattern Patterns }
+   *               { ReturnExpression }
+   *               { FunSig }
+   *               { TryExpression }
+   *               { Expr SelfType }
+   *               { SelfInvocation }
+   *               { Enumerators }
+   *               { SimpleExpr1 ResultExpr }
+   *               { TopStatSeq }
+   *               { Refinement } }
    */
-  word: $ => $.identifier,
+  conflicts: $ => [
+                    [$.SimpleExpr],
+                    [$.Def, $.EarlyDef],
+                    [$.Path, $.SimpleType],
+                    [$.Path, $.ImportExpr],
+                    [$.Path, $.SelfType],
+                    [$.IfExpression],
+                    [$.SimpleExpr1, $.Binding],
+                    [$.SimpleExpr1, $.SimpleExpr],
+                    [$.AnnotType, $.SimpleType],
+                    [$.ClassDef],
+                    [$.ObjectDef],
+                    [$.TraitDef],
+                    [$.Exprs],
+                    [$.InfixType],
+                    [$.CompoundType],
+                    [$.Block],
+                    [$.Constr],
+                    [$.ClassTemplate],
+                    [$.TraitTemplate],
+                    [$.Generator],
+                    [$.TemplateBody],
+                    [$.BlockStat, $.LocalModifier],
+                    [$.ImplicitClassParams, $.LocalModifier],
+                    [$.InfixExpr],
+                    [$.Annotation],
+                    [$.Patterns],
+                    [$.SimpleType, $.Annotation],
+                    [$.SimplePattern, $.Patterns],
+                    [$.ReturnExpression],
+                    [$.FunSig],
+                    [$.TryExpression],
+                    [$.Expr, $.SelfType],
+                    [$.SelfInvocation],
+                    [$.Enumerators],
+                    [$.SimpleExpr1, $.ResultExpr],
+                    [$.TopStatSeq],
+                    [$.Refinement]
+                  ],
   rules: {
     /*
-     * scalar2c.ebnf:22
-     * compilation_unit                     ::= _definition*
+     * scalar2c.ebnf:46
+     * SourceFile           ::= (CompilationUnit | TemplateStat (semi TemplateStat)*) semi?
      */
-    compilation_unit: $ => repeat($._definition),
+    SourceFile: $ => seq(
+                       choice($.CompilationUnit, seq($.TemplateStat, repeat(seq($._semi, $.TemplateStat)))),
+                       optional($._semi)
+                     ),
     /*
-     * scalar2c.ebnf:23-35
-     * _definition                          ::= package_clause
-     *                                        | package_object
-     *                                        | class_definition
-     *                                        | import_declaration
-     *                                        | object_definition
-     *                                        | trait_definition
-     *                                        | val_definition
-     *                                        | val_declaration
-     *                                        | var_definition
-     *                                        | var_declaration
-     *                                        | type_definition
-     *                                        | function_definition
-     *                                        | function_declaration
+     * scalar2c.ebnf:47
+     * CompilationUnit      ::= ('package' QualId semi)* TopStatSeq
      */
-    _definition: $ => choice(
-                        $.package_clause,
-                        $.package_object,
-                        $.class_definition,
-                        $.import_declaration,
-                        $.object_definition,
-                        $.trait_definition,
-                        $.val_definition,
-                        $.val_declaration,
-                        $.var_definition,
-                        $.var_declaration,
-                        $.type_definition,
-                        $.function_definition,
-                        $.function_declaration
-                      ),
+    CompilationUnit: $ => seq(repeat(seq('package', $.QualId, $._semi)), $.TopStatSeq),
     /*
-     * scalar2c.ebnf:36
-     * package_clause                       ::= 'package' (package_identifier: name) (template_body?: body)
+     * scalar2c.ebnf:48
+     * whiteSpace           ::= /[\u0020\u0009\u000D\u000A]/
      */
-    package_clause: $ => seq(
-                           'package',
-                           field('name', $.package_identifier),
-                           field('body', optional($.template_body))
-                         ),
-    /*
-     * scalar2c.ebnf:37
-     * package_identifier                   ::= identifier ('.' identifier)*
-     */
-    package_identifier: $ => seq($.identifier, repeat(seq('.', $.identifier))),
-    /*
-     * scalar2c.ebnf:38
-     * package_object                       ::= 'package' 'object' _object_definition
-     */
-    package_object: $ => seq('package', 'object', $._object_definition),
-    /*
-     * scalar2c.ebnf:39
-     * import_declaration                   ::= 'import' (_import_expression (',' _import_expression)*)
-     */
-    import_declaration: $ => seq('import', seq($._import_expression, repeat(seq(',', $._import_expression)))),
-    /*
-     * scalar2c.ebnf:40
-     * _import_expression                   ::= ((stable_identifier | identifier): path) ('.' (wildcard | import_selectors))?
-     */
-    _import_expression: $ => seq(
-                               field('path', choice($.stable_identifier, $.identifier)),
-                               optional(seq('.', choice($.wildcard, $.import_selectors)))
-                             ),
-    /*
-     * scalar2c.ebnf:41
-     * import_selectors                     ::= '{' ((identifier | renamed_identifier) (',' (identifier | renamed_identifier))*) '}'
-     */
-    import_selectors: $ => seq(
-                             '{',
-                             seq(
-                               choice($.identifier, $.renamed_identifier),
-                               repeat(seq(',', choice($.identifier, $.renamed_identifier)))
-                             ),
-                             '}'
-                           ),
-    /*
-     * scalar2c.ebnf:42
-     * renamed_identifier                   ::= (identifier: name) '=>' ((identifier | wildcard): alias)
-     */
-    renamed_identifier: $ => seq(
-                               field('name', $.identifier),
-                               '=>',
-                               field('alias', choice($.identifier, $.wildcard))
-                             ),
-    /*
-     * scalar2c.ebnf:43
-     * object_definition                    ::= annotation* modifiers? 'case'? 'object' _object_definition
-     */
-    object_definition: $ => seq(
-                              repeat($.annotation),
-                              optional($.modifiers),
-                              optional('case'),
-                              'object',
-                              $._object_definition
-                            ),
-    /*
-     * scalar2c.ebnf:44
-     * _object_definition                   ::= (identifier: name) (extends_clause?: extend) (template_body?: body)
-     */
-    _object_definition: $ => seq(
-                               field('name', $.identifier),
-                               field('extend', optional($.extends_clause)),
-                               field('body', optional($.template_body))
-                             ),
-    /*
-     * scalar2c.ebnf:45-47
-     * class_definition                     ::= annotation* modifiers? 'case'? 'class' (identifier: name)
-     *                                            (type_parameters?: type_parameters) (class_parameters*: class_parameters)
-     *                                            (extends_clause?: extend) (template_body?: body)
-     */
-    class_definition: $ => seq(
-                             repeat($.annotation),
-                             optional($.modifiers),
-                             optional('case'),
-                             'class',
-                             field('name', $.identifier),
-                             field('type_parameters', optional($.type_parameters)),
-                             field('class_parameters', repeat($.class_parameters)),
-                             field('extend', optional($.extends_clause)),
-                             field('body', optional($.template_body))
-                           ),
-    /*
-     * scalar2c.ebnf:48-49
-     * trait_definition                     ::= 'trait' (identifier: name) (type_parameters?: type_parameters)
-     *                                            (extends_clause?: extend) (template_body?: body)
-     */
-    trait_definition: $ => seq(
-                             'trait',
-                             field('name', $.identifier),
-                             field('type_parameters', optional($.type_parameters)),
-                             field('extend', optional($.extends_clause)),
-                             field('body', optional($.template_body))
-                           ),
-    /*
-     * scalar2c.ebnf:50
-     * type_parameters                      ::= '[' (_variant_type_parameter (',' _variant_type_parameter)*) ']'
-     */
-    type_parameters: $ => seq(
-                            '[',
-                            seq($._variant_type_parameter, repeat(seq(',', $._variant_type_parameter))),
-                            ']'
-                          ),
-    /*
-     * scalar2c.ebnf:51
-     * _variant_type_parameter              ::= annotation* (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
-     */
-    _variant_type_parameter: $ => seq(
-                                    repeat($.annotation),
-                                    choice($.covariant_type_parameter, $.contravariant_type_parameter, $._type_parameter)
-                                  ),
-    /*
-     * scalar2c.ebnf:52
-     * covariant_type_parameter             ::= '+' _type_parameter
-     */
-    covariant_type_parameter: $ => seq('+', $._type_parameter),
-    /*
-     * scalar2c.ebnf:53
-     * contravariant_type_parameter         ::= '-' _type_parameter
-     */
-    contravariant_type_parameter: $ => seq('-', $._type_parameter),
-    /*
-     * scalar2c.ebnf:54-55
-     * _type_parameter                      ::= ((wildcard | identifier): name) (type_parameters?: type_parameters)
-     *                                            (upper_bound?: bound) (lower_bound?: bound) (view_bound*?: bound) (context_bound*?: bound)
-     */
-    _type_parameter: $ => seq(
-                            field('name', choice($.wildcard, $.identifier)),
-                            field('type_parameters', optional($.type_parameters)),
-                            field('bound', optional($.upper_bound)),
-                            field('bound', optional($.lower_bound)),
-                            field('bound', optional(repeat($.view_bound))),
-                            field('bound', optional(repeat($.context_bound)))
-                          ),
-    /*
-     * scalar2c.ebnf:56
-     * upper_bound                          ::= '<:' (_type: type)
-     */
-    upper_bound: $ => seq('<:', field('type', $._type)),
+    _whiteSpace: $ => /[\u0020\u0009\u000D\u000A]/,
     /*
      * scalar2c.ebnf:57
-     * lower_bound                          ::= '>:' (_type: type)
+     * lower                ::= [$lowerChars]
      */
-    lower_bound: $ => seq('>:', field('type', $._type)),
-    /*
-     * scalar2c.ebnf:58
-     * view_bound                           ::= '<%' (_type: type)
-     */
-    view_bound: $ => seq('<%', field('type', $._type)),
+    _lower: $ => /[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F]/,
     /*
      * scalar2c.ebnf:59
-     * context_bound                        ::= ':' (_type: type)
+     * paren                ::= [(){}\[\]]
      */
-    context_bound: $ => seq(':', field('type', $._type)),
+    _paren: $ => /[(){}\[\]]/,
     /*
-     * scalar2c.ebnf:60
-     * template_body                        ::= '{' _block? '}'
+     * scalar2c.ebnf:66
+     * [v]arid              ::= /$varidRegex/
      */
-    template_body: $ => seq('{', optional($._block), '}'),
+    varid: $ => /[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?/,
     /*
-     * scalar2c.ebnf:61
-     * annotation                           ::= >('@' (_simple_type: name) (arguments*: arguments))
+     * scalar2c.ebnf:67
+     * boundvarid           ::= /($varidRegex|[`]$varidRegex[`])/
      */
-    annotation: $ => prec.right(seq('@', field('name', $._simple_type), field('arguments', repeat($.arguments)))),
+    _boundvarid: $ => /([\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[`][\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?[`])/,
     /*
-     * scalar2c.ebnf:62
-     * val_definition                       ::= annotation* modifiers? 'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+     * scalar2c.ebnf:71
+     * identifier           ::= /($opchar+|$idRegex|$varidRegex|[`]$varidRegex[`])/
      */
-    val_definition: $ => seq(
-                           repeat($.annotation),
-                           optional($.modifiers),
-                           'val',
-                           field('pattern', $._pattern),
-                           optional(seq(':', field('type', $._type))),
-                           '=',
-                           field('value', $._expression)
-                         ),
-    /*
-     * scalar2c.ebnf:63
-     * val_declaration                      ::= annotation* modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
-     */
-    val_declaration: $ => seq(
-                            repeat($.annotation),
-                            optional($.modifiers),
-                            'val',
-                            seq(field('name', $.identifier), repeat(seq(',', field('name', $.identifier)))),
-                            ':',
-                            field('type', $._type)
-                          ),
-    /*
-     * scalar2c.ebnf:64
-     * var_declaration                      ::= annotation* modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
-     */
-    var_declaration: $ => seq(
-                            repeat($.annotation),
-                            optional($.modifiers),
-                            'var',
-                            seq(field('name', $.identifier), repeat(seq(',', field('name', $.identifier)))),
-                            ':',
-                            field('type', $._type)
-                          ),
-    /*
-     * scalar2c.ebnf:65
-     * var_definition                       ::= annotation* modifiers? 'var' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
-     */
-    var_definition: $ => seq(
-                           repeat($.annotation),
-                           optional($.modifiers),
-                           'var',
-                           field('pattern', $._pattern),
-                           optional(seq(':', field('type', $._type))),
-                           '=',
-                           field('value', $._expression)
-                         ),
-    /*
-     * scalar2c.ebnf:66-67
-     * type_definition                      ::= annotation* modifiers? 'type' (_type_identifier: name)
-     *                                            (type_parameters?: type_parameters) '=' (_type: type)
-     */
-    type_definition: $ => seq(
-                            repeat($.annotation),
-                            optional($.modifiers),
-                            'type',
-                            field('name', $._type_identifier),
-                            field('type_parameters', optional($.type_parameters)),
-                            '=',
-                            field('type', $._type)
-                          ),
-    /*
-     * scalar2c.ebnf:68-70
-     * function_definition                  ::= annotation* modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
-     *                                            (parameters*: parameters) (':' (_type: return_type))?
-     *                                            (('=' (_expression: body)) | (block: body))
-     */
-    function_definition: $ => seq(
-                                repeat($.annotation),
-                                optional($.modifiers),
-                                'def',
-                                field('name', $.identifier),
-                                field('type_parameters', optional($.type_parameters)),
-                                field('parameters', repeat($.parameters)),
-                                optional(seq(':', field('return_type', $._type))),
-                                choice(seq('=', field('body', $._expression)), field('body', $.block))
-                              ),
-    /*
-     * scalar2c.ebnf:71-72
-     * function_declaration                 ::= annotation* modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
-     *                                            (parameters*: parameters) (':' (_type: return_type))?
-     */
-    function_declaration: $ => seq(
-                                 repeat($.annotation),
-                                 optional($.modifiers),
-                                 'def',
-                                 field('name', $.identifier),
-                                 field('type_parameters', optional($.type_parameters)),
-                                 field('parameters', repeat($.parameters)),
-                                 optional(seq(':', field('return_type', $._type)))
-                               ),
-    /*
-     * scalar2c.ebnf:73
-     * local_modifier                       ::= ('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
-     */
-    local_modifier: $ => choice('abstract', 'final', 'sealed', 'implicit', 'lazy'),
+    _identifier: $ => /([\-!#%&*+/\\:<=>?@\u005e\u007c~]+|([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)|[`]([\u0020-\u005f\u0061-\u007f]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*[`]|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[`][\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?[`])/,
     /*
      * scalar2c.ebnf:74
-     * access_modifier                      ::= ('private' | 'protected') access_qualifier?
+     * integerLiteral       ::= /-?($decimalNumeral|$hexNumeral)[Ll]?/
      */
-    access_modifier: $ => seq(choice('private', 'protected'), optional($.access_qualifier)),
+    _integerLiteral: $ => /-?([0-9]+|0[xX][0-9a-fA-F]+)[Ll]?/,
     /*
      * scalar2c.ebnf:75
-     * access_qualifier                     ::= '[' (identifier | 'this') ']'
+     * decimalNumeral       ::= /[0-9]+/
      */
-    access_qualifier: $ => seq('[', choice($.identifier, 'this'), ']'),
+    _decimalNumeral: $ => /[0-9]+/,
     /*
-     * scalar2c.ebnf:76
-     * modifiers                            ::= (local_modifier | access_modifier | 'override')+
+     * scalar2c.ebnf:81
+     * floatingPointLiteral ::= /-?($fpLit1|$fpLit2|$fpLit3|$fpLit4)/
      */
-    modifiers: $ => repeat1(choice($.local_modifier, $.access_modifier, 'override')),
-    /*
-     * scalar2c.ebnf:77
-     * extends_clause                       ::= 'extends' (_type: type) arguments?
-     */
-    extends_clause: $ => seq('extends', field('type', $._type), optional($.arguments)),
-    /*
-     * scalar2c.ebnf:78
-     * class_parameters                     ::= '(' 'implicit'? (class_parameter (',' class_parameter)*)? ')'
-     */
-    class_parameters: $ => seq(
-                             '(',
-                             optional('implicit'),
-                             optional(seq($.class_parameter, repeat(seq(',', $.class_parameter)))),
-                             ')'
-                           ),
-    /*
-     * scalar2c.ebnf:79
-     * parameters                           ::= '(' 'implicit'? (parameter (',' parameter)*)? ')'
-     */
-    parameters: $ => seq(
-                       '(',
-                       optional('implicit'),
-                       optional(seq($.parameter, repeat(seq(',', $.parameter)))),
-                       ')'
-                     ),
-    /*
-     * scalar2c.ebnf:80-81
-     * class_parameter                      ::= annotation* ('val' | 'var')? (identifier: name) (':' (_type: type))?
-     *                                            ('=' (_expression: default_value))?
-     */
-    class_parameter: $ => seq(
-                            repeat($.annotation),
-                            optional(choice('val', 'var')),
-                            field('name', $.identifier),
-                            optional(seq(':', field('type', $._type))),
-                            optional(seq('=', field('default_value', $._expression)))
-                          ),
-    /*
-     * scalar2c.ebnf:82
-     * parameter                            ::= annotation* (identifier: name) (':' (_param_type: type))? ('=' (_expression: default_value))?
-     */
-    parameter: $ => seq(
-                      repeat($.annotation),
-                      field('name', $.identifier),
-                      optional(seq(':', field('type', $._param_type))),
-                      optional(seq('=', field('default_value', $._expression)))
-                    ),
-    /*
-     * scalar2c.ebnf:83
-     * _block                               ::= <(((_expression | _definition) (_semicolon (_expression | _definition))*) _semicolon?)
-     */
-    _block: $ => prec.left(
-                   seq(
-                     seq(
-                       choice($._expression, $._definition),
-                       repeat(seq($._semicolon, choice($._expression, $._definition)))
-                     ),
-                     optional($._semicolon)
-                   )
-                 ),
+    _floatingPointLiteral: $ => /-?([0-9]+[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[0-9]+([Ee][+-]?[0-9]+)?[FfDd]|[0-9]+([Ee][+-]?[0-9]+)[FfDd]?)/,
     /*
      * scalar2c.ebnf:84
-     * block                                ::= '{' _block? '}'
+     * booleanLiteral       ::= "true" | "false"
      */
-    block: $ => seq('{', optional($._block), '}'),
+    _booleanLiteral: $ => choice("true", "false"),
     /*
      * scalar2c.ebnf:85
-     * _type                                ::= function_type | compound_type | infix_type | _annotated_type
+     * characterLiteral     ::= /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\])'/
      */
-    _type: $ => choice($.function_type, $.compound_type, $.infix_type, $._annotated_type),
+    _characterLiteral: $ => /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\])'/,
     /*
      * scalar2c.ebnf:86
-     * _annotated_type                      ::= >(_simple_type annotation*)
+     * rawString            ::= /"""("?"?[^"])*"*"""/
      */
-    _annotated_type: $ => prec.right(seq($._simple_type, repeat($.annotation))),
+    _rawString: $ => /"""("?"?[^"])*"*"""/,
     /*
      * scalar2c.ebnf:87
-     * _simple_type                         ::= generic_type | projected_type | tuple_type | stable_type_identifier | _type_identifier
+     * stringLiteral        ::= string | rawString
      */
-    _simple_type: $ => choice(
-                         $.generic_type,
-                         $.projected_type,
-                         $.tuple_type,
-                         $.stable_type_identifier,
-                         $._type_identifier
-                       ),
+    _stringLiteral: $ => choice($._string, $._rawString),
     /*
      * scalar2c.ebnf:88
-     * compound_type                        ::= 3((_annotated_type: base) ('with' (_annotated_type: extra))+)
+     * string               ::= /"([^"\u000A]|$escapeSeq)*"/
      */
-    compound_type: $ => prec(
-                          3,
-                          seq(
-                            field('base', $._annotated_type),
-                            repeat1(seq('with', field('extra', $._annotated_type)))
-                          )
-                        ),
+    _string: $ => /"([^"\u000A]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*"/,
     /*
-     * scalar2c.ebnf:89-91
-     * infix_type                           ::= <2(((compound_type | infix_type | _annotated_type): left)
-     *                                            ((identifier): operator)
-     *                                            ((compound_type | infix_type | _annotated_type): right))
+     * scalar2c.ebnf:90
+     * charMinusQuoteDollar ::= [^"\$]
      */
-    infix_type: $ => prec.left(
-                       2,
-                       seq(
-                         field('left', choice($.compound_type, $.infix_type, $._annotated_type)),
-                         field('operator', $.identifier),
-                         field('right', choice($.compound_type, $.infix_type, $._annotated_type))
-                       )
-                     ),
+    _charMinusQuoteDollar: $ => /[ !#\u0025-\u007f]/,
     /*
-     * scalar2c.ebnf:92
-     * tuple_type                           ::= '(' (_type (',' _type)*) ')'
+     * scalar2c.ebnf:90
+     * charMinusQuoteDollar ::= [^"\$]
      */
-    tuple_type: $ => seq('(', seq($._type, repeat(seq(',', $._type))), ')'),
+    _charMinusQuoteDollar: $ => /[^"\$]/,
+    /*
+     * scalar2c.ebnf:91-92
+     * [i]nterpolatedString ::= alphaid '"' (charMinusQuoteDollar | escape)* '"'
+     *                        | alphaid '"""' ('"'? '"'? charMinusQuoteDollar | escape)* '"'? '"""'
+     */
+    interpolatedString: $ => choice(
+                               seq($._alphaid, '"', repeat(choice($._charMinusQuoteDollar, $.escape)), '"'),
+                               seq(
+                                 $._alphaid,
+                                 '"""',
+                                 repeat(choice(seq(optional('"'), optional('"'), $._charMinusQuoteDollar), $.escape)),
+                                 optional('"'),
+                                 '"""'
+                               )
+                             ),
     /*
      * scalar2c.ebnf:93
-     * stable_type_identifier               ::= (identifier | stable_identifier) '.' _type_identifier
+     * [e]scape             ::= "$$" | "$" id | "$" BlockExpr
      */
-    stable_type_identifier: $ => seq(choice($.identifier, $.stable_identifier), '.', $._type_identifier),
+    escape: $ => choice("$$", seq("$", $._id), seq("$", $.BlockExpr)),
     /*
      * scalar2c.ebnf:94
-     * stable_identifier                    ::= (identifier | stable_identifier) '.' identifier
+     * alphaid              ::= $upper $idrest | varid
      */
-    stable_identifier: $ => seq(choice($.identifier, $.stable_identifier), '.', $.identifier),
+    _alphaid: $ => choice(
+                     seq(
+                       /[\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$]/,
+                       repeat(
+                         /[\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]/
+                       ),
+                       optional(repeat1(/[\-!#%&*+/\\:<=>?@\u005e\u007c~]/))
+                     ),
+                     $.varid
+                   ),
     /*
      * scalar2c.ebnf:95
-     * generic_type                         ::= (_simple_type: type) (type_arguments: type_arguments)
+     * symbolLiteral        ::= /[']$plainid/
      */
-    generic_type: $ => seq(field('type', $._simple_type), field('type_arguments', $.type_arguments)),
+    _symbolLiteral: $ => /[']([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)/,
     /*
      * scalar2c.ebnf:96
-     * projected_type                       ::= (_simple_type: type) '#' (_type_identifier: selector)
+     * comment              ::= _openMultiComment _multiComment "*∕" | "//" /.*∕
      */
-    projected_type: $ => seq(field('type', $._simple_type), '#', field('selector', $._type_identifier)),
+    _comment: $ => choice(seq($._openMultiComment, $._multiComment, "*/"), seq("//", /.*/)),
     /*
      * scalar2c.ebnf:97
-     * function_type                        ::= >((parameter_types: parameter_types) '=>' (_type: return_type))
+     * nl                   ::= "\\n"
      */
-    function_type: $ => prec.right(
-                          seq(field('parameter_types', $.parameter_types), '=>', field('return_type', $._type))
-                        ),
+    _nl: $ => "\\n",
     /*
-     * scalar2c.ebnf:98-101
-     * parameter_types                      ::= -1(_annotated_type
-     *                                        | ~1('(' (_param_type (',' _param_type)*)? ')')
-     *                                        | compound_type
-     *                                        | infix_type)
+     * scalar2c.ebnf:98
+     * semi                 ::= (';' | _automaticSemicolon)
      */
-    parameter_types: $ => prec(
-                            -1,
-                            choice(
-                              $._annotated_type,
-                              prec.dynamic(1, seq('(', optional(seq($._param_type, repeat(seq(',', $._param_type)))), ')')),
-                              $.compound_type,
-                              $.infix_type
-                            )
-                          ),
+    _semi: $ => choice(';', $._automaticSemicolon),
     /*
-     * scalar2c.ebnf:102
-     * _param_type                          ::= _type | lazy_parameter_type | repeated_parameter_type
+     * scalar2c.ebnf:99
+     * id                   ::= /$idRegex/
      */
-    _param_type: $ => choice($._type, $.lazy_parameter_type, $.repeated_parameter_type),
+    _id: $ => /([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)|[`]([\u0020-\u005f\u0061-\u007f]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*[`]/,
     /*
-     * scalar2c.ebnf:103
-     * lazy_parameter_type                  ::= '=>' (_type: type)
+     * scalar2c.ebnf:102-109
+     * Literal              ::= integerLiteral
+     *                        | floatingPointLiteral
+     *                        | booleanLiteral
+     *                        | characterLiteral
+     *                        | stringLiteral
+     *                        | interpStart interpolatedString
+     *                        | symbolLiteral
+     *                        | "null"
      */
-    lazy_parameter_type: $ => seq('=>', field('type', $._type)),
+    Literal: $ => choice(
+                    $._integerLiteral,
+                    $._floatingPointLiteral,
+                    $._booleanLiteral,
+                    $._characterLiteral,
+                    $._stringLiteral,
+                    seq($.interpStart, $.interpolatedString),
+                    $._symbolLiteral,
+                    "null"
+                  ),
     /*
-     * scalar2c.ebnf:104
-     * repeated_parameter_type              ::= (_type: type) '*'
+     * scalar2c.ebnf:111
+     * QualId               ::= id ("." id)*
      */
-    repeated_parameter_type: $ => seq(field('type', $._type), '*'),
+    QualId: $ => seq($._id, repeat(seq(".", $._id))),
     /*
-     * scalar2c.ebnf:105
-     * _type_identifier                     ::= identifier -> type_identifier
+     * scalar2c.ebnf:112
+     * ids                  ::= id ("," id)*
      */
-    _type_identifier: $ => alias($.identifier, $.type_identifier),
+    _ids: $ => seq($._id, repeat(seq(",", $._id))),
     /*
-     * scalar2c.ebnf:106-118
-     * _pattern                             ::= identifier
-     *                                        | capture_pattern
-     *                                        | tuple_pattern
-     *                                        | case_class_pattern
-     *                                        | infix_pattern
-     *                                        | alternative_pattern
-     *                                        | typed_pattern
-     *                                        | number
-     *                                        | boolean_literal
-     *                                        | character_literal
-     *                                        | symbol_literal
-     *                                        | string
-     *                                        | wildcard
+     * scalar2c.ebnf:114-115
+     * Path                 ::= (StableId
+     *                        | (id '.')? 'this')
      */
-    _pattern: $ => choice(
-                     $.identifier,
-                     $.capture_pattern,
-                     $.tuple_pattern,
-                     $.case_class_pattern,
-                     $.infix_pattern,
-                     $.alternative_pattern,
-                     $.typed_pattern,
-                     $.number,
-                     $.boolean_literal,
-                     $.character_literal,
-                     $.symbol_literal,
-                     $.string,
-                     $.wildcard
+    Path: $ => choice($.StableId, seq(optional(seq($._id, '.')), 'this')),
+    /*
+     * scalar2c.ebnf:116-118
+     * StableId             ::= 5(id
+     *                        | Path '.' id
+     *                        | (id '.')? 'super' ClassQualifier? '.' id)
+     */
+    StableId: $ => prec(
+                     5,
+                     choice(
+                       $._id,
+                       seq($.Path, '.', $._id),
+                       seq(optional(seq($._id, '.')), 'super', optional($.ClassQualifier), '.', $._id)
+                     )
                    ),
     /*
      * scalar2c.ebnf:119
-     * case_class_pattern                   ::= ((_type_identifier | stable_type_identifier): type) '(' ((_pattern (',' _pattern)*)?: pattern) ')'
+     * ClassQualifier       ::= "[" id "]"
      */
-    case_class_pattern: $ => seq(
-                               field('type', choice($._type_identifier, $.stable_type_identifier)),
-                               '(',
-                               field('pattern', optional(seq($._pattern, repeat(seq(',', $._pattern))))),
-                               ')'
-                             ),
+    ClassQualifier: $ => seq("[", $._id, "]"),
     /*
      * scalar2c.ebnf:120
-     * infix_pattern                        ::= <2((_pattern: left) ((identifier): operator) (_pattern: right))
+     * ValDef               ::= "val" id "=" Literal
      */
-    infix_pattern: $ => prec.left(
-                          2,
-                          seq(
-                            field('left', $._pattern),
-                            field('operator', $.identifier),
-                            field('right', $._pattern)
-                          )
-                        ),
+    ValDef: $ => seq("val", $._id, "=", $.Literal),
     /*
-     * scalar2c.ebnf:121
-     * capture_pattern                      ::= 1((identifier: name) '@' (_pattern: pattern))
+     * scalar2c.ebnf:122-123
+     * Type                 ::= 1(FunctionArgTypes '=>' Type | InfixType
+     *                            ExistentialClause?)
      */
-    capture_pattern: $ => prec(1, seq(field('name', $.identifier), '@', field('pattern', $._pattern))),
+    Type: $ => prec(
+                 1,
+                 choice(
+                   seq($.FunctionArgTypes, '=>', $.Type),
+                   seq($.InfixType, optional($.ExistentialClause))
+                 )
+               ),
     /*
-     * scalar2c.ebnf:122
-     * typed_pattern                        ::= -1((_pattern: pattern) ':' (_type: type))
+     * scalar2c.ebnf:124-125
+     * FunctionArgTypes     ::= InfixType
+     *                        | '(' ParamType (',' ParamType )*? ')'
      */
-    typed_pattern: $ => prec(-1, seq(field('pattern', $._pattern), ':', field('type', $._type))),
+    FunctionArgTypes: $ => choice($.InfixType, seq('(', $.ParamType, optional(repeat(seq(',', $.ParamType))), ')')),
     /*
-     * scalar2c.ebnf:123
-     * alternative_pattern                  ::= <-2(_pattern '|' _pattern)
+     * scalar2c.ebnf:126
+     * ExistentialClause    ::= 'forSome' '{' ExistentialDcl (semi ExistentialDcl)* '}'
      */
-    alternative_pattern: $ => prec.left(-2, seq($._pattern, '|', $._pattern)),
+    ExistentialClause: $ => seq('forSome', '{', $.ExistentialDcl, repeat(seq($._semi, $.ExistentialDcl)), '}'),
     /*
-     * scalar2c.ebnf:124
-     * tuple_pattern                        ::= '(' _pattern (',' _pattern)+ ')'
+     * scalar2c.ebnf:127-128
+     * ExistentialDcl       ::= 'type' TypeDcl
+     *                        | 'val' ValDcl
      */
-    tuple_pattern: $ => seq('(', $._pattern, repeat1(seq(',', $._pattern)), ')'),
+    ExistentialDcl: $ => choice(seq('type', $.TypeDcl), seq('val', $.ValDcl)),
     /*
-     * scalar2c.ebnf:125-133
-     * _expression                          ::= if_expression
-     *                                        | match_expression
-     *                                        | try_expression
-     *                                        | for_expression
-     *                                        | call_expression
-     *                                        | generic_function
-     *                                        | assignment_expression
-     *                                        | infix_expression
-     *                                        | _simple_expression
+     * scalar2c.ebnf:129
+     * InfixType            ::= CompoundType (id nl? CompoundType)*
      */
-    _expression: $ => choice(
-                        $.if_expression,
-                        $.match_expression,
-                        $.try_expression,
-                        $.for_expression,
-                        $.call_expression,
-                        $.generic_function,
-                        $.assignment_expression,
-                        $.infix_expression,
-                        $._simple_expression
-                      ),
+    InfixType: $ => seq($.CompoundType, repeat(seq($._id, optional($._nl), $.CompoundType))),
     /*
-     * scalar2c.ebnf:134-147
-     * _simple_expression                   ::= interpolated_string_expression
-     *                                        | parenthesized_expression
-     *                                        | field_expression
-     *                                        | instance_expression
-     *                                        | prefix_expression
-     *                                        | tuple_expression
-     *                                        | case_block
-     *                                        | block
-     *                                        | identifier
-     *                                        | number
-     *                                        | boolean_literal
-     *                                        | character_literal
-     *                                        | symbol_literal
-     *                                        | string
+     * scalar2c.ebnf:130
+     * CompoundType         ::= AnnotType ('with' AnnotType)* Refinement? | Refinement
      */
-    _simple_expression: $ => choice(
-                               $.interpolated_string_expression,
-                               $.parenthesized_expression,
-                               $.field_expression,
-                               $.instance_expression,
-                               $.prefix_expression,
-                               $.tuple_expression,
-                               $.case_block,
-                               $.block,
-                               $.identifier,
-                               $.number,
-                               $.boolean_literal,
-                               $.character_literal,
-                               $.symbol_literal,
-                               $.string
-                             ),
+    CompoundType: $ => choice(
+                         seq($.AnnotType, repeat(seq('with', $.AnnotType)), optional($.Refinement)),
+                         $.Refinement
+                       ),
     /*
-     * scalar2c.ebnf:148-149
-     * if_expression                        ::= >('if' (parenthesized_expression: condition) (_expression: consequence)
-     *                                            ('else' (_expression: alternative))?)
+     * scalar2c.ebnf:131
+     * AnnotType            ::= SimpleType Annotation*
      */
-    if_expression: $ => prec.right(
-                          seq(
-                            'if',
-                            field('condition', $.parenthesized_expression),
-                            field('consequence', $._expression),
-                            optional(seq('else', field('alternative', $._expression)))
-                          )
-                        ),
+    AnnotType: $ => seq($.SimpleType, repeat($.Annotation)),
+    /*
+     * scalar2c.ebnf:132-136
+     * SimpleType           ::= SimpleType TypeArgs
+     *                        | SimpleType '#' id
+     *                        | StableId
+     *                        | Path '.' 'type'
+     *                        | '(' Types ')'
+     */
+    SimpleType: $ => choice(
+                       seq($.SimpleType, $.TypeArgs),
+                       seq($.SimpleType, '#', $._id),
+                       $.StableId,
+                       seq($.Path, '.', 'type'),
+                       seq('(', $.Types, ')')
+                     ),
+    /*
+     * scalar2c.ebnf:137
+     * TypeArgs             ::= '[' Types ']'
+     */
+    TypeArgs: $ => seq('[', $.Types, ']'),
+    /*
+     * scalar2c.ebnf:138
+     * Types                ::= 1(Type (',' Type)*)
+     */
+    Types: $ => prec(1, seq($.Type, repeat(seq(',', $.Type)))),
+    /*
+     * scalar2c.ebnf:139
+     * Refinement           ::= nl? '{' RefineStat? (semi RefineStat)* '}'
+     */
+    Refinement: $ => seq(
+                       optional($._nl),
+                       '{',
+                       optional($.RefineStat),
+                       repeat(seq($._semi, $.RefineStat)),
+                       '}'
+                     ),
+    /*
+     * scalar2c.ebnf:140-141
+     * RefineStat           ::= Dcl
+     *                        | 'type' TypeDef
+     */
+    RefineStat: $ => choice($.Dcl, seq('type', $.TypeDef)),
+    /*
+     * scalar2c.ebnf:142
+     * TypePat              ::= Type
+     */
+    TypePat: $ => $.Type,
+    /*
+     * scalar2c.ebnf:144-146
+     * Ascription           ::= 1(':' InfixType
+     *                        | ':' Annotation Annotation*
+     *                        | ':' '_' '*')
+     */
+    Ascription: $ => prec(
+                       1,
+                       choice(
+                         seq(':', $.InfixType),
+                         seq(':', $.Annotation, repeat($.Annotation)),
+                         seq(':', '_', '*')
+                       )
+                     ),
+    /*
+     * scalar2c.ebnf:148
+     * IfExpression         ::= ('if' '(' Expr ')' nl* Expr (semi? 'else' Expr)?)
+     */
+    IfExpression: $ => seq(
+                         'if',
+                         '(',
+                         $.Expr,
+                         ')',
+                         repeat($._nl),
+                         $.Expr,
+                         optional(seq(optional($._semi), 'else', $.Expr))
+                       ),
+    /*
+     * scalar2c.ebnf:149
+     * WhileExpression      ::= 'while' '(' Expr ')' nl* Expr
+     */
+    WhileExpression: $ => seq('while', '(', $.Expr, ')', repeat($._nl), $.Expr),
     /*
      * scalar2c.ebnf:150
-     * match_expression                     ::= (_expression: value) 'match' (case_block: body)
+     * TryExpression        ::= ('try' Expr ('catch' Expr)? ('finally' Expr)?)
      */
-    match_expression: $ => seq(field('value', $._expression), 'match', field('body', $.case_block)),
+    TryExpression: $ => seq('try', $.Expr, optional(seq('catch', $.Expr)), optional(seq('finally', $.Expr))),
     /*
      * scalar2c.ebnf:151
-     * try_expression                       ::= >('try' (_expression: body) catch_clause? finally_clause?)
+     * DoExpression         ::= ('do' Expr semi? 'while' '(' Expr ')')
      */
-    try_expression: $ => prec.right(
-                           seq(
-                             'try',
-                             field('body', $._expression),
-                             optional($.catch_clause),
-                             optional($.finally_clause)
-                           )
-                         ),
+    DoExpression: $ => seq('do', $.Expr, optional($._semi), 'while', '(', $.Expr, ')'),
     /*
      * scalar2c.ebnf:152
-     * catch_clause                         ::= >('catch' case_block)
+     * ThrowExpression      ::= 'throw' Expr
      */
-    catch_clause: $ => prec.right(seq('catch', $.case_block)),
+    ThrowExpression: $ => seq('throw', $.Expr),
     /*
      * scalar2c.ebnf:153
-     * finally_clause                       ::= >('finally' _expression)
+     * ReturnExpression     ::= ('return' Expr?)
      */
-    finally_clause: $ => prec.right(seq('finally', $._expression)),
+    ReturnExpression: $ => seq('return', optional($.Expr)),
     /*
      * scalar2c.ebnf:154
-     * case_block                           ::= -1('{' '}') | ('{' case_clause+ '}')
+     * ForExpression        ::= 'for' ('(' Enumerators ')' | '{' Enumerators semi? '}') nl* 'yield'? Expr
      */
-    case_block: $ => choice(prec(-1, seq('{', '}')), seq('{', repeat1($.case_clause), '}')),
+    ForExpression: $ => seq(
+                          'for',
+                          choice(seq('(', $.Enumerators, ')'), seq('{', $.Enumerators, optional($._semi), '}')),
+                          repeat($._nl),
+                          optional('yield'),
+                          $.Expr
+                        ),
     /*
      * scalar2c.ebnf:155
-     * case_clause                          ::= <('case' (_pattern: pattern) guard? '=>' (_block?: body))
+     * CaseExpression       ::= PostfixExpr 'match' '{' CaseClauses '}'
      */
-    case_clause: $ => prec.left(
-                        seq(
-                          'case',
-                          field('pattern', $._pattern),
-                          optional($.guard),
-                          '=>',
-                          field('body', optional($._block))
+    CaseExpression: $ => seq($.PostfixExpr, 'match', '{', $.CaseClauses, '}'),
+    /*
+     * scalar2c.ebnf:156
+     * Expr                 ::= 1((Bindings | 'implicit'? id | '_') '=>' Expr | Expr1)
+     */
+    Expr: $ => prec(
+                 1,
+                 choice(
+                   seq(choice($.Bindings, seq(optional('implicit'), $._id), '_'), '=>', $.Expr),
+                   $.Expr1
+                 )
+               ),
+    /*
+     * scalar2c.ebnf:157-166
+     * Expr1                ::= 1(IfExpression
+     *                        | WhileExpression
+     *                        | TryExpression
+     *                        | DoExpression
+     *                        | ThrowExpression
+     *                        | ReturnExpression
+     *                        | ForExpression
+     *                        | PostfixExpr
+     *                        | PostfixExpr Ascription
+     *                        | CaseExpression)
+     */
+    Expr1: $ => prec(
+                  1,
+                  choice(
+                    $.IfExpression,
+                    $.WhileExpression,
+                    $.TryExpression,
+                    $.DoExpression,
+                    $.ThrowExpression,
+                    $.ReturnExpression,
+                    $.ForExpression,
+                    $.PostfixExpr,
+                    seq($.PostfixExpr, $.Ascription),
+                    $.CaseExpression
+                  )
+                ),
+    /*
+     * scalar2c.ebnf:167
+     * PostfixExpr          ::= -1(InfixExpr (id nl?)?)
+     */
+    PostfixExpr: $ => prec(-1, seq($.InfixExpr, optional(seq($._id, optional($._nl))))),
+    /*
+     * scalar2c.ebnf:168
+     * InfixExpr            ::= <((PrefixExpr | InfixExpr id nl? InfixExpr))
+     */
+    InfixExpr: $ => prec.left(choice($.PrefixExpr, seq($.InfixExpr, $._id, optional($._nl), $.InfixExpr))),
+    /*
+     * scalar2c.ebnf:169
+     * PrefixExpr           ::= ('-' | '+' | '~' | '!')? SimpleExpr
+     */
+    PrefixExpr: $ => seq(optional(choice('-', '+', '~', '!')), $.SimpleExpr),
+    /*
+     * scalar2c.ebnf:170-172
+     * SimpleExpr           ::= 'new' (ClassTemplate | TemplateBody)
+     *                        | BlockExpr
+     *                        | SimpleExpr1 '_'?
+     */
+    SimpleExpr: $ => choice(
+                       seq('new', choice($.ClassTemplate, $.TemplateBody)),
+                       $.BlockExpr,
+                       seq($.SimpleExpr1, optional('_'))
+                     ),
+    /*
+     * scalar2c.ebnf:173-179
+     * SimpleExpr1          ::= 10(Literal
+     *                        | Path
+     *                        | '_'
+     *                        | '(' Exprs? ')'
+     *                        | SimpleExpr '.' id
+     *                        | SimpleExpr TypeArgs
+     *                        | SimpleExpr1 ArgumentExprs)
+     */
+    SimpleExpr1: $ => prec(
+                        10,
+                        choice(
+                          $.Literal,
+                          $.Path,
+                          '_',
+                          seq('(', optional($.Exprs), ')'),
+                          seq($.SimpleExpr, '.', $._id),
+                          seq($.SimpleExpr, $.TypeArgs),
+                          seq($.SimpleExpr1, $.ArgumentExprs)
                         )
                       ),
     /*
-     * scalar2c.ebnf:156
-     * guard                                ::= 'if' (_expression: condition)
+     * scalar2c.ebnf:180
+     * Exprs                ::= Expr (',' Expr)*
      */
-    guard: $ => seq('if', field('condition', $._expression)),
+    Exprs: $ => seq($.Expr, repeat(seq(',', $.Expr))),
     /*
-     * scalar2c.ebnf:158
-     * enumerators          ::= <(generator (_semicolon generator)*)
+     * scalar2c.ebnf:181-183
+     * ArgumentExprs        ::= '(' Exprs? ')'
+     *                        | '(' (Exprs ',')? PostfixExpr ':' '_' '*' ')'
+     *                        | nl? BlockExpr
      */
-    enumerators: $ => prec.left(seq($.generator, repeat(seq($._semicolon, $.generator)))),
+    ArgumentExprs: $ => choice(
+                          seq('(', optional($.Exprs), ')'),
+                          seq('(', optional(seq($.Exprs, ',')), $.PostfixExpr, ':', '_', '*', ')'),
+                          seq(optional($._nl), $.BlockExpr)
+                        ),
     /*
-     * scalar2c.ebnf:159
-     * generator            ::= <(_pattern '<-' _expression (_semicolon? guard | _semicolon _pattern '=' _expression)*)
+     * scalar2c.ebnf:184-185
+     * BlockExpr            ::= '{' CaseClauses '}'
+     *                        | '{' nl* Block '}'
      */
-    generator: $ => prec.left(
-                      seq(
-                        $._pattern,
-                        '<-',
-                        $._expression,
-                        repeat(
-                          choice(
-                            seq(optional($._semicolon), $.guard),
-                            seq($._semicolon, $._pattern, '=', $._expression)
-                          )
-                        )
+    BlockExpr: $ => choice(seq('{', $.CaseClauses, '}'), seq('{', repeat($._nl), $.Block, '}')),
+    /*
+     * scalar2c.ebnf:186
+     * Block                ::= BlockStat (semi BlockStat)* ResultExpr?
+     */
+    Block: $ => seq($.BlockStat, repeat(seq($._semi, $.BlockStat)), optional($.ResultExpr)),
+    /*
+     * scalar2c.ebnf:187-191
+     * BlockStat            ::= Import
+     *                        | Annotation* 'implicit'? 'lazy'? Def
+     *                        | Annotation* LocalModifier* TmplDef
+     *                        | Expr1
+     *                        | _empty
+     */
+    BlockStat: $ => choice(
+                      $.Import,
+                      seq(repeat($.Annotation), optional('implicit'), optional('lazy'), $.Def),
+                      seq(repeat($.Annotation), repeat($.LocalModifier), $.TmplDef),
+                      $.Expr1,
+                      $._empty
+                    ),
+    /*
+     * scalar2c.ebnf:192-194
+     * ResultExpr           ::= -10(Expr1
+     *                        | (Bindings | ('implicit'? id | '_') ':'
+     *                            CompoundType) '=>' Block)
+     */
+    ResultExpr: $ => prec(
+                       -10,
+                       choice(
+                         $.Expr1,
+                         seq(
+                           choice(
+                             $.Bindings,
+                             seq(choice(seq(optional('implicit'), $._id), '_'), ':', $.CompoundType)
+                           ),
+                           '=>',
+                           $.Block
+                         )
+                       )
+                     ),
+    /*
+     * scalar2c.ebnf:196
+     * Enumerators          ::= Generator (semi Generator)*
+     */
+    Enumerators: $ => seq($.Generator, repeat(seq($._semi, $.Generator))),
+    /*
+     * scalar2c.ebnf:197
+     * Generator            ::= Pattern1 '<-' Expr (semi? Guard | semi Pattern1 '=' Expr)*
+     */
+    Generator: $ => seq(
+                      $.Pattern1,
+                      '<-',
+                      $.Expr,
+                      repeat(choice(seq(optional($._semi), $.Guard), seq($._semi, $.Pattern1, '=', $.Expr)))
+                    ),
+    /*
+     * scalar2c.ebnf:199
+     * CaseClauses          ::= CaseClause (semi? CaseClause)*
+     */
+    CaseClauses: $ => seq($.CaseClause, repeat(seq(optional($._semi), $.CaseClause))),
+    /*
+     * scalar2c.ebnf:200
+     * CaseClause           ::= "case" Pattern Guard? "=>" Block
+     */
+    CaseClause: $ => seq("case", $.Pattern, optional($.Guard), "=>", $.Block),
+    /*
+     * scalar2c.ebnf:201
+     * Guard                ::= 'if' PostfixExpr
+     */
+    Guard: $ => seq('if', $.PostfixExpr),
+    /*
+     * scalar2c.ebnf:203
+     * Pattern              ::= Pattern1 ('|' Pattern1)*
+     */
+    Pattern: $ => seq($.Pattern1, repeat(seq('|', $.Pattern1))),
+    /*
+     * scalar2c.ebnf:204-206
+     * Pattern1             ::= boundvarid ':' TypePat
+     *                        | '_' ':' TypePat
+     *                        | Pattern2
+     */
+    Pattern1: $ => choice(seq($._boundvarid, ':', $.TypePat), seq('_', ':', $.TypePat), $.Pattern2),
+    /*
+     * scalar2c.ebnf:207-208
+     * Pattern2             ::= 10(id ('@' Pattern3)?
+     *                        | Pattern3)
+     */
+    Pattern2: $ => prec(10, choice(seq($._id, optional(seq('@', $.Pattern3))), $.Pattern3)),
+    /*
+     * scalar2c.ebnf:209-210
+     * Pattern3             ::= SimplePattern
+     *                        | SimplePattern (id nl? SimplePattern)*
+     */
+    Pattern3: $ => choice(
+                     $.SimplePattern,
+                     seq($.SimplePattern, repeat(seq($._id, optional($._nl), $.SimplePattern)))
+                   ),
+    /*
+     * scalar2c.ebnf:211-217
+     * SimplePattern        ::= ('_'
+     *                        | varid
+     *                        | Literal
+     *                        | StableId
+     *                        | StableId '(' Patterns? ')'
+     *                        | StableId '(' (Patterns ',')? (id '@')? '_' '*' ')'
+     *                        | '(' Patterns? ')')
+     */
+    SimplePattern: $ => choice(
+                          '_',
+                          $.varid,
+                          $.Literal,
+                          $.StableId,
+                          seq($.StableId, '(', optional($.Patterns), ')'),
+                          seq(
+                            $.StableId,
+                            '(',
+                            optional(seq($.Patterns, ',')),
+                            optional(seq($._id, '@')),
+                            '_',
+                            '*',
+                            ')'
+                          ),
+                          seq('(', optional($.Patterns), ')')
+                        ),
+    /*
+     * scalar2c.ebnf:218-219
+     * Patterns             ::= (Pattern (',' Patterns)?
+     *                        | '_' '*')
+     */
+    Patterns: $ => choice(seq($.Pattern, optional(seq(',', $.Patterns))), seq('_', '*')),
+    /*
+     * scalar2c.ebnf:221
+     * TypeParamClause      ::= '[' VariantTypeParam (',' VariantTypeParam)* ']'
+     */
+    TypeParamClause: $ => seq('[', $.VariantTypeParam, repeat(seq(',', $.VariantTypeParam)), ']'),
+    /*
+     * scalar2c.ebnf:222
+     * FunTypeParamClause   ::= '[' TypeParam (',' TypeParam)* ']'
+     */
+    FunTypeParamClause: $ => seq('[', $.TypeParam, repeat(seq(',', $.TypeParam)), ']'),
+    /*
+     * scalar2c.ebnf:223
+     * VariantTypeParam     ::= Annotation* ('+' | '-')? TypeParam
+     */
+    VariantTypeParam: $ => seq(repeat($.Annotation), optional(choice('+', '-')), $.TypeParam),
+    /*
+     * scalar2c.ebnf:224-225
+     * TypeParam            ::= (id | '_') TypeParamClause? ('>:' Type)? ('<:' Type)?
+     *                            ('<%' Type)* (':' Type)*
+     */
+    TypeParam: $ => seq(
+                      choice($._id, '_'),
+                      optional($.TypeParamClause),
+                      optional(seq('>:', $.Type)),
+                      optional(seq('<:', $.Type)),
+                      repeat(seq('<%', $.Type)),
+                      repeat(seq(':', $.Type))
+                    ),
+    /*
+     * scalar2c.ebnf:227
+     * ParamClause          ::= nl? '(' Params? ')'
+     */
+    ParamClause: $ => seq(optional($._nl), '(', optional($.Params), ')'),
+    /*
+     * scalar2c.ebnf:228
+     * Params               ::= Param (',' Param)* _trailingComma?
+     */
+    Params: $ => seq($.Param, repeat(seq(',', $.Param)), optional($._trailingComma)),
+    /*
+     * scalar2c.ebnf:229
+     * Param                ::= Annotation* id (':' ParamType)? ('=' Expr)?
+     */
+    Param: $ => seq(
+                  repeat($.Annotation),
+                  $._id,
+                  optional(seq(':', $.ParamType)),
+                  optional(seq('=', $.Expr))
+                ),
+    /*
+     * scalar2c.ebnf:230
+     * ParamType            ::= (Type | '=>' Type |  Type '*')
+     */
+    ParamType: $ => choice($.Type, seq('=>', $.Type), seq($.Type, '*')),
+    /*
+     * scalar2c.ebnf:231
+     * ImplicitClassParams  ::= '(' 'implicit' ClassParams ')'
+     */
+    ImplicitClassParams: $ => seq('(', 'implicit', $.ClassParams, ')'),
+    /*
+     * scalar2c.ebnf:233
+     * ClassParamClause     ::= (nl? '(' ClassParams? ')')
+     */
+    ClassParamClause: $ => seq(optional($._nl), '(', optional($.ClassParams), ')'),
+    /*
+     * scalar2c.ebnf:234
+     * ClassParams          ::= ClassParam (',' ClassParam)*
+     */
+    ClassParams: $ => seq($.ClassParam, repeat(seq(',', $.ClassParam))),
+    /*
+     * scalar2c.ebnf:235-236
+     * ClassParam           ::= Annotation* Modifier* (('val' | 'var'))?
+     *                            id ':' ParamType ('=' Expr)?
+     */
+    ClassParam: $ => seq(
+                       repeat($.Annotation),
+                       repeat($.Modifier),
+                       optional(choice('val', 'var')),
+                       $._id,
+                       ':',
+                       $.ParamType,
+                       optional(seq('=', $.Expr))
+                     ),
+    /*
+     * scalar2c.ebnf:237
+     * Bindings             ::= '(' Binding (',' Binding)* ')'
+     */
+    Bindings: $ => seq('(', $.Binding, repeat(seq(',', $.Binding)), ')'),
+    /*
+     * scalar2c.ebnf:238
+     * Binding              ::= (id | "_") (':' Type)?
+     */
+    Binding: $ => seq(choice($._id, "_"), optional(seq(':', $.Type))),
+    /*
+     * scalar2c.ebnf:240-242
+     * Modifier             ::= (LocalModifier
+     *                        | AccessModifier
+     *                        | 'override')
+     */
+    Modifier: $ => choice($.LocalModifier, $.AccessModifier, 'override'),
+    /*
+     * scalar2c.ebnf:243
+     * LocalModifier        ::= ('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
+     */
+    LocalModifier: $ => choice('abstract', 'final', 'sealed', 'implicit', 'lazy'),
+    /*
+     * scalar2c.ebnf:244
+     * AccessModifier       ::= ('private' | 'protected') AccessQualifier?
+     */
+    AccessModifier: $ => seq(choice('private', 'protected'), optional($.AccessQualifier)),
+    /*
+     * scalar2c.ebnf:245
+     * AccessQualifier      ::= '[' (id | 'this') ']'
+     */
+    AccessQualifier: $ => seq('[', choice($._id, 'this'), ']'),
+    /*
+     * scalar2c.ebnf:247
+     * Annotation           ::= ('@' SimpleType ArgumentExprs*)
+     */
+    Annotation: $ => seq('@', $.SimpleType, repeat($.ArgumentExprs)),
+    /*
+     * scalar2c.ebnf:248
+     * ConstrAnnotation     ::= '@' SimpleType ArgumentExprs
+     */
+    ConstrAnnotation: $ => seq('@', $.SimpleType, $.ArgumentExprs),
+    /*
+     * scalar2c.ebnf:250
+     * TemplateBody         ::= 1(nl? '{' SelfType? TemplateStat (semi TemplateStat)* '}')
+     */
+    TemplateBody: $ => prec(
+                         1,
+                         seq(
+                           optional($._nl),
+                           '{',
+                           optional($.SelfType),
+                           $.TemplateStat,
+                           repeat(seq($._semi, $.TemplateStat)),
+                           '}'
+                         )
+                       ),
+    /*
+     * scalar2c.ebnf:251-255
+     * TemplateStat         ::= 1(Import
+     *                        | (Annotation nl?)* Modifier* Def
+     *                        | (Annotation nl?)* Modifier* Dcl
+     *                        | Expr
+     *                        | empty)
+     */
+    TemplateStat: $ => prec(
+                         1,
+                         choice(
+                           $.Import,
+                           seq(repeat(seq($.Annotation, optional($._nl))), repeat($.Modifier), $.Def),
+                           seq(repeat(seq($.Annotation, optional($._nl))), repeat($.Modifier), $.Dcl),
+                           $.Expr,
+                           $._empty
+                         )
+                       ),
+    /*
+     * scalar2c.ebnf:258
+     * SelfType             ::= (id (':' Type)? '=>' |  'this' ':' Type '=>')
+     */
+    SelfType: $ => choice(seq($._id, optional(seq(':', $.Type)), '=>'), seq('this', ':', $.Type, '=>')),
+    /*
+     * scalar2c.ebnf:260
+     * Import               ::= 'import' ImportExpr (',' ImportExpr)*
+     */
+    Import: $ => seq('import', $.ImportExpr, repeat(seq(',', $.ImportExpr))),
+    /*
+     * scalar2c.ebnf:261
+     * ImportExpr           ::= (StableId '.' (id | '_' | ImportSelectors))
+     */
+    ImportExpr: $ => seq($.StableId, '.', choice($._id, '_', $.ImportSelectors)),
+    /*
+     * scalar2c.ebnf:262
+     * ImportSelectors      ::= ('{' (ImportSelector ',')* (ImportSelector | '_') '}')
+     */
+    ImportSelectors: $ => seq('{', repeat(seq($.ImportSelector, ',')), choice($.ImportSelector, '_'), '}'),
+    /*
+     * scalar2c.ebnf:263
+     * ImportSelector       ::= id ('=>' id | '=>' '_')?
+     */
+    ImportSelector: $ => seq($._id, optional(choice(seq('=>', $._id), seq('=>', '_')))),
+    /*
+     * scalar2c.ebnf:267-270
+     * Dcl                  ::= (_val ValDcl
+     *                        | _var VarDcl
+     *                        | _def1 FunDcl
+     *                        | 'type' nl* TypeDcl)
+     */
+    Dcl: $ => choice(
+                seq($._val, $.ValDcl),
+                seq($._var, $.VarDcl),
+                seq($._def1, $.FunDcl),
+                seq('type', repeat($._nl), $.TypeDcl)
+              ),
+    /*
+     * scalar2c.ebnf:272
+     * ValDcl               ::= ids ':' Type
+     */
+    ValDcl: $ => seq($._ids, ':', $.Type),
+    /*
+     * scalar2c.ebnf:273
+     * VarDcl               ::= ids ':' Type
+     */
+    VarDcl: $ => seq($._ids, ':', $.Type),
+    /*
+     * scalar2c.ebnf:274-275
+     * FunDcl               ::= FunSig (':' Type)?
+     * ; TODO not sure about right associativity
+     */
+    FunDcl: $ => seq($.FunSig, optional(seq(':', $.Type))),
+    /*
+     * scalar2c.ebnf:276
+     * FunSig               ::= (id FunTypeParamClause? $ParamClauses)
+     */
+    FunSig: $ => seq(
+                   $._id,
+                   optional($.FunTypeParamClause),
+                   repeat($.ParamClause),
+                   optional(seq(optional($._nl), '(', 'implicit', $.Params, ')'))
+                 ),
+    /*
+     * scalar2c.ebnf:277
+     * TypeDcl              ::= id  TypeParamClause? ('>:' Type)? ('<:' Type)?
+     */
+    TypeDcl: $ => seq(
+                    $._id,
+                    optional($.TypeParamClause),
+                    optional(seq('>:', $.Type)),
+                    optional(seq('<:', $.Type))
+                  ),
+    /*
+     * scalar2c.ebnf:279-280
+     * PatVarDef            ::= 'val' PatDef
+     *                        | 'var' VarDef
+     */
+    PatVarDef: $ => choice(seq('val', $.PatDef), seq('var', $.VarDef)),
+    /*
+     * scalar2c.ebnf:281-284
+     * Def                  ::= 1(PatVarDef
+     *                        | 'def' FunDef
+     *                        | 'type' nl* TypeDef
+     *                        | TmplDef)
+     */
+    Def: $ => prec(
+                1,
+                choice(
+                  $.PatVarDef,
+                  seq('def', $.FunDef),
+                  seq('type', repeat($._nl), $.TypeDef),
+                  $.TmplDef
+                )
+              ),
+    /*
+     * scalar2c.ebnf:285
+     * PatDef               ::= Pattern2 (':' Type)? '=' Expr
+     */
+    PatDef: $ => seq($.Pattern2, optional(seq(':', $.Type)), '=', $.Expr),
+    /*
+     * scalar2c.ebnf:286-287
+     * VarDef               ::= PatDef
+     *                        | ids ':' Type '=' '_'
+     */
+    VarDef: $ => choice($.PatDef, seq($._ids, ':', $.Type, '=', '_')),
+    /*
+     * scalar2c.ebnf:288-290
+     * FunDef               ::= FunSig (':' Type)? '=' Expr
+     *                        | FunSig nl? '{' Block '}'
+     *                        | 'this' ParamClause $ParamClauses ('=' ConstrExpr | nl? ConstrBlock)
+     */
+    FunDef: $ => choice(
+                   seq($.FunSig, optional(seq(':', $.Type)), '=', $.Expr),
+                   seq($.FunSig, optional($._nl), '{', $.Block, '}'),
+                   seq(
+                     'this',
+                     $.ParamClause,
+                     repeat($.ParamClause),
+                     optional(seq(optional($._nl), '(', 'implicit', $.Params, ')')),
+                     choice(seq('=', $.ConstrExpr), seq(optional($._nl), $.ConstrBlock))
+                   )
+                 ),
+    /*
+     * scalar2c.ebnf:291
+     * TypeDef              ::= id TypeParamClause? '=' Type
+     */
+    TypeDef: $ => seq($._id, optional($.TypeParamClause), '=', $.Type),
+    /*
+     * scalar2c.ebnf:293-295
+     * TmplDef              ::= 'case'? 'class' ClassDef
+     *                        | 'case'? 'object' ObjectDef
+     *                        | 'trait' TraitDef
+     */
+    TmplDef: $ => choice(
+                    seq(optional('case'), 'class', $.ClassDef),
+                    seq(optional('case'), 'object', $.ObjectDef),
+                    seq('trait', $.TraitDef)
+                  ),
+    /*
+     * scalar2c.ebnf:296-297
+     * ClassDef             ::= id TypeParamClause? ConstrAnnotation* AccessModifier?
+     *                            $ClassParamClauses ($ClassTemplateOpt)
+     */
+    ClassDef: $ => seq(
+                     $._id,
+                     optional($.TypeParamClause),
+                     repeat($.ConstrAnnotation),
+                     optional($.AccessModifier),
+                     prec.left(
+                       10,
+                       seq(
+                         repeat($.ClassParamClause),
+                         seq(optional($._nl), optional($.ImplicitClassParams))
+                       )
+                     ),
+                     choice(
+                       seq('extends', $.ClassTemplate),
+                       optional(seq(optional('extends'), $.TemplateBody))
+                     )
+                   ),
+    /*
+     * scalar2c.ebnf:298
+     * TraitDef             ::= id TypeParamClause? ($TraitTemplateOpt)
+     */
+    TraitDef: $ => seq(
+                     $._id,
+                     optional($.TypeParamClause),
+                     choice(
+                       seq('extends', $.TraitTemplate),
+                       optional(seq(optional('extends'), $.TemplateBody))
+                     )
+                   ),
+    /*
+     * scalar2c.ebnf:299-300
+     * ObjectDef            ::= id ($ClassTemplateOpt)
+     * ; These have to be constants because tree-sitter does not allow rules that match the empty string
+     */
+    ObjectDef: $ => seq(
+                      $._id,
+                      choice(
+                        seq('extends', $.ClassTemplate),
+                        optional(seq(optional('extends'), $.TemplateBody))
                       )
                     ),
     /*
-     * scalar2c.ebnf:160
-     * for_expression        ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') '\n'* 'yield'? _expression)
+     * scalar2c.ebnf:304
+     * ClassTemplate        ::= -1(EarlyDefs? ClassParents TemplateBody?)
      */
-    for_expression: $ => prec.left(
-                           3,
-                           seq(
-                             'for',
-                             choice(
-                               seq('(', $.enumerators, ')'),
-                               seq('{', $.enumerators, optional($._semicolon), '}')
-                             ),
-                             repeat('\n'),
-                             optional('yield'),
-                             $._expression
-                           )
-                         ),
+    ClassTemplate: $ => prec(-1, seq(optional($.EarlyDefs), $.ClassParents, optional($.TemplateBody))),
     /*
-     * scalar2c.ebnf:162
-     * assignment_expression                ::= >1((_expression: left) '=' (_expression: right))
+     * scalar2c.ebnf:305
+     * TraitTemplate        ::= -1(EarlyDefs? TraitParents TemplateBody?)
      */
-    assignment_expression: $ => prec.right(1, seq(field('left', $._expression), '=', field('right', $._expression))),
+    TraitTemplate: $ => prec(-1, seq(optional($.EarlyDefs), $.TraitParents, optional($.TemplateBody))),
     /*
-     * scalar2c.ebnf:163
-     * generic_function                     ::= 4((_expression: function) (type_arguments: type_arguments))
+     * scalar2c.ebnf:306
+     * ClassParents         ::= Constr ('with' AnnotType)*
      */
-    generic_function: $ => prec(
-                             4,
-                             seq(field('function', $._expression), field('type_arguments', $.type_arguments))
-                           ),
+    ClassParents: $ => seq($.Constr, repeat(seq('with', $.AnnotType))),
     /*
-     * scalar2c.ebnf:164
-     * call_expression                      ::= 4((_expression: function) (arguments: arguments) ((block | case_block)?: body))
+     * scalar2c.ebnf:307
+     * TraitParents         ::= AnnotType ('with' AnnotType)*
      */
-    call_expression: $ => prec(
-                            4,
-                            seq(
-                              field('function', $._expression),
-                              field('arguments', $.arguments),
-                              field('body', optional(choice($.block, $.case_block)))
-                            )
-                          ),
+    TraitParents: $ => seq($.AnnotType, repeat(seq('with', $.AnnotType))),
     /*
-     * scalar2c.ebnf:165
-     * field_expression                     ::= 4((_expression: value) '.' (identifier: field))
+     * scalar2c.ebnf:308
+     * Constr               ::= AnnotType ArgumentExprs*
      */
-    field_expression: $ => prec(4, seq(field('value', $._expression), '.', field('field', $.identifier))),
+    Constr: $ => seq($.AnnotType, repeat($.ArgumentExprs)),
     /*
-     * scalar2c.ebnf:166
-     * instance_expression                  ::= 3('new' _expression)
+     * scalar2c.ebnf:309
+     * EarlyDefs            ::= '{' (EarlyDef (semi EarlyDef)*)? '}' 'with'
      */
-    instance_expression: $ => prec(3, seq('new', $._expression)),
+    EarlyDefs: $ => seq('{', optional(seq($.EarlyDef, repeat(seq($._semi, $.EarlyDef)))), '}', 'with'),
     /*
-     * scalar2c.ebnf:167
-     * infix_expression                     ::= <2((_simple_expression: left) ((identifier): operator) (_expression: right))
+     * scalar2c.ebnf:310
+     * EarlyDef             ::= 1((Annotation nl?)* Modifier* PatVarDef)
      */
-    infix_expression: $ => prec.left(
-                             2,
-                             seq(
-                               field('left', $._simple_expression),
-                               field('operator', $.identifier),
-                               field('right', $._expression)
-                             )
-                           ),
+    EarlyDef: $ => prec(
+                     1,
+                     seq(repeat(seq($.Annotation, optional($._nl))), repeat($.Modifier), $.PatVarDef)
+                   ),
     /*
-     * scalar2c.ebnf:168
-     * prefix_expression                    ::= 3(('+' | '-' | '!' | '~') _simple_expression)
+     * scalar2c.ebnf:312-313
+     * ConstrExpr           ::= SelfInvocation
+     *                        | ConstrBlock
      */
-    prefix_expression: $ => prec(3, seq(choice('+', '-', '!', '~'), $._simple_expression)),
+    ConstrExpr: $ => choice($.SelfInvocation, $.ConstrBlock),
     /*
-     * scalar2c.ebnf:169
-     * tuple_expression                     ::= '(' _expression (',' _expression)+ ')'
+     * scalar2c.ebnf:314-315
+     * ConstrBlock          ::= '{' SelfInvocation (semi BlockStat)* empty? '}'
+     * ; TODO right associativity
      */
-    tuple_expression: $ => seq('(', $._expression, repeat1(seq(',', $._expression)), ')'),
+    ConstrBlock: $ => seq(
+                        '{',
+                        $.SelfInvocation,
+                        repeat(seq($._semi, $.BlockStat)),
+                        optional($._empty),
+                        '}'
+                      ),
     /*
-     * scalar2c.ebnf:170
-     * parenthesized_expression             ::= '(' _expression ')'
+     * scalar2c.ebnf:316
+     * SelfInvocation       ::= 'this' ArgumentExprs ArgumentExprs*
      */
-    parenthesized_expression: $ => seq('(', $._expression, ')'),
+    SelfInvocation: $ => seq('this', $.ArgumentExprs, repeat($.ArgumentExprs)),
     /*
-     * scalar2c.ebnf:171
-     * type_arguments                       ::= '[' (_type (',' _type)*) ']'
+     * scalar2c.ebnf:318
+     * TopStatSeq           ::= TopStat (semi TopStat)*
      */
-    type_arguments: $ => seq('[', seq($._type, repeat(seq(',', $._type))), ']'),
+    TopStatSeq: $ => seq($.TopStat, repeat(seq($._semi, $.TopStat))),
     /*
-     * scalar2c.ebnf:172
-     * arguments                            ::= '(' (_expression (',' _expression)*)? ')'
+     * scalar2c.ebnf:319-322
+     * TopStat              ::= (Annotation nl?)* Modifier* TmplDef
+     *                        | Import
+     *                        | Packaging
+     *                        | PackageObject
      */
-    arguments: $ => seq('(', optional(seq($._expression, repeat(seq(',', $._expression)))), ')'),
+    TopStat: $ => choice(
+                    seq(repeat(seq($.Annotation, optional($._nl))), repeat($.Modifier), $.TmplDef),
+                    $.Import,
+                    $.Packaging,
+                    $.PackageObject
+                  ),
     /*
-     * scalar2c.ebnf:190
-     * identifier           ::= /($opchar+|$idRegex|$varidRegex|[`]$varidRegex[`])/
+     * scalar2c.ebnf:323
+     * Packaging            ::= 'package' QualId nl? '{' TopStatSeq '}'
      */
-    identifier: $ => /([\-!#%&*+/\\:<=>?@\u005e\u007c~]+|([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)|[`]([\u0020-\u005f\u0061-\u007f]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*[`]|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[`][\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?[`])/,
+    Packaging: $ => seq('package', $.QualId, optional($._nl), '{', $.TopStatSeq, '}'),
     /*
-     * scalar2c.ebnf:191
-     * wildcard                             ::= '_'
+     * scalar2c.ebnf:324
+     * PackageObject        ::= 'package' 'object' ObjectDef
      */
-    wildcard: $ => '_',
-    /*
-     * scalar2c.ebnf:203
-     * number                               ::= $integer_literal | $floating_point_literal
-     */
-    number: $ => choice(
-                   /-?([0-9]+|0[xX][0-9a-fA-F]+)[Ll]?/,
-                   /-?([0-9]+[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[0-9]+([Ee][+-]?[0-9]+)?[FfDd]|[0-9]+([Ee][+-]?[0-9]+)[FfDd]?)/
-                 ),
-    /*
-     * scalar2c.ebnf:204
-     * boolean_literal                      ::= 'true' | 'false'
-     */
-    boolean_literal: $ => choice('true', 'false'),
-    /*
-     * scalar2c.ebnf:205
-     * character_literal                    ::= /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\]|\\u+[0-9a-fA-F]{4})'/
-     */
-    character_literal: $ => /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\]|\\u+[0-9a-fA-F]{4})'/,
-    /*
-     * scalar2c.ebnf:206
-     * symbol_literal                       ::= @("'" [^\\'\n]+)
-     */
-    symbol_literal: $ => token(seq("'", repeat1(/[^\\'\n]/))),
-    /*
-     * scalar2c.ebnf:207
-     * interpolated_string_expression       ::= identifier interpolated_string
-     */
-    interpolated_string_expression: $ => seq($.identifier, $.interpolated_string),
-    /*
-     * scalar2c.ebnf:208
-     * _interpolated_string_start           ::= '"'
-     */
-    _interpolated_string_start: $ => '"',
-    /*
-     * scalar2c.ebnf:209
-     * _interpolated_multiline_string_start ::= '"""'
-     */
-    _interpolated_multiline_string_start: $ => '"""',
-    /*
-     * scalar2c.ebnf:210
-     * interpolation                        ::= '$' (identifier | block | '$')
-     */
-    interpolation: $ => seq('$', choice($.identifier, $.block, '$')),
-    /*
-     * scalar2c.ebnf:211-212
-     * interpolated_string                  ::= (_interpolated_string_start (_interpolated_string_middle interpolation)* _interpolated_string_end)
-     *                                        | (_interpolated_multiline_string_start (_interpolated_multiline_string_middle interpolation)* _interpolated_multiline_string_end)
-     */
-    interpolated_string: $ => choice(
-                                seq(
-                                  $._interpolated_string_start,
-                                  repeat(seq($._interpolated_string_middle, $.interpolation)),
-                                  $._interpolated_string_end
-                                ),
-                                seq(
-                                  $._interpolated_multiline_string_start,
-                                  repeat(seq($._interpolated_multiline_string_middle, $.interpolation)),
-                                  $._interpolated_multiline_string_end
-                                )
-                              ),
-    /*
-     * scalar2c.ebnf:213
-     * string                               ::= _simple_string | _simple_multiline_string
-     */
-    string: $ => choice($._simple_string, $._simple_multiline_string),
-    /*
-     * scalar2c.ebnf:214
-     * _semicolon                           ::= ';' | _automatic_semicolon
-     */
-    _semicolon: $ => choice(';', $._automatic_semicolon),
-    /*
-     * scalar2c.ebnf:215
-     * comment                              ::= @(('//' /.*∕) | ('/*' /[^*]*\*+([^/*][^*]*\*+)*∕ '/'))
-     */
-    comment: $ => token(choice(seq('//', /.*/), seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')))
+    PackageObject: $ => seq('package', 'object', $.ObjectDef)
   }
 });
