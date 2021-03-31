@@ -1,5 +1,5 @@
 {
-  "name": "scalar",
+  "name": "scalar2c",
   "word": "identifier",
   "rules": {
     "compilation_unit": {
