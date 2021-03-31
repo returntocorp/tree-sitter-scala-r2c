@@ -1,8 +1,8 @@
 .PHONY: all test
 all: test
 
-grammar.js: scala.ebnf script/parse_grammar.lua
-	script/parse_grammar.lua -o grammar.js scala.ebnf
+grammar.js: scalar2c.ebnf script/parse_grammar.lua
+	script/parse_grammar.lua -o grammar.js $<
 
 src/grammar.json: grammar.js
 	tree-sitter generate

@@ -1,12 +1,11 @@
 ==========================
 Scratch
 ==========================
-object foo {
-	for {
-	  x <- Nil
-	} { x + 1 }
+object Foo {
+  foo map { x => x + 1}
 }
 -----
-(compilation_unit (object_definition (identifier) (template_body (for_expression (enumerators (generator (identifier) (identifier))) (block
-(infix_expression (identifier) (identifier) (number)))))))
-
+(compilation_unit (object_definition (identifier) (template_body
+(infix_expression (identifier) (identifier) (block (infix_expression
+(identifier) (identifier) (infix_expression (identifier) (identifier)
+(number))))))))
