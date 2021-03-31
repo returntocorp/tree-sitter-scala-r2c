@@ -35,6 +35,8 @@ The [test script](script/test.sh) has an optional flag `-w` that will put it
 into a continuous mode in which it waits for change to the source files, which
 include [scala.ebnf](scala.ebnf), [src/scanner.c](src/scanner.c) and the
 [parse_grammer.lua](../../src/lua/parse_grammar.lua) script that converts the
-scala.ebnf file into a grammar.js file. The test script also supports filtering
-tests with the usual -f flag in the `tree-sitter test` runner. This allows for
-rapid incremental development of the grammar.
+scala.ebnf file into a grammar.js file. You must have
+[entr](https://github.com/eradman/entr) installed for the continuous mode to
+work. The test script also supports filtering tests with the usual -f flag in
+the `tree-sitter test` runner. This allows for rapid incremental development of
+the grammar.
