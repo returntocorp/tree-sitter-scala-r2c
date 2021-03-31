@@ -1,7 +1,7 @@
 .PHONY: all test
 all: test
 
-grammar.js: scalar2c.ebnf script/parse_grammar.lua
+grammar.js: scalar.ebnf script/parse_grammar.lua
 	script/parse_grammar.lua -o grammar.js $<
 
 src/grammar.json: grammar.js
