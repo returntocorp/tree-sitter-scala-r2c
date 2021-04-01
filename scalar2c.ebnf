@@ -4,8 +4,6 @@ supertypes ::= { _expression _definition _pattern }
 
 externals  ::= {
                  _automatic_semicolon
-                 _simple_string
-                 _simple_multiline_string
                  }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
@@ -236,7 +234,12 @@ rules:
   interpolated_string          ::= _interpolation_string_prefix ($charMinusQuoteDollar | _escape)* '"'
                                  | _interpolation_string_prefix '""' ('"'? '"'? $charMinusQuoteDollar | _escape)* '"'? '"""'
   _escape                      ::= "$$" | "$" identifier | "$" block
-  string_literal               ::= _simple_string | _simple_multiline_string
+  _raw_string                  ::= /"""("?"?[^"])*"*"""/
+  _simple_string               ::= '"' /[^"\n]|$escapeSeq/* '"' | '""'
+  unicodeEscape                :=  \\u+$hexDigit$hexDigit$hexDigit$hexDigit
+  charEscapeSeq                :=  \\[btnfr"'\\]
+  escapeSeq                    :=  ($unicodeEscape|$charEscapeSeq)
+  string_literal               ::= _simple_string | _raw_string
   _semicolon                   ::= ';' | _automatic_semicolon
   ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*/ | comment)* '/'
   comment                      ::= @(('//' /.*/) | '/*' /[^*]*\*+([^/*][^*]*\*+)*/ '/')

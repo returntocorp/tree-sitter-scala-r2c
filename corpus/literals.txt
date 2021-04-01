@@ -172,8 +172,9 @@ Symbols
 ====================
 'foo
 'foo_bar
+'foo_bar1
 --------------------
-(compilation_unit (symbol_literal) (symbol_literal))
+(compilation_unit (symbol_literal) (symbol_literal) (symbol_literal))
 
 ====================
 Null
@@ -186,7 +187,6 @@ null
 Interpolated strings
 ====================
 foo""
-foo "" // this should be an error because of the space
 foo"$bar"
 foo"a $bar "
 foo"a ${val x = "bar"; x }"
@@ -195,7 +195,6 @@ foo"a ${
   x
 }"
 foo""""""
-foo """""" // this should be an error because of the space
 foo"""$bar"""
 foo"""a $bar """
 foo"""a ${val x = "bar"; x }"""
@@ -210,13 +209,11 @@ baz"""
 --------------------
 (compilation_unit
   (interpolated_string)
-  (ERROR (identifier)) (string_literal) (comment)
   (interpolated_string (identifier))
   (interpolated_string (identifier))
   (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
   (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
   (interpolated_string)
-  (ERROR (identifier)) (string_literal) (comment)
   (interpolated_string (identifier))
   (interpolated_string (identifier))
   (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
@@ -226,7 +223,14 @@ baz"""
 ====================
 Interpolated strings2
 ====================
-foo ""
-foo""
+a "" // this should be an error because of the space
+bar""
+foo """""" // this should be an error because of the space
+bar""""""
 --------------------
-(compilation_unit (ERROR (identifier)) (string_literal) (interpolated_string))
+(compilation_unit
+  (ERROR (identifier)) (string_literal) (comment)
+  (interpolated_string)
+  (ERROR (identifier)) (string_literal) (comment)
+  (interpolated_string))
+

@@ -4,8 +4,6 @@
 
 enum TokenType {
   AUTOMATIC_SEMICOLON,
-  SIMPLE_STRING,
-  SIMPLE_MULTILINE_STRING,
 };
 
 typedef struct keyword {
@@ -72,40 +70,6 @@ void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, u
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
-static bool scan_string_content(TSLexer *lexer, bool is_multiline) {
-  unsigned closing_quote_count = 0;
-  for (;;) {
-    if (lexer->lookahead == '"') {
-      advance(lexer);
-      closing_quote_count++;
-      if (!is_multiline) {
-        lexer->result_symbol = SIMPLE_STRING;
-        return true;
-      }
-      if (closing_quote_count == 3) {
-        lexer->result_symbol = SIMPLE_MULTILINE_STRING;
-        return true;
-      }
-    } else {
-      closing_quote_count = 0;
-      if (lexer->lookahead == '\\') {
-        advance(lexer);
-        if (lexer->lookahead != 0) advance(lexer);
-      } else if (lexer->lookahead == '\n') {
-        if (is_multiline) {
-          advance(lexer);
-        } else {
-          return false;
-        }
-      } else if (lexer->lookahead == 0) {
-        return false;
-      } else {
-        advance(lexer);
-      }
-    }
-  }
-}
-
 bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
   unsigned newline_count = 0;
@@ -163,29 +127,6 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
     lexer->mark_end(lexer);
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
     return true;
-  }
-
-  while (iswspace(lexer->lookahead)) {
-    if (lexer->lookahead == '\n') newline_count++;
-    lexer->advance(lexer, true);
-  }
-
-  if (valid_symbols[SIMPLE_STRING] && lexer->lookahead == '"') {
-    advance(lexer);
-
-    bool is_multiline = false;
-    if (lexer->lookahead == '"') {
-      advance(lexer);
-      if (lexer->lookahead == '"') {
-        advance(lexer);
-        is_multiline = true;
-      } else {
-        lexer->result_symbol = SIMPLE_STRING;
-        return true;
-      }
-    }
-
-    return scan_string_content(lexer, is_multiline);
   }
 
   return false;

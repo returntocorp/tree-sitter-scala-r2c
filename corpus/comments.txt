@@ -27,4 +27,3 @@ val foo: String = "foo"
 (compilation_unit
   (comment) (val_definition (identifier) (type_identifier) (number))
   (comment) (val_definition (identifier) (type_identifier) (string_literal)))
-
