@@ -19,14 +19,17 @@ conflicts  ::= { { tuple_type parameter_types } }
 word       ::= identifier
 
 rules:
-  foo                                  ::= literal+
-  compilation_unit                     ::= _definition*
+  compilation_unit                     ::= ('package' qualified_identifier _semicolon)*
+                                         | _literal+
   _literal                             ::= number
                                          | boolean_literal
                                          | character_literal
                                          | symbol_literal
                                          | string
                                          | wildcard
+                                         | 'null'
+
+  qualified_identifier                 ::= identifier ("." identifier)*
   _definition                          ::= package_clause
                                          | package_object
                                          | class_definition

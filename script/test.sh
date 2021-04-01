@@ -36,7 +36,6 @@ COMMAND="make VERBOSE=$VERBOSE DEBUG=$DEBUG TEST_FLAG=$TEST_FLAG TEST_FILTER=$TE
 
 if [ -n "$WATCH" ]; then
   trap "exec $0 $PARAMS -w $DEBUG $TEST_FLAG $TEST_FILTER" ERR
-	ls scalar2c.ebnf
   ls Makefile scalar2c.ebnf corpus/*.txt script/parse_grammar.lua src/scanner.c |
     entr -d $COMMAND
 fi

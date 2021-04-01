@@ -699,6 +699,45 @@
     }
   },
   {
+    "type": "compilation_unit",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "character_literal",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "qualified_identifier",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol_literal",
+          "named": true
+        },
+        {
+          "type": "wildcard",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "compound_type",
     "named": true,
     "fields": {
@@ -1025,41 +1064,6 @@
       "types": [
         {
           "type": "_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "foo",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "boolean_literal",
-          "named": true
-        },
-        {
-          "type": "character_literal",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "symbol_literal",
-          "named": true
-        },
-        {
-          "type": "wildcard",
           "named": true
         }
       ]
@@ -2375,6 +2379,21 @@
     }
   },
   {
+    "type": "qualified_identifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "renamed_identifier",
     "named": true,
     "fields": {
@@ -3498,6 +3517,10 @@
   },
   {
     "type": "new",
+    "named": false
+  },
+  {
+    "type": "null",
     "named": false
   },
   {

@@ -2,19 +2,37 @@
   "name": "scalar2c",
   "word": "identifier",
   "rules": {
-    "foo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_literal"
-      }
-    },
     "compilation_unit": {
-      "type": "REPEAT",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_definition"
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "package"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "qualified_identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_semicolon"
+              }
+            ]
+          }
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_literal"
+          }
+        }
+      ]
     },
     "_literal": {
       "type": "CHOICE",
@@ -42,6 +60,35 @@
         {
           "type": "SYMBOL",
           "name": "wildcard"
+        },
+        {
+          "type": "STRING",
+          "value": "null"
+        }
+      ]
+    },
+    "qualified_identifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              }
+            ]
+          }
         }
       ]
     },
