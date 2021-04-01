@@ -21,7 +21,7 @@ rules:
                                  | boolean_literal
                                  | character_literal
                                  | symbol_literal
-                                 | string
+                                 | string_literal
                                  | wildcard
                                  | interpolated_string
                                  | 'null'
@@ -141,7 +141,7 @@ rules:
                                  | boolean_literal
                                  | character_literal
                                  | symbol_literal
-                                 | string
+                                 | string_literal
                                  | wildcard
   case_class_pattern           ::= ((_type_identifier | stable_type_identifier): type) '(' ((_pattern (',' _pattern)*)?: pattern) ')'
   infix_pattern                ::= <2((_pattern: left) ((identifier): operator) (_pattern: right))
@@ -171,7 +171,7 @@ rules:
                                  | boolean_literal
                                  | character_literal
                                  | symbol_literal
-                                 | string
+                                 | string_literal
   if_expression                ::= >('if' (parenthesized_expression: condition) (_expression: consequence)
                                      ('else' (_expression: alternative))?)
   match_expression             ::= (_expression: value) 'match' (case_block: body)
@@ -237,7 +237,7 @@ rules:
   interpolated_string          ::= _interpolation_string_prefix ($charMinusQuoteDollar | _escape)* '"'
                                  | _interpolation_string_prefix '""' ('"'? '"'? $charMinusQuoteDollar | _escape)* '"'? '"""'
   _escape                      ::= "$$" | "$" identifier | "$" block
-  string                       ::= _simple_string | _simple_multiline_string
+  string_literal               ::= _simple_string | _simple_multiline_string
   _semicolon                   ::= ';' | _automatic_semicolon
   ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*/ | comment)* '/'
   comment                      ::= @(('//' /.*/) | '/*' /[^*]*\*+([^/*][^*]*\*+)*/ '/')

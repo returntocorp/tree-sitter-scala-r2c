@@ -155,7 +155,7 @@ Normal strings
 "blah\n"
 "tabs\t spaces \"'"
 --------------------
-(compilation_unit (string) (string) (string))
+(compilation_unit (string_literal) (string_literal) (string_literal))
 
 ====================
 Raw strings
@@ -165,7 +165,7 @@ a bc
     bac
    """
 --------------------
-(compilation_unit (string))
+(compilation_unit (string_literal))
 
 ====================
 Symbols
@@ -210,17 +210,17 @@ baz"""
 --------------------
 (compilation_unit
   (interpolated_string)
-  (ERROR (identifier)) (string) (comment)
+  (ERROR (identifier)) (string_literal) (comment)
   (interpolated_string (identifier))
   (interpolated_string (identifier))
-  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
-  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
   (interpolated_string)
-  (ERROR (identifier)) (string) (comment)
+  (ERROR (identifier)) (string_literal) (comment)
   (interpolated_string (identifier))
   (interpolated_string (identifier))
-  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
-  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
   (interpolated_string (identifier) (identifier) (identifier)))
 
 ====================
@@ -229,4 +229,4 @@ Interpolated strings2
 foo ""
 foo""
 --------------------
-(compilation_unit (ERROR (identifier)) (string) (interpolated_string))
+(compilation_unit (ERROR (identifier)) (string_literal) (interpolated_string))

@@ -115,7 +115,7 @@ module.exports = grammar({
      *                                | boolean_literal
      *                                | character_literal
      *                                | symbol_literal
-     *                                | string
+     *                                | string_literal
      *                                | wildcard
      *                                | interpolated_string
      *                                | 'null'
@@ -125,7 +125,7 @@ module.exports = grammar({
                      $.boolean_literal,
                      $.character_literal,
                      $.symbol_literal,
-                     $.string,
+                     $.string_literal,
                      $.wildcard,
                      $.interpolated_string,
                      'null'
@@ -687,7 +687,7 @@ module.exports = grammar({
      *                                | boolean_literal
      *                                | character_literal
      *                                | symbol_literal
-     *                                | string
+     *                                | string_literal
      *                                | wildcard
      */
     _pattern: $ => choice(
@@ -702,7 +702,7 @@ module.exports = grammar({
                      $.boolean_literal,
                      $.character_literal,
                      $.symbol_literal,
-                     $.string,
+                     $.string_literal,
                      $.wildcard
                    ),
     /*
@@ -785,7 +785,7 @@ module.exports = grammar({
      *                                | boolean_literal
      *                                | character_literal
      *                                | symbol_literal
-     *                                | string
+     *                                | string_literal
      */
     _simple_expression: $ => choice(
                                $.interpolated_string,
@@ -801,7 +801,7 @@ module.exports = grammar({
                                $.boolean_literal,
                                $.character_literal,
                                $.symbol_literal,
-                               $.string
+                               $.string_literal
                              ),
     /*
      * scalar2c.ebnf:175-176
@@ -1063,9 +1063,9 @@ module.exports = grammar({
     _escape: $ => choice("$$", seq("$", $.identifier), seq("$", $.block)),
     /*
      * scalar2c.ebnf:240
-     * string                       ::= _simple_string | _simple_multiline_string
+     * string_literal               ::= _simple_string | _simple_multiline_string
      */
-    string: $ => choice($._simple_string, $._simple_multiline_string),
+    string_literal: $ => choice($._simple_string, $._simple_multiline_string),
     /*
      * scalar2c.ebnf:241-242
      * _semicolon                   ::= ';' | _automatic_semicolon

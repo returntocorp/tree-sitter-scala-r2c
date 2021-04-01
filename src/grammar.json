@@ -144,7 +144,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "string_literal"
         },
         {
           "type": "SYMBOL",
@@ -2774,7 +2774,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "string_literal"
         },
         {
           "type": "SYMBOL",
@@ -3092,7 +3092,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "string_literal"
         }
       ]
     },
@@ -4198,7 +4198,7 @@
         }
       ]
     },
-    "string": {
+    "string_literal": {
       "type": "CHOICE",
       "members": [
         {
