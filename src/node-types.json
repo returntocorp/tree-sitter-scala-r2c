@@ -723,6 +723,10 @@
           "named": true
         },
         {
+          "type": "package_object",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -1991,6 +1995,10 @@
           },
           {
             "type": "package_clause",
+            "named": true
+          },
+          {
+            "type": "package_object",
             "named": true
           }
         ]

@@ -36,3 +36,14 @@ package bar {
   (package_clause (package_identifier (identifier))
     (import_declaration (stable_identifier (identifier) (identifier)))))
 
+================================
+Package object
+================================
+package object bar {
+  val x = 1
+}
+
+--------------------------------
+(compilation_unit (package_object (identifier)
+  (template_body (val_definition (identifier) (number)))))
+

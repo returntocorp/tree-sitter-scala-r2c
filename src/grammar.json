@@ -136,6 +136,10 @@
         {
           "type": "SYMBOL",
           "name": "package_clause"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "package_object"
         }
       ]
     },

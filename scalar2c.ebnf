@@ -31,6 +31,7 @@ rules:
   topLevelStatementSeq                 :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
   _top_level_statement                 ::= import_declaration
                                          | package_clause
+                                         | package_object
 
   package_identifier                 ::= identifier ("." identifier)*
   _definition                          ::= package_clause
