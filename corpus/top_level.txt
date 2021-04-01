@@ -28,11 +28,11 @@ Packaging
 ================================
 package foo
 package bar {
-  val x = 1
+  import foo.bar
 }
 --------------------------------
 (compilation_unit
   (package_identifier (identifier))
   (package_clause (package_identifier (identifier))
-    (template_body (val_definition (identifier) (number)))))
+    (import_declaration (stable_identifier (identifier) (identifier)))))
 

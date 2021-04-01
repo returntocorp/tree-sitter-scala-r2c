@@ -1978,11 +1978,19 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "template_body",
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "import_declaration",
+            "named": true
+          },
+          {
+            "type": "package_clause",
             "named": true
           }
         ]

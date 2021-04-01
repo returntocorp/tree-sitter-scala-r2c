@@ -180,12 +180,23 @@ module.exports = grammar({
                       ),
     /*
      * scalar2c.ebnf:49
-     * package_clause                       ::= 'package' (package_identifier: name) (template_body?: body)
+     * package_clause                       ::= 'package' (package_identifier: name) '{' ($topLevelStatementSeq?: body) '}'
      */
     package_clause: $ => seq(
                            'package',
                            field('name', $.package_identifier),
-                           field('body', optional($.template_body))
+                           '{',
+                           field(
+                             'body',
+                             optional(
+                               seq(
+                                 $._top_level_statement,
+                                 repeat(seq($._semicolon, $._top_level_statement)),
+                                 optional($._semicolon)
+                               )
+                             )
+                           ),
+                           '}'
                          ),
     /*
      * scalar2c.ebnf:50

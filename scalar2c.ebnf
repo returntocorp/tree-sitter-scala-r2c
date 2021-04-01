@@ -46,7 +46,7 @@ rules:
                                          | type_definition
                                          | function_definition
                                          | function_declaration
-  package_clause                       ::= 'package' (package_identifier: name) (template_body?: body)
+  package_clause                       ::= 'package' (package_identifier: name) '{' ($topLevelStatementSeq?: body) '}'
   package_object                       ::= 'package' 'object' _object_definition
   import_declaration                   ::= 'import' (_import_expression (',' _import_expression)*)
   _import_expression                   ::= ((stable_identifier | identifier): path) ('.' (wildcard | import_selectors))?
