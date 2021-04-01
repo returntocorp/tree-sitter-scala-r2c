@@ -173,6 +173,10 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
       }
     }
     return true;
+  } else if (valid_symbols[AUTOMATIC_SEMICOLON] && !lexer->lookahead) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+    return true;
   }
 
   while (iswspace(lexer->lookahead)) {

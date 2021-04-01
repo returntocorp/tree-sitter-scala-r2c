@@ -14,12 +14,12 @@ externals  ::= {
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
-conflicts  ::= { { tuple_type parameter_types } }
+conflicts  ::= { }
 
 word       ::= identifier
 
 rules:
-  compilation_unit                     ::= ('package' qualified_identifier _semicolon)*
+  compilation_unit                     ::= ('package' 1(package_identifier _semicolon))* $topLevelStatementSeq?
                                          | _literal+
   _literal                             ::= number
                                          | boolean_literal
@@ -28,8 +28,11 @@ rules:
                                          | string
                                          | wildcard
                                          | 'null'
+  topLevelStatementSeq                 :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
+  _top_level_statement                 ::= import_declaration
+                                         | package_clause
 
-  qualified_identifier                 ::= identifier ("." identifier)*
+  package_identifier                 ::= identifier ("." identifier)*
   _definition                          ::= package_clause
                                          | package_object
                                          | class_definition
@@ -44,7 +47,6 @@ rules:
                                          | function_definition
                                          | function_declaration
   package_clause                       ::= 'package' (package_identifier: name) (template_body?: body)
-  package_identifier                   ::= identifier ('.' identifier)*
   package_object                       ::= 'package' 'object' _object_definition
   import_declaration                   ::= 'import' (_import_expression (',' _import_expression)*)
   _import_expression                   ::= ((stable_identifier | identifier): path) ('.' (wildcard | import_selectors))?
@@ -94,12 +96,11 @@ rules:
   block                                ::= '{' _block? '}'
   _type                                ::= function_type | compound_type | infix_type | _annotated_type
   _annotated_type                      ::= >(_simple_type annotation*)
-  _simple_type                         ::= generic_type | projected_type | tuple_type | stable_type_identifier | _type_identifier
+  _simple_type                         ::= generic_type | projected_type | stable_type_identifier | _type_identifier
   compound_type                        ::= 3((_annotated_type: base) ('with' (_annotated_type: extra))+)
   infix_type                           ::= <2(((compound_type | infix_type | _annotated_type): left)
                                              ((identifier): operator)
                                              ((compound_type | infix_type | _annotated_type): right))
-  tuple_type                           ::= '(' (_type (',' _type)*) ')'
   stable_type_identifier               ::= (identifier | stable_identifier) '.' _type_identifier
   stable_identifier                    ::= (identifier | stable_identifier) '.' identifier
   generic_type                         ::= (_simple_type: type) (type_arguments: type_arguments)

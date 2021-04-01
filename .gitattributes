@@ -5,3 +5,4 @@ src/grammar.json binary
 src/binding.cc binary
 src/tree_sitter/* binary
 src/node-types.json binary
+grammar.js binary

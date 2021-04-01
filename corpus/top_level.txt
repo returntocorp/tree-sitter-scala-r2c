@@ -1,0 +1,32 @@
+================================
+Top level imports
+================================
+package foo
+
+import foo._
+import foo.bar
+import foo.{ x => _, _ }
+--------------------------------
+(compilation_unit (package_identifier (identifier)) (import_declaration (identifier) (wildcard)) (import_declaration (stable_identifier
+(identifier) (identifier))) (import_declaration (identifier) (import_selectors (renamed_identifier (identifier) (wildcard)) (identifier))))
+
+================================
+Top level package only
+================================
+package foo
+--------------------------------
+(compilation_unit (package_identifier (identifier)))
+
+================================
+Packaging
+================================
+package foo
+package bar {
+  val x = 1
+}
+--------------------------------
+(compilation_unit
+  (package_identifier (identifier))
+  (package_clause (package_identifier (identifier))
+    (template_body (val_definition (identifier) (number)))))
+
