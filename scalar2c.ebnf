@@ -36,6 +36,13 @@ rules:
   _template_statement                  ::= import_declaration
                                          | val_definition
                                          | literal
+  ;PatVarDef            ::= 'val' PatDef
+                         ;| 'var' VarDef
+  ;Def                  ::= 1(PatVarDef
+                         ;| 'def' FunDef
+                         ;| 'type' nl* TypeDef
+                         ;| TmplDef)
+  ;PatDef               ::= Pattern2 (':' Type)? '=' Expr
 
   package_identifier                   ::= identifier ("." identifier)*
   _definition                          ::= package_clause

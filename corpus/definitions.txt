@@ -1,0 +1,11 @@
+================================
+Val definitions
+================================
+val x = 1
+val x: Int = 1
+val (x, y) = (1, 2)
+--------------------------------
+(compilation_unit
+  (val_definition (identifier) (number))
+  (val_definition (identifier) (type_identifier) (number))
+  (val_definition (tuple_pattern (identifier) (identifier)) (tuple_expression (number) (number))))
