@@ -148,10 +148,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "wildcard"
-        },
-        {
-          "type": "SYMBOL",
           "name": "interpolated_string"
         },
         {

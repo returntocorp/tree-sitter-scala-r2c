@@ -22,7 +22,6 @@ rules:
                                  | character_literal
                                  | symbol_literal
                                  | string_literal
-                                 | wildcard
                                  | interpolated_string
                                  | 'null'
   topLevelStatementSeq         :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
