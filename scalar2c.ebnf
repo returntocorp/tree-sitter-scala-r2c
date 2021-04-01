@@ -20,7 +20,7 @@ word       ::= identifier
 
 rules:
   compilation_unit                     ::= ('package' 1(package_identifier _semicolon))* $topLevelStatementSeq?
-                                         | _literal+
+                                         | $templateStatementSeq?
   _literal                             ::= number
                                          | boolean_literal
                                          | character_literal
@@ -29,11 +29,14 @@ rules:
                                          | wildcard
                                          | 'null'
   topLevelStatementSeq                 :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
-  _top_level_statement                 ::= import_declaration
+  _top_level_statement                 ::= 1(import_declaration
                                          | package_clause
-                                         | package_object
+                                         | package_object)
+  templateStatementSeq                 :=  (_template_statement (_semicolon _template_statement)* _semicolon)
+  _template_statement                  ::= import_declaration
+                                         | _literal
 
-  package_identifier                 ::= identifier ("." identifier)*
+  package_identifier                   ::= identifier ("." identifier)*
   _definition                          ::= package_clause
                                          | package_object
                                          | class_definition

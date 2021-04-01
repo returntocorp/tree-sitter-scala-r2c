@@ -85,11 +85,41 @@
           ]
         },
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_literal"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_template_statement"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_semicolon"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "_template_statement"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_semicolon"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -127,6 +157,27 @@
       ]
     },
     "_top_level_statement": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "import_declaration"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "package_clause"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "package_object"
+          }
+        ]
+      }
+    },
+    "_template_statement": {
       "type": "CHOICE",
       "members": [
         {
@@ -135,11 +186,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "package_clause"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "package_object"
+          "name": "_literal"
         }
       ]
     },
