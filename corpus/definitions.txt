@@ -19,6 +19,6 @@ implicit val x: Foo = ???
 ================================
 Illegal val definitions
 ================================
-private val x = 1 // can't have access modifier at top level
+private val x = 1 /* */
 --------------------------------
 (compilation_unit (ERROR) (val_definition (identifier) (number)) (comment))

@@ -1,0 +1,30 @@
+====================================
+Regular comments
+====================================
+val x = foo // comment
+------------------------------------
+(compilation_unit (val_definition (identifier) (identifier)) (comment))
+
+====================================
+Mixed inline comments
+====================================
+val /*foo*/ x = /* bar */ foo
+------------------------------------
+(compilation_unit (val_definition (comment) (identifier) (comment) (identifier)))
+
+====================================
+Scaladoc comments
+====================================
+/**
+ * scaladoc style
+ */
+val foo: Int = 1
+/**********
+ * scaladoc style with extra *
+ */
+val foo: String = "foo"
+------------------------------------
+(compilation_unit
+  (comment) (val_definition (identifier) (type_identifier) (number))
+  (comment) (val_definition (identifier) (type_identifier) (string)))
+
