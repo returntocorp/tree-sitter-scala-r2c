@@ -6,10 +6,6 @@ enum TokenType {
   AUTOMATIC_SEMICOLON,
   SIMPLE_STRING,
   SIMPLE_MULTILINE_STRING,
-  INTERPOLATED_STRING_MIDDLE,
-  INTERPOLATED_STRING_END,
-  INTERPOLATED_MULTILINE_STRING_MIDDLE,
-  INTERPOLATED_MULTILINE_STRING_END,
 };
 
 typedef struct keyword {
@@ -76,29 +72,19 @@ void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, u
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
-static bool scan_string_content(TSLexer *lexer, bool is_multiline, bool has_interpolation) {
+static bool scan_string_content(TSLexer *lexer, bool is_multiline) {
   unsigned closing_quote_count = 0;
   for (;;) {
     if (lexer->lookahead == '"') {
       advance(lexer);
       closing_quote_count++;
       if (!is_multiline) {
-        lexer->result_symbol = has_interpolation ? INTERPOLATED_STRING_END : SIMPLE_STRING;
+        lexer->result_symbol = SIMPLE_STRING;
         return true;
       }
       if (closing_quote_count == 3) {
-        lexer->result_symbol = has_interpolation ? INTERPOLATED_MULTILINE_STRING_END : SIMPLE_MULTILINE_STRING;
+        lexer->result_symbol = SIMPLE_MULTILINE_STRING;
         return true;
-      }
-    } else if (lexer->lookahead == '$') {
-      if (is_multiline && has_interpolation) {
-        lexer->result_symbol =  INTERPOLATED_MULTILINE_STRING_MIDDLE;
-        return true;
-      } else if (has_interpolation){
-        lexer->result_symbol = INTERPOLATED_STRING_MIDDLE;
-        return true;
-      } else {
-        advance(lexer);
       }
     } else {
       closing_quote_count = 0;
@@ -199,15 +185,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
       }
     }
 
-    return scan_string_content(lexer, is_multiline, false);
-  }
-
-  if (valid_symbols[INTERPOLATED_STRING_MIDDLE]) {
-    return scan_string_content(lexer, false, true);
-  }
-
-  if (valid_symbols[INTERPOLATED_MULTILINE_STRING_MIDDLE]) {
-    return scan_string_content(lexer, true, true);
+    return scan_string_content(lexer, is_multiline);
   }
 
   return false;

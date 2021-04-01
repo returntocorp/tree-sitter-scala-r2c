@@ -174,9 +174,59 @@ Symbols
 'foo_bar
 --------------------
 (compilation_unit (symbol_literal) (symbol_literal))
+
 ====================
 Null
 ====================
 null
 --------------------
 (compilation_unit)
+
+====================
+Interpolated strings
+====================
+foo""
+foo "" // this should be an error because of the space
+foo"$bar"
+foo"a $bar "
+foo"a ${val x = "bar"; x }"
+foo"a ${
+  val x = "bar"
+  x
+}"
+foo""""""
+foo """""" // this should be an error because of the space
+foo"""$bar"""
+foo"""a $bar """
+foo"""a ${val x = "bar"; x }"""
+foo"""a ${
+  val x = "bar"
+  x
+}"""
+baz"""
+  $foo $$ $bar
+    $baz
+"""
+--------------------
+(compilation_unit
+  (interpolated_string)
+  (ERROR (identifier)) (string) (comment)
+  (interpolated_string (identifier))
+  (interpolated_string (identifier))
+  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string)
+  (ERROR (identifier)) (string) (comment)
+  (interpolated_string (identifier))
+  (interpolated_string (identifier))
+  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string)) (identifier)))
+  (interpolated_string (identifier) (identifier) (identifier)))
+
+====================
+Interpolated strings2
+====================
+foo ""
+foo""
+--------------------
+(compilation_unit (ERROR (identifier)) (string) (interpolated_string))
