@@ -2,12 +2,48 @@
   "name": "scalar2c",
   "word": "identifier",
   "rules": {
+    "foo": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_literal"
+      }
+    },
     "compilation_unit": {
       "type": "REPEAT",
       "content": {
         "type": "SYMBOL",
         "name": "_definition"
       }
+    },
+    "_literal": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "boolean_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "character_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "symbol_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "wildcard"
+        }
+      ]
     },
     "_definition": {
       "type": "CHOICE",
