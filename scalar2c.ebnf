@@ -20,7 +20,7 @@ word       ::= identifier
 
 rules:
   compilation_unit                     ::= ('package' 1(package_identifier _semicolon))* $topLevelStatementSeq?
-                                         | $templateStatementSeq?
+                                         | $blockStatementSeq?
   _literal                             ::= number
                                          | boolean_literal
                                          | character_literal
@@ -32,9 +32,13 @@ rules:
   _top_level_statement                 ::= 1(import_declaration
                                          | package_clause
                                          | package_object)
-  templateStatementSeq                 :=  (_template_statement (_semicolon _template_statement)* _semicolon)
+  ;templateStatementSeq                 :=  (_template_statement (_semicolon _template_statement)* _semicolon)
   _template_statement                  ::= import_declaration
                                          | val_definition
+                                         | literal
+  blockStatementSeq                    :=  (_block_statement (_semicolon _block_statement)* _semicolon)
+  _block_statement                     ::= import_declaration
+                                         | _local_val_definition -> val_definition
                                          | literal
   ;PatVarDef            ::= 'val' PatDef
                          ;| 'var' VarDef
@@ -83,6 +87,9 @@ rules:
   context_bound                        ::= ':' (_type: type)
   template_body                        ::= '{' _block? '}'
   annotation                           ::= >('@' (_simple_type: name) (arguments*: arguments))
+  _local_val_definition                ::= annotation* ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
+                                             'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+
   val_definition                       ::= annotation* modifiers? 'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
   val_declaration                      ::= annotation* modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
   var_declaration                      ::= annotation* modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)

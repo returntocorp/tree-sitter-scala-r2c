@@ -3013,6 +3013,14 @@
           "named": true
         },
         {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         }
@@ -3362,12 +3370,20 @@
     "named": false
   },
   {
+    "type": "implicit_modifier",
+    "named": true
+  },
+  {
     "type": "import",
     "named": false
   },
   {
     "type": "lazy",
     "named": false
+  },
+  {
+    "type": "lazy_modifier",
+    "named": true
   },
   {
     "type": "match",

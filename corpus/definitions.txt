@@ -6,14 +6,19 @@ val x: Int = 1
 val (x, y) = (1, 2)
 val Foo(x) = y
 @foo lazy val x = 1
+implicit val x: Foo = ???
 --------------------------------
 (compilation_unit
   (val_definition (identifier) (number))
   (val_definition (identifier) (type_identifier) (number))
   (val_definition (tuple_pattern (identifier) (identifier)) (tuple_expression (number) (number)))
   (val_definition (case_class_pattern (type_identifier) (identifier)) (identifier))
-  (val_definition (annotation (type_identifier)) (modifiers (local_modifier)) (identifier) (number)))
+  (val_definition (annotation (type_identifier)) (lazy_modifier) (identifier) (number))
+  (val_definition (implicit_modifier) (identifier) (type_identifier) (identifier)))
 
 ================================
-Val definitions
+Illegal val definitions
 ================================
+private val x = 1 // can't have access modifier at top level
+--------------------------------
+(compilation_unit (ERROR) (val_definition (identifier) (number)) (comment))
