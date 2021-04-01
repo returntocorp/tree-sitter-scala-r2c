@@ -11,6 +11,12 @@ import foo.{ x => _, _ }
 (identifier) (identifier))) (import_declaration (identifier) (import_selectors (renamed_identifier (identifier) (wildcard)) (identifier))))
 
 ================================
+Empty
+================================
+--------------------------------
+(compilation_unit)
+
+================================
 Top level package only
 ================================
 package foo
