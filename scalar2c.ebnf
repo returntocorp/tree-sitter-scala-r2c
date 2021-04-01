@@ -34,7 +34,8 @@ rules:
                                          | package_object)
   templateStatementSeq                 :=  (_template_statement (_semicolon _template_statement)* _semicolon)
   _template_statement                  ::= import_declaration
-                                         | _literal
+                                         | val_definition
+                                         | literal
 
   package_identifier                   ::= identifier ("." identifier)*
   _definition                          ::= package_clause

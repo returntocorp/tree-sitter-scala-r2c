@@ -735,6 +735,10 @@
           "named": true
         },
         {
+          "type": "val_definition",
+          "named": true
+        },
+        {
           "type": "wildcard",
           "named": true
         }

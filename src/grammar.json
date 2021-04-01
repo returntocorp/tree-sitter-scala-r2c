@@ -186,6 +186,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "val_definition"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_literal"
         }
       ]

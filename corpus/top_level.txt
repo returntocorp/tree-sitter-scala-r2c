@@ -47,3 +47,9 @@ package object bar {
 (compilation_unit (package_object (identifier)
   (template_body (val_definition (identifier) (number)))))
 
+================================
+Top level val definition
+================================
+val x: Int = 1
+--------------------------------
+(compilation_unit (val_definition (identifier) (type_identifier) (number)))
