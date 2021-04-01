@@ -242,4 +242,5 @@ rules:
                                          | (_interpolated_multiline_string_start (_interpolated_multiline_string_middle interpolation)* _interpolated_multiline_string_end)
   string                               ::= _simple_string | _simple_multiline_string
   _semicolon                           ::= ';' | _automatic_semicolon
-  comment                              ::= @(('//' /.*/) | ('/*' /[^*]*\*+([^/*][^*]*\*+)*/ '/'))
+  ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*/ | comment)* '/'
+  comment                              ::= @(('//' /.*/) | '/*' /[^*]*\*+([^/*][^*]*\*+)*/ '/')

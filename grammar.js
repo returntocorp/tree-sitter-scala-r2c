@@ -1062,13 +1062,14 @@ module.exports = grammar({
      */
     string: $ => choice($._simple_string, $._simple_multiline_string),
     /*
-     * scalar2c.ebnf:244
+     * scalar2c.ebnf:244-245
      * _semicolon                           ::= ';' | _automatic_semicolon
+     * ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*∕ | comment)* '/'
      */
     _semicolon: $ => choice(';', $._automatic_semicolon),
     /*
-     * scalar2c.ebnf:245
-     * comment                              ::= @(('//' /.*∕) | ('/*' /[^*]*\*+([^/*][^*]*\*+)*∕ '/'))
+     * scalar2c.ebnf:246
+     * comment                              ::= @(('//' /.*∕) | '/*' /[^*]*\*+([^/*][^*]*\*+)*∕ '/')
      */
     comment: $ => token(choice(seq('//', /.*/), seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')))
   }
