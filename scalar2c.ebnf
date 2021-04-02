@@ -53,8 +53,6 @@ rules:
   early_definition             ::= 1(val_definition)
   template_body                ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
   _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
-    ; TypeParamClause? ConstrAnnotation* AccessModifier?
-                             ;$ClassParamClauses ($ClassTemplateOpt)
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
@@ -104,7 +102,7 @@ rules:
   lower_bound                  ::= '>:' (_type: type)
   view_bound                   ::= '<%' (_type: type)
   context_bound                ::= ':' (_type: type)
-  template_body                ::= '{' _block? '}'
+  ; template_body                ::= '{' _block? '}'
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= annotation* ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?

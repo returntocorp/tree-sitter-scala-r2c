@@ -160,3 +160,8 @@ private[foo] trait Foo
   (trait_definition (annotation (type_identifier)) (modifiers (access_modifier (access_qualifier))) (identifier))
   (trait_definition (modifiers (access_modifier (access_qualifier (identifier)))) (identifier)))
 
+====================================
+Self type definitions
+====================================
+class Foo { self => val x = self }
+------------------------------------
