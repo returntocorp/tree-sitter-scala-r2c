@@ -4,6 +4,8 @@
 
 enum TokenType {
   AUTOMATIC_SEMICOLON,
+  DISABLE_AUTOMATIC_SEMICOLON,
+  ENABLE_AUTOMATIC_SEMICOLON,
 };
 
 typedef struct keyword {
@@ -62,20 +64,53 @@ static keyword* invalid_begin_strings[] = {
   &RIGHT_CURLY
 };
 
-void *tree_sitter_scalar2c_external_scanner_create() { return NULL; }
-void tree_sitter_scalar2c_external_scanner_destroy(void *p) {}
-void tree_sitter_scalar2c_external_scanner_reset(void *p) {}
-unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) { return 0; }
-void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
+typedef struct scanner_state {
+  bool automatic_semicolons_disabled;
+} scanner_state;
+
+void *tree_sitter_scalar2c_external_scanner_create() {
+  scanner_state *state = (scanner_state*) malloc(sizeof(scanner_state));
+  state->automatic_semicolons_disabled = false;
+  return (void*) state;
+}
+void tree_sitter_scalar2c_external_scanner_destroy(void *p) { free(p); }
+void tree_sitter_scalar2c_external_scanner_reset(void *p) {
+  ((scanner_state *)p)->automatic_semicolons_disabled = false;
+}
+unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) {
+  buffer[0] = ((scanner_state*)p)->automatic_semicolons_disabled;
+  return 1;
+}
+void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {
+  if (p && n) {
+    ((scanner_state*)p)->automatic_semicolons_disabled = b[0];
+  }
+}
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
 bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
+  scanner_state *state = (scanner_state*) payload;
+  if (valid_symbols[DISABLE_AUTOMATIC_SEMICOLON]) {
+    state->automatic_semicolons_disabled = true;
+    lexer->result_symbol = DISABLE_AUTOMATIC_SEMICOLON;
+    return true;
+  }
+
+  lexer->mark_end(lexer);
   unsigned newline_count = 0;
   while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead == '\n') newline_count++;
-    lexer->advance(lexer, true);
+    lexer->advance(lexer, false);
+  }
+
+  if (valid_symbols[ENABLE_AUTOMATIC_SEMICOLON]) {
+    if (newline_count > 0 && lexer->lookahead != '{' || !lexer->lookahead) {
+      state->automatic_semicolons_disabled = false;
+      lexer->result_symbol = ENABLE_AUTOMATIC_SEMICOLON;
+      return true;
+    }
   }
 
   if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0) {
@@ -83,6 +118,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
 
     if (newline_count > 1) return true;
+    else if (state->automatic_semicolons_disabled) return false;
 
     int active_count = sizeof(invalid_begin_strings) / sizeof(keyword*);
     int active_automata[active_count];

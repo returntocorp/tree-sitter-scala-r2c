@@ -248,6 +248,26 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "case"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "class"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_disable_semicolon"
+        },
+        {
           "type": "FIELD",
           "name": "name",
           "content": {
@@ -355,6 +375,10 @@
               ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enable_semicolon"
         }
       ]
     },
@@ -397,6 +421,10 @@
           "value": "class"
         },
         {
+          "type": "SYMBOL",
+          "name": "_disable_semicolon"
+        },
+        {
           "type": "FIELD",
           "name": "name",
           "content": {
@@ -504,6 +532,10 @@
               ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enable_semicolon"
         }
       ]
     },
@@ -544,6 +576,10 @@
         {
           "type": "STRING",
           "value": "object"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_disable_semicolon"
         },
         {
           "type": "FIELD",
@@ -599,6 +635,10 @@
               ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enable_semicolon"
         }
       ]
     },
@@ -627,6 +667,10 @@
         {
           "type": "STRING",
           "value": "trait"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_disable_semicolon"
         },
         {
           "type": "FIELD",
@@ -698,6 +742,10 @@
               ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enable_semicolon"
         }
       ]
     },
@@ -5134,6 +5182,14 @@
     {
       "type": "SYMBOL",
       "name": "_automatic_semicolon"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_disable_semicolon"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_enable_semicolon"
     }
   ],
   "inline": [

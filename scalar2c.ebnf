@@ -2,7 +2,7 @@ extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= { _automatic_semicolon }
+externals  ::= { _automatic_semicolon _disable_semicolon _enable_semicolon }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
@@ -31,17 +31,23 @@ rules:
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
-  _block_class_definition      ::= annotation* local_modifier* $classDef
+  _block_class_definition      ::= annotation* local_modifier* 'case'? 'class' $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
-  _template_trait_definition  ::= annotation* modifiers? 'trait' $traitDef
-  classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
+  _template_trait_definition   ::= annotation* modifiers? 'trait' $traitDef
+  classDef                     :=  _disable_semicolon
+                                     (identifier: name) (type_parameters?: type_parameters)
                                      (constructor_annotation*: constructor_annotations)
                                      (access_modifier?: access_modifier)
                                      (class_parameters*: class_parameters)
                                      $classTemplateOpt
-  objectDef                    :=  (identifier: name) $classTemplateOpt
-  traitDef                     :=  (identifier: name) (type_parameters?: type_parameters) $traitTemplateOpt
+                                     _enable_semicolon
+  objectDef                    :=  _disable_semicolon
+                                     (identifier: name) $classTemplateOpt
+                                     _enable_semicolon
+  traitDef                     :=  _disable_semicolon
+                                     (identifier: name) (type_parameters?: type_parameters) $traitTemplateOpt
+                                     _enable_semicolon
   classTemplateOpt             :=  ('extends' _class_template | ('extends'? template_body)?)
   traitTemplateOpt             :=  ('extends' _trait_template | ('extends'? template_body)?)
   _constructor                 ::= _annotated_type arguments*
@@ -52,7 +58,7 @@ rules:
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
   template_body                ::= '\n'? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
-  self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
+  self_type                    ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
