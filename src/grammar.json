@@ -1954,6 +1954,10 @@
               "name": "annotation"
             },
             {
+              "type": "SYMBOL",
+              "name": "_at_most_one_newline"
+            },
+            {
               "type": "CHOICE",
               "members": [
                 {
@@ -5312,6 +5316,10 @@
     {
       "type": "SYMBOL",
       "name": "_block_newline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_at_most_one_newline"
     }
   ],
   "inline": [

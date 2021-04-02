@@ -6,6 +6,7 @@ enum TokenType {
   AUTOMATIC_SEMICOLON,
   SINGLE_NEWLINE,
   BLOCK_NEWLINE,
+  AT_MOST_ONE_NEWLINE,
 };
 
 typedef struct keyword {
@@ -75,14 +76,28 @@ static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
   unsigned newline_count = 0;
+  lexer->mark_end(lexer);
   while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead == '\n') newline_count++;
     lexer->advance(lexer, true);
-    if (newline_count == 1 && valid_symbols[SINGLE_NEWLINE]) {
-      lexer->mark_end(lexer);
-      lexer->result_symbol = SINGLE_NEWLINE;
-      return true;
+    if (newline_count == 1) {
+      if (valid_symbols[AT_MOST_ONE_NEWLINE]) {
+        lexer->result_symbol = AT_MOST_ONE_NEWLINE;
+        while (iswspace(lexer->lookahead)) {
+          if (lexer->lookahead == '\n') return false;
+          lexer->advance(lexer, true);
+        }
+        return true;
+      } else if (valid_symbols[SINGLE_NEWLINE]) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = SINGLE_NEWLINE;
+        return true;
+      }
     }
+  }
+  if (valid_symbols[AT_MOST_ONE_NEWLINE]) {
+    lexer->result_symbol = AT_MOST_ONE_NEWLINE;
+    return newline_count <= 1;
   }
 
   if (valid_symbols[BLOCK_NEWLINE] && newline_count == 1 &&

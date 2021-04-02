@@ -2,7 +2,7 @@ extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= { _automatic_semicolon _single_newline _block_newline }
+externals  ::= { _automatic_semicolon _single_newline _block_newline _at_most_one_newline }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
@@ -104,7 +104,7 @@ rules:
   view_bound                   ::= '<%' (_type: type)
   context_bound                ::= ':' (_type: type)
   ; template_body                ::= '{' _block? '}'
-  _annotations                 ::= 2((annotation _single_newline?)+)
+  _annotations                 ::= 2((annotation _at_most_one_newline _single_newline?)+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= 1(_annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?

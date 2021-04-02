@@ -83,9 +83,14 @@ module.exports = grammar({
   supertypes: $ => [$._expression, $._definition, $._pattern],
   /*
    * scalar2c.ebnf:5
-   * externals  ::= { _automatic_semicolon _single_newline _block_newline }
+   * externals  ::= { _automatic_semicolon _single_newline _block_newline _at_most_one_newline }
    */
-  externals: $ => [$._automatic_semicolon, $._single_newline, $._block_newline],
+  externals: $ => [
+                    $._automatic_semicolon,
+                    $._single_newline,
+                    $._block_newline,
+                    $._at_most_one_newline
+                  ],
   /*
    * scalar2c.ebnf:7
    * inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
@@ -511,9 +516,12 @@ module.exports = grammar({
     context_bound: $ => seq(':', field('type', $._type)),
     /*
      * scalar2c.ebnf:107
-     * _annotations                 ::= 2((annotation _single_newline?)+)
+     * _annotations                 ::= 2((annotation _at_most_one_newline _single_newline?)+)
      */
-    _annotations: $ => prec(2, repeat1(seq($.annotation, optional($._single_newline)))),
+    _annotations: $ => prec(
+                         2,
+                         repeat1(seq($.annotation, $._at_most_one_newline, optional($._single_newline)))
+                       ),
     /*
      * scalar2c.ebnf:108
      * annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
