@@ -2,9 +2,7 @@ extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= {
-                 _automatic_semicolon
-                 }
+externals  ::= { _automatic_semicolon }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
