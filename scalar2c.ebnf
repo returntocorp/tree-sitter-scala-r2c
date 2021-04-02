@@ -34,9 +34,18 @@ rules:
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
-                                   (constructor_annotation*: constructor_annotations)
-                                   (access_modifier?: access_modifier)
-                                   (class_parameters*: class_parameters)
+                                     (constructor_annotation*: constructor_annotations)
+                                     (access_modifier?: access_modifier)
+                                     (class_parameters*: class_parameters)
+                                     $class_template_opt
+  class_template_opt           :=  ('extends' _class_template | ('extends'? _template_body)?)
+  constructor                  ::= _annotated_type arguments*
+  _class_template              ::= early_definitions? _class_parents _template_body?
+  _class_parents               ::= constructor: parent_class_name ('with' _annotated_type: inherited_trait_name)*
+  early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
+  early_definition             ::= 1(val_definition)
+  _template_body               ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
+  _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
     ; TypeParamClause? ConstrAnnotation* AccessModifier?
                              ;$ClassParamClauses ($ClassTemplateOpt)
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
@@ -90,7 +99,7 @@ rules:
   context_bound                ::= ':' (_type: type)
   template_body                ::= '{' _block? '}'
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
-  constructor_annotation     ::= '@' (_simple_type: name) (arguments: arguments)
+  constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= annotation* ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
                                      'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
 

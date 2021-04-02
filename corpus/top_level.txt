@@ -70,6 +70,8 @@ class Foo[T] @foo() private ()
 class Foo(x: Int, y: Int)(z: String)(w: Double)
 class Foo(x: Int)(implicit z: String)
 @foo private final sealed implicit case class Foo(x: Int)
+class Foo extends { val x = 1 } with Bar
+
 ------------------------------------
 (compilation_unit
   (class_definition (identifier))
@@ -101,5 +103,8 @@ class Foo(x: Int)(implicit z: String)
     (annotation (type_identifier))
     (modifiers (access_modifier) (local_modifier) (local_modifier) (local_modifier))
     (identifier)
-    (class_parameters (class_parameter (identifier) (type_identifier)))))
+    (class_parameters (class_parameter (identifier) (type_identifier))))
+  (class_definition (identifier)
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (constructor (type_identifier))))
 
