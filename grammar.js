@@ -165,10 +165,10 @@ module.exports = grammar({
                                ),
     /*
      * scalar2c.ebnf:35
-     * _block_class_definition      ::= annotation* local_modifier* $classDef
+     * _block_class_definition      ::= _annotations? local_modifier* $classDef
      */
     _block_class_definition: $ => seq(
-                                    repeat($.annotation),
+                                    optional($._annotations),
                                     repeat($.local_modifier),
                                     field('name', $.identifier),
                                     field('type_parameters', optional($.type_parameters)),
@@ -182,10 +182,10 @@ module.exports = grammar({
                                   ),
     /*
      * scalar2c.ebnf:36
-     * _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
+     * _template_class_definition   ::= _annotations? modifiers? 'case'? 'class' $classDef
      */
     _template_class_definition: $ => seq(
-                                       repeat($.annotation),
+                                       optional($._annotations),
                                        optional($.modifiers),
                                        optional('case'),
                                        'class',
@@ -201,10 +201,10 @@ module.exports = grammar({
                                      ),
     /*
      * scalar2c.ebnf:37
-     * _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
+     * _template_object_definition  ::= _annotations? modifiers? 'case'? 'object' $objectDef
      */
     _template_object_definition: $ => seq(
-                                        repeat($.annotation),
+                                        optional($._annotations),
                                         optional($.modifiers),
                                         optional('case'),
                                         'object',
@@ -216,10 +216,10 @@ module.exports = grammar({
                                       ),
     /*
      * scalar2c.ebnf:38
-     * _template_trait_definition   ::= annotation* modifiers? 'trait' $traitDef
+     * _template_trait_definition   ::= _annotations? modifiers? 'trait' $traitDef
      */
     _template_trait_definition: $ => seq(
-                                       repeat($.annotation),
+                                       optional($._annotations),
                                        optional($.modifiers),
                                        'trait',
                                        field('name', $.identifier),
@@ -401,10 +401,10 @@ module.exports = grammar({
                              ),
     /*
      * scalar2c.ebnf:89
-     * object_definition            ::= annotation* modifiers? 'case'? 'object' _object_definition
+     * object_definition            ::= _annotations? modifiers? 'case'? 'object' _object_definition
      */
     object_definition: $ => seq(
-                              repeat($.annotation),
+                              optional($._annotations),
                               optional($.modifiers),
                               optional('case'),
                               'object',
@@ -421,12 +421,12 @@ module.exports = grammar({
                              ),
     /*
      * scalar2c.ebnf:91-93
-     * class_definition             ::= annotation* modifiers? 'case'? 'class' (identifier: name)
+     * class_definition             ::= _annotations? modifiers? 'case'? 'class' (identifier: name)
      *                                    (type_parameters?: type_parameters) (class_parameters*: class_parameters)
      *                                    (extends_clause?: extend) (template_body?: body)
      */
     class_definition: $ => seq(
-                             repeat($.annotation),
+                             optional($._annotations),
                              optional($.modifiers),
                              optional('case'),
                              'class',
@@ -459,10 +459,10 @@ module.exports = grammar({
                           ),
     /*
      * scalar2c.ebnf:97
-     * _variant_type_parameter      ::= annotation* (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
+     * _variant_type_parameter      ::= _annotations? (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
      */
     _variant_type_parameter: $ => seq(
-                                    repeat($.annotation),
+                                    optional($._annotations),
                                     choice($.covariant_type_parameter, $.contravariant_type_parameter, $._type_parameter)
                                   ),
     /*
@@ -511,35 +511,43 @@ module.exports = grammar({
     context_bound: $ => seq(':', field('type', $._type)),
     /*
      * scalar2c.ebnf:107
+     * _annotations                 ::= 2((annotation _single_newline?)+)
+     */
+    _annotations: $ => prec(2, repeat1(seq($.annotation, optional($._single_newline)))),
+    /*
+     * scalar2c.ebnf:108
      * annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
      */
     annotation: $ => prec.right(seq('@', field('name', $._simple_type), field('arguments', repeat($.arguments)))),
     /*
-     * scalar2c.ebnf:108
+     * scalar2c.ebnf:109
      * constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
      */
     constructor_annotation: $ => seq('@', field('name', $._simple_type), field('arguments', $.arguments)),
     /*
-     * scalar2c.ebnf:109-110
-     * _local_val_definition        ::= annotation* ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
-     *                                    'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+     * scalar2c.ebnf:110-111
+     * _local_val_definition        ::= 1(_annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
+     *                                    'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value))
      */
-    _local_val_definition: $ => seq(
-                                  repeat($.annotation),
-                                  optional(alias('implicit', $.implicit_modifier)),
-                                  optional(alias('lazy', $.lazy_modifier)),
-                                  'val',
-                                  field('pattern', $._pattern),
-                                  optional(seq(':', field('type', $._type))),
-                                  '=',
-                                  field('value', $._expression)
+    _local_val_definition: $ => prec(
+                                  1,
+                                  seq(
+                                    optional($._annotations),
+                                    optional(alias('implicit', $.implicit_modifier)),
+                                    optional(alias('lazy', $.lazy_modifier)),
+                                    'val',
+                                    field('pattern', $._pattern),
+                                    optional(seq(':', field('type', $._type))),
+                                    '=',
+                                    field('value', $._expression)
+                                  )
                                 ),
     /*
-     * scalar2c.ebnf:112
-     * val_definition               ::= annotation* modifiers? 'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+     * scalar2c.ebnf:113
+     * val_definition               ::= _annotations? modifiers? 'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
      */
     val_definition: $ => seq(
-                           repeat($.annotation),
+                           optional($._annotations),
                            optional($.modifiers),
                            'val',
                            field('pattern', $._pattern),
@@ -548,11 +556,11 @@ module.exports = grammar({
                            field('value', $._expression)
                          ),
     /*
-     * scalar2c.ebnf:113
-     * val_declaration              ::= annotation* modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
+     * scalar2c.ebnf:114
+     * val_declaration              ::= _annotations? modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
      */
     val_declaration: $ => seq(
-                            repeat($.annotation),
+                            optional($._annotations),
                             optional($.modifiers),
                             'val',
                             seq(field('name', $.identifier), repeat(seq(',', field('name', $.identifier)))),
@@ -560,11 +568,11 @@ module.exports = grammar({
                             field('type', $._type)
                           ),
     /*
-     * scalar2c.ebnf:114
-     * var_declaration              ::= annotation* modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
+     * scalar2c.ebnf:115
+     * var_declaration              ::= _annotations? modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
      */
     var_declaration: $ => seq(
-                            repeat($.annotation),
+                            optional($._annotations),
                             optional($.modifiers),
                             'var',
                             seq(field('name', $.identifier), repeat(seq(',', field('name', $.identifier)))),
@@ -572,11 +580,11 @@ module.exports = grammar({
                             field('type', $._type)
                           ),
     /*
-     * scalar2c.ebnf:115
-     * var_definition               ::= annotation* modifiers? 'var' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+     * scalar2c.ebnf:116
+     * var_definition               ::= _annotations? modifiers? 'var' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
      */
     var_definition: $ => seq(
-                           repeat($.annotation),
+                           optional($._annotations),
                            optional($.modifiers),
                            'var',
                            field('pattern', $._pattern),
@@ -585,12 +593,12 @@ module.exports = grammar({
                            field('value', $._expression)
                          ),
     /*
-     * scalar2c.ebnf:116-117
-     * type_definition              ::= annotation* modifiers? 'type' (_type_identifier: name)
+     * scalar2c.ebnf:117-118
+     * type_definition              ::= _annotations? modifiers? 'type' (_type_identifier: name)
      *                                    (type_parameters?: type_parameters) '=' (_type: type)
      */
     type_definition: $ => seq(
-                            repeat($.annotation),
+                            optional($._annotations),
                             optional($.modifiers),
                             'type',
                             field('name', $._type_identifier),
@@ -599,13 +607,13 @@ module.exports = grammar({
                             field('type', $._type)
                           ),
     /*
-     * scalar2c.ebnf:118-120
-     * function_definition          ::= annotation* modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
+     * scalar2c.ebnf:119-121
+     * function_definition          ::= _annotations? modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
      *                                    (parameters*: parameters) (':' (_type: return_type))?
      *                                    (('=' (_expression: body)) | (block: body))
      */
     function_definition: $ => seq(
-                                repeat($.annotation),
+                                optional($._annotations),
                                 optional($.modifiers),
                                 'def',
                                 field('name', $.identifier),
@@ -615,12 +623,12 @@ module.exports = grammar({
                                 choice(seq('=', field('body', $._expression)), field('body', $.block))
                               ),
     /*
-     * scalar2c.ebnf:121-122
-     * function_declaration         ::= annotation* modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
+     * scalar2c.ebnf:122-123
+     * function_declaration         ::= _annotations? modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
      *                                    (parameters*: parameters) (':' (_type: return_type))?
      */
     function_declaration: $ => seq(
-                                 repeat($.annotation),
+                                 optional($._annotations),
                                  optional($.modifiers),
                                  'def',
                                  field('name', $.identifier),
@@ -629,32 +637,32 @@ module.exports = grammar({
                                  optional(seq(':', field('return_type', $._type)))
                                ),
     /*
-     * scalar2c.ebnf:123
-     * local_modifier               ::= 1('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
-     */
-    local_modifier: $ => prec(1, choice('abstract', 'final', 'sealed', 'implicit', 'lazy')),
-    /*
      * scalar2c.ebnf:124
+     * local_modifier               ::= 2('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
+     */
+    local_modifier: $ => prec(2, choice('abstract', 'final', 'sealed', 'implicit', 'lazy')),
+    /*
+     * scalar2c.ebnf:125
      * access_modifier              ::= ('private' | 'protected') access_qualifier?
      */
     access_modifier: $ => seq(choice('private', 'protected'), optional($.access_qualifier)),
     /*
-     * scalar2c.ebnf:125
+     * scalar2c.ebnf:126
      * access_qualifier             ::= '[' (identifier | 'this') ']'
      */
     access_qualifier: $ => seq('[', choice($.identifier, 'this'), ']'),
     /*
-     * scalar2c.ebnf:126
+     * scalar2c.ebnf:127
      * modifiers                    ::= (local_modifier | access_modifier | 'override')+
      */
     modifiers: $ => repeat1(choice($.local_modifier, $.access_modifier, 'override')),
     /*
-     * scalar2c.ebnf:127
+     * scalar2c.ebnf:128
      * extends_clause               ::= 'extends' (_type: type) arguments?
      */
     extends_clause: $ => seq('extends', field('type', $._type), optional($.arguments)),
     /*
-     * scalar2c.ebnf:128
+     * scalar2c.ebnf:129
      * class_parameters             ::= '(' 'implicit'? (class_parameter (',' class_parameter)*)? ')'
      */
     class_parameters: $ => seq(
@@ -664,7 +672,7 @@ module.exports = grammar({
                              ')'
                            ),
     /*
-     * scalar2c.ebnf:129
+     * scalar2c.ebnf:130
      * parameters                   ::= '(' 'implicit'? (parameter (',' parameter)*)? ')'
      */
     parameters: $ => seq(
@@ -674,7 +682,7 @@ module.exports = grammar({
                        ')'
                      ),
     /*
-     * scalar2c.ebnf:130-131
+     * scalar2c.ebnf:131-132
      * class_parameter              ::= annotation* ('val' | 'var')? (identifier: name) (':' (_type: type))?
      *                                    ('=' (_expression: default_value))?
      */
@@ -686,7 +694,7 @@ module.exports = grammar({
                             optional(seq('=', field('default_value', $._expression)))
                           ),
     /*
-     * scalar2c.ebnf:132
+     * scalar2c.ebnf:133
      * parameter                    ::= annotation* (identifier: name) (':' (_param_type: type))? ('=' (_expression: default_value))?
      */
     parameter: $ => seq(
@@ -696,7 +704,7 @@ module.exports = grammar({
                       optional(seq('=', field('default_value', $._expression)))
                     ),
     /*
-     * scalar2c.ebnf:133
+     * scalar2c.ebnf:134
      * _block                       ::= <(((_expression | _definition) (_semicolon (_expression | _definition))*) _semicolon?)
      */
     _block: $ => prec.left(
@@ -709,27 +717,27 @@ module.exports = grammar({
                    )
                  ),
     /*
-     * scalar2c.ebnf:134
+     * scalar2c.ebnf:135
      * block                        ::= '{' _block? '}'
      */
     block: $ => seq('{', optional($._block), '}'),
     /*
-     * scalar2c.ebnf:135
+     * scalar2c.ebnf:136
      * _type                        ::= function_type | compound_type | infix_type | _annotated_type
      */
     _type: $ => choice($.function_type, $.compound_type, $.infix_type, $._annotated_type),
     /*
-     * scalar2c.ebnf:136
+     * scalar2c.ebnf:137
      * _annotated_type              ::= >(_simple_type annotation*)
      */
     _annotated_type: $ => prec.right(seq($._simple_type, repeat($.annotation))),
     /*
-     * scalar2c.ebnf:137
+     * scalar2c.ebnf:138
      * _simple_type                 ::= generic_type | projected_type | stable_type_identifier | _type_identifier
      */
     _simple_type: $ => choice($.generic_type, $.projected_type, $.stable_type_identifier, $._type_identifier),
     /*
-     * scalar2c.ebnf:138
+     * scalar2c.ebnf:139
      * compound_type                ::= 3((_annotated_type: base) ('with' (_annotated_type: extra))+)
      */
     compound_type: $ => prec(
@@ -740,7 +748,7 @@ module.exports = grammar({
                           )
                         ),
     /*
-     * scalar2c.ebnf:139-141
+     * scalar2c.ebnf:140-142
      * infix_type                   ::= <2(((compound_type | infix_type | _annotated_type): left)
      *                                    ((identifier): operator)
      *                                    ((compound_type | infix_type | _annotated_type): right))
@@ -754,34 +762,34 @@ module.exports = grammar({
                        )
                      ),
     /*
-     * scalar2c.ebnf:142
+     * scalar2c.ebnf:143
      * stable_type_identifier       ::= (identifier | stable_identifier) '.' _type_identifier
      */
     stable_type_identifier: $ => seq(choice($.identifier, $.stable_identifier), '.', $._type_identifier),
     /*
-     * scalar2c.ebnf:143
+     * scalar2c.ebnf:144
      * stable_identifier            ::= (identifier | stable_identifier) '.' identifier
      */
     stable_identifier: $ => seq(choice($.identifier, $.stable_identifier), '.', $.identifier),
     /*
-     * scalar2c.ebnf:144
+     * scalar2c.ebnf:145
      * generic_type                 ::= (_simple_type: type) (type_arguments: type_arguments)
      */
     generic_type: $ => seq(field('type', $._simple_type), field('type_arguments', $.type_arguments)),
     /*
-     * scalar2c.ebnf:145
+     * scalar2c.ebnf:146
      * projected_type               ::= (_simple_type: type) '#' (_type_identifier: selector)
      */
     projected_type: $ => seq(field('type', $._simple_type), '#', field('selector', $._type_identifier)),
     /*
-     * scalar2c.ebnf:146
+     * scalar2c.ebnf:147
      * function_type                ::= >((parameter_types: parameter_types) '=>' (_type: return_type))
      */
     function_type: $ => prec.right(
                           seq(field('parameter_types', $.parameter_types), '=>', field('return_type', $._type))
                         ),
     /*
-     * scalar2c.ebnf:147-150
+     * scalar2c.ebnf:148-151
      * parameter_types              ::= -1(_annotated_type
      *                                | ~1('(' (_param_type (',' _param_type)*)? ')')
      *                                | compound_type
@@ -797,27 +805,27 @@ module.exports = grammar({
                             )
                           ),
     /*
-     * scalar2c.ebnf:151
+     * scalar2c.ebnf:152
      * _param_type                  ::= _type | lazy_parameter_type | repeated_parameter_type
      */
     _param_type: $ => choice($._type, $.lazy_parameter_type, $.repeated_parameter_type),
     /*
-     * scalar2c.ebnf:152
+     * scalar2c.ebnf:153
      * lazy_parameter_type          ::= '=>' (_type: type)
      */
     lazy_parameter_type: $ => seq('=>', field('type', $._type)),
     /*
-     * scalar2c.ebnf:153
+     * scalar2c.ebnf:154
      * repeated_parameter_type      ::= (_type: type) '*'
      */
     repeated_parameter_type: $ => seq(field('type', $._type), '*'),
     /*
-     * scalar2c.ebnf:154
+     * scalar2c.ebnf:155
      * _type_identifier             ::= identifier -> type_identifier
      */
     _type_identifier: $ => alias($.identifier, $.type_identifier),
     /*
-     * scalar2c.ebnf:155-167
+     * scalar2c.ebnf:156-168
      * _pattern                     ::= identifier
      *                                | capture_pattern
      *                                | tuple_pattern
@@ -848,7 +856,7 @@ module.exports = grammar({
                      $.wildcard
                    ),
     /*
-     * scalar2c.ebnf:168
+     * scalar2c.ebnf:169
      * case_class_pattern           ::= ((_type_identifier | stable_type_identifier): type) '(' ((_pattern (',' _pattern)*)?: pattern) ')'
      */
     case_class_pattern: $ => seq(
@@ -858,7 +866,7 @@ module.exports = grammar({
                                ')'
                              ),
     /*
-     * scalar2c.ebnf:169
+     * scalar2c.ebnf:170
      * infix_pattern                ::= <2((_pattern: left) ((identifier): operator) (_pattern: right))
      */
     infix_pattern: $ => prec.left(
@@ -870,27 +878,27 @@ module.exports = grammar({
                           )
                         ),
     /*
-     * scalar2c.ebnf:170
+     * scalar2c.ebnf:171
      * capture_pattern              ::= 1((identifier: name) '@' (_pattern: pattern))
      */
     capture_pattern: $ => prec(1, seq(field('name', $.identifier), '@', field('pattern', $._pattern))),
     /*
-     * scalar2c.ebnf:171
+     * scalar2c.ebnf:172
      * typed_pattern                ::= -1((_pattern: pattern) ':' (_type: type))
      */
     typed_pattern: $ => prec(-1, seq(field('pattern', $._pattern), ':', field('type', $._type))),
     /*
-     * scalar2c.ebnf:172
+     * scalar2c.ebnf:173
      * alternative_pattern          ::= <-2(_pattern '|' _pattern)
      */
     alternative_pattern: $ => prec.left(-2, seq($._pattern, '|', $._pattern)),
     /*
-     * scalar2c.ebnf:173
+     * scalar2c.ebnf:174
      * tuple_pattern                ::= '(' _pattern (',' _pattern)+ ')'
      */
     tuple_pattern: $ => seq('(', $._pattern, repeat1(seq(',', $._pattern)), ')'),
     /*
-     * scalar2c.ebnf:174-184
+     * scalar2c.ebnf:175-185
      * _expression                  ::= if_expression
      *                                | match_expression
      *                                | try_expression
@@ -917,7 +925,7 @@ module.exports = grammar({
                         $._simple_expression
                       ),
     /*
-     * scalar2c.ebnf:185-193
+     * scalar2c.ebnf:186-194
      * _simple_expression           ::= parenthesized_expression
      *                                | field_expression
      *                                | instance_expression
@@ -940,7 +948,7 @@ module.exports = grammar({
                                $._literal
                              ),
     /*
-     * scalar2c.ebnf:194-195
+     * scalar2c.ebnf:195-196
      * if_expression                ::= >('if' (parenthesized_expression: condition) (_expression: consequence)
      *                                    ('else' (_expression: alternative))?)
      */
@@ -953,12 +961,12 @@ module.exports = grammar({
                           )
                         ),
     /*
-     * scalar2c.ebnf:196
+     * scalar2c.ebnf:197
      * match_expression             ::= 1(_expression: value) 'match' (case_block: body)
      */
     match_expression: $ => seq(prec(1, field('value', $._expression)), 'match', field('body', $.case_block)),
     /*
-     * scalar2c.ebnf:197
+     * scalar2c.ebnf:198
      * try_expression               ::= >('try' (_expression: body) catch_clause? finally_clause?)
      */
     try_expression: $ => prec.right(
@@ -970,22 +978,22 @@ module.exports = grammar({
                            )
                          ),
     /*
-     * scalar2c.ebnf:198
+     * scalar2c.ebnf:199
      * catch_clause                 ::= >('catch' case_block)
      */
     catch_clause: $ => prec.right(seq('catch', $.case_block)),
     /*
-     * scalar2c.ebnf:199
+     * scalar2c.ebnf:200
      * finally_clause               ::= >('finally' _expression)
      */
     finally_clause: $ => prec.right(seq('finally', $._expression)),
     /*
-     * scalar2c.ebnf:200
+     * scalar2c.ebnf:201
      * case_block                   ::= -1('{' '}') | ('{' case_clause+ '}')
      */
     case_block: $ => choice(prec(-1, seq('{', '}')), seq('{', repeat1($.case_clause), '}')),
     /*
-     * scalar2c.ebnf:201
+     * scalar2c.ebnf:202
      * case_clause                  ::= <('case' (_pattern: pattern) guard? '=>' (_block?: body))
      */
     case_clause: $ => prec.left(
@@ -998,17 +1006,17 @@ module.exports = grammar({
                         )
                       ),
     /*
-     * scalar2c.ebnf:202
+     * scalar2c.ebnf:203
      * guard                        ::= 'if' (_expression: condition)
      */
     guard: $ => seq('if', field('condition', $._expression)),
     /*
-     * scalar2c.ebnf:204
+     * scalar2c.ebnf:205
      * enumerators                  ::= <(generator (_semicolon generator)*)
      */
     enumerators: $ => prec.left(seq($.generator, repeat(seq($._semicolon, $.generator)))),
     /*
-     * scalar2c.ebnf:205
+     * scalar2c.ebnf:206
      * generator                    ::= <(_pattern '<-' _expression (_semicolon? guard | _semicolon _pattern '=' _expression)*)
      */
     generator: $ => prec.left(
@@ -1025,7 +1033,7 @@ module.exports = grammar({
                       )
                     ),
     /*
-     * scalar2c.ebnf:206
+     * scalar2c.ebnf:207
      * for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _single_newline* 'yield'? _expression)
      */
     for_expression: $ => prec.left(
@@ -1042,7 +1050,7 @@ module.exports = grammar({
                            )
                          ),
     /*
-     * scalar2c.ebnf:208
+     * scalar2c.ebnf:209
      * while_expression             ::= 2('while' '(' _expression ')' _block_newline? _expression)
      */
     while_expression: $ => prec(
@@ -1050,17 +1058,17 @@ module.exports = grammar({
                              seq('while', '(', $._expression, ')', optional($._block_newline), $._expression)
                            ),
     /*
-     * scalar2c.ebnf:209
+     * scalar2c.ebnf:210
      * do_expression                ::= ('do' _expression _semicolon? 'while' '(' _expression ')')
      */
     do_expression: $ => seq('do', $._expression, optional($._semicolon), 'while', '(', $._expression, ')'),
     /*
-     * scalar2c.ebnf:211
+     * scalar2c.ebnf:212
      * assignment_expression        ::= >1((_expression: left) '=' (_expression: right))
      */
     assignment_expression: $ => prec.right(1, seq(field('left', $._expression), '=', field('right', $._expression))),
     /*
-     * scalar2c.ebnf:212
+     * scalar2c.ebnf:213
      * generic_function             ::= 4((_expression: function) (type_arguments: type_arguments))
      */
     generic_function: $ => prec(
@@ -1068,7 +1076,7 @@ module.exports = grammar({
                              seq(field('function', $._expression), field('type_arguments', $.type_arguments))
                            ),
     /*
-     * scalar2c.ebnf:213
+     * scalar2c.ebnf:214
      * call_expression              ::= 4((_expression: function) (arguments: arguments) ((block | case_block)?: body))
      */
     call_expression: $ => prec(
@@ -1080,17 +1088,17 @@ module.exports = grammar({
                             )
                           ),
     /*
-     * scalar2c.ebnf:214
+     * scalar2c.ebnf:215
      * field_expression             ::= 4((_expression: value) '.' (identifier: field))
      */
     field_expression: $ => prec(4, seq(field('value', $._expression), '.', field('field', $.identifier))),
     /*
-     * scalar2c.ebnf:215
+     * scalar2c.ebnf:216
      * instance_expression          ::= 3('new' _expression)
      */
     instance_expression: $ => prec(3, seq('new', $._expression)),
     /*
-     * scalar2c.ebnf:216
+     * scalar2c.ebnf:217
      * infix_expression             ::= <2((_simple_expression: left) ((identifier): operator) (_expression: right))
      */
     infix_expression: $ => prec.left(
@@ -1102,42 +1110,42 @@ module.exports = grammar({
                              )
                            ),
     /*
-     * scalar2c.ebnf:217
+     * scalar2c.ebnf:218
      * prefix_expression            ::= 3(('+' | '-' | '!' | '~') _simple_expression)
      */
     prefix_expression: $ => prec(3, seq(choice('+', '-', '!', '~'), $._simple_expression)),
     /*
-     * scalar2c.ebnf:218
+     * scalar2c.ebnf:219
      * tuple_expression             ::= '(' _expression (',' _expression)+ ')'
      */
     tuple_expression: $ => seq('(', $._expression, repeat1(seq(',', $._expression)), ')'),
     /*
-     * scalar2c.ebnf:219
+     * scalar2c.ebnf:220
      * parenthesized_expression     ::= '(' _expression ')'
      */
     parenthesized_expression: $ => seq('(', $._expression, ')'),
     /*
-     * scalar2c.ebnf:220
+     * scalar2c.ebnf:221
      * type_arguments               ::= '[' (_type (',' _type)*) ']'
      */
     type_arguments: $ => seq('[', seq($._type, repeat(seq(',', $._type))), ']'),
     /*
-     * scalar2c.ebnf:221
+     * scalar2c.ebnf:222
      * arguments                    ::= '(' (_expression (',' _expression)*)? ')'
      */
     arguments: $ => seq('(', optional(seq($._expression, repeat(seq(',', $._expression)))), ')'),
     /*
-     * scalar2c.ebnf:239
+     * scalar2c.ebnf:240
      * identifier                   ::= /($opchar+|$idRegex|$varidRegex|[`]$varidRegex[`])/
      */
     identifier: $ => /([\-!#%&*+/\\:<=>?@\u005e\u007c~]+|([\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)|[`]([\u0020-\u005f\u0061-\u007f]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))*[`]|[\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?|[`][\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F_][\p{Lu}\p{Lt}\p{Nl}\p{Lo}\p{Lm}\$\p{Ll}_\u00AA\u00BB\u02B0-\u02B8\u02C0-\u02C1\u02E0-\u02E4\u037A\u1D78\u1D9B-\u1DBF\u2071\u207F\u2090-\u209C\u2C7C-\u2C7D\uA69C-\uA69D\uA770\uA7F8-\uA7F9\uAB5C-\uAB5F0-9]*(_[\-!#%&*+/\\:<=>?@\u005e\u007c~]+)?[`])/,
     /*
-     * scalar2c.ebnf:240
+     * scalar2c.ebnf:241
      * wildcard                     ::= '_'
      */
     wildcard: $ => '_',
     /*
-     * scalar2c.ebnf:252
+     * scalar2c.ebnf:253
      * number                       ::= $integer_literal | $floating_point_literal
      */
     number: $ => choice(
@@ -1145,22 +1153,22 @@ module.exports = grammar({
                    /-?([0-9]+[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[.][0-9]+([Ee][+-]?[0-9]+)?[FfDd]?|[0-9]+([Ee][+-]?[0-9]+)?[FfDd]|[0-9]+([Ee][+-]?[0-9]+)[FfDd]?)/
                  ),
     /*
-     * scalar2c.ebnf:253
+     * scalar2c.ebnf:254
      * boolean_literal              ::= 'true' | 'false'
      */
     boolean_literal: $ => choice('true', 'false'),
     /*
-     * scalar2c.ebnf:254
+     * scalar2c.ebnf:255
      * character_literal            ::= /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\]|\\u+[0-9a-fA-F]{4})'/
      */
     character_literal: $ => /'([\u0020-\u0026\u0028-\u007f]|\\[btnfr"'\\]|\\u+[0-9a-fA-F]{4})'/,
     /*
-     * scalar2c.ebnf:255
+     * scalar2c.ebnf:256
      * symbol_literal               ::= @("'" [^\\'\n]+)
      */
     symbol_literal: $ => token(seq("'", repeat1(/[^\\'\n]/))),
     /*
-     * scalar2c.ebnf:257
+     * scalar2c.ebnf:258
      * _interpolation_string_prefix ::= !(($upper $idrest): interpolation_name '"') | !($varidRegex: interpolation_name '"')
      */
     _interpolation_string_prefix: $ => choice(
@@ -1191,7 +1199,7 @@ module.exports = grammar({
                                          )
                                        ),
     /*
-     * scalar2c.ebnf:259-260
+     * scalar2c.ebnf:260-261
      * interpolated_string          ::= _interpolation_string_prefix ($charMinusQuoteDollar | _escape)* '"'
      *                                | _interpolation_string_prefix '""' ('"'? '"'? $charMinusQuoteDollar | _escape)* '"'? '"""'
      */
@@ -1206,17 +1214,17 @@ module.exports = grammar({
                                 )
                               ),
     /*
-     * scalar2c.ebnf:261
+     * scalar2c.ebnf:262
      * _escape                      ::= "$$" | "$" identifier | "$" block
      */
     _escape: $ => choice("$$", seq("$", $.identifier), seq("$", $.block)),
     /*
-     * scalar2c.ebnf:262
+     * scalar2c.ebnf:263
      * _raw_string                  ::= /"""("?"?[^"])*"*"""/
      */
     _raw_string: $ => /"""("?"?[^"])*"*"""/,
     /*
-     * scalar2c.ebnf:263
+     * scalar2c.ebnf:264
      * _simple_string               ::= '"' /[^"\n]|$escapeSeq/* '"' | '""'
      */
     _simple_string: $ => choice(
@@ -1228,18 +1236,18 @@ module.exports = grammar({
                            '""'
                          ),
     /*
-     * scalar2c.ebnf:267
+     * scalar2c.ebnf:268
      * string_literal               ::= _simple_string | _raw_string
      */
     string_literal: $ => choice($._simple_string, $._raw_string),
     /*
-     * scalar2c.ebnf:268-269
+     * scalar2c.ebnf:269-270
      * _semicolon                   ::= ';' | _automatic_semicolon
      * ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*∕ | comment)* '/'
      */
     _semicolon: $ => choice(';', $._automatic_semicolon),
     /*
-     * scalar2c.ebnf:270
+     * scalar2c.ebnf:271
      * comment                      ::= @(('//' /.*∕) | '/*' /[^*]*\*+([^/*][^*]*\*+)*∕ '/')
      */
     comment: $ => token(choice(seq('//', /.*/), seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')))
