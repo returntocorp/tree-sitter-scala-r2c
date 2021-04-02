@@ -33,7 +33,7 @@ rules:
   _template_definition         ::= _template_class_definition -> class_definition
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
-  classDef                     :=  identifier type_parameters?
+  classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
     ; TypeParamClause? ConstrAnnotation* AccessModifier?
                              ;$ClassParamClauses ($ClassTemplateOpt)
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)

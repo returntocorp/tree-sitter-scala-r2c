@@ -6,7 +6,7 @@
  * charEscapeSeq            := \\[btnfr"'\\]
  * charMinusQuoteDollar     := [^"\$]
  * charNoBQOrNL             := [\u0020-\u005f\u0061-\u007f]
- * classDef                 := identifier type_parameters?
+ * classDef                 := (identifier: name) (type_parameters?: type_parameters)
  * decimal_numeral          := [0-9]+
  * escapeSeq                := ($unicodeEscape|$charEscapeSeq)
  *     ((\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\]))
@@ -157,8 +157,8 @@ module.exports = grammar({
     _block_class_definition: $ => seq(
                                     repeat($.annotation),
                                     repeat($.local_modifier),
-                                    $.identifier,
-                                    optional($.type_parameters)
+                                    field('name', $.identifier),
+                                    field('type_parameters', optional($.type_parameters))
                                   ),
     /*
      * scalar2c.ebnf:35
@@ -169,8 +169,8 @@ module.exports = grammar({
                                        optional($.modifiers),
                                        optional('case'),
                                        'class',
-                                       $.identifier,
-                                       optional($.type_parameters)
+                                       field('name', $.identifier),
+                                       field('type_parameters', optional($.type_parameters))
                                      ),
     /*
      * scalar2c.ebnf:40-49
