@@ -21,4 +21,4 @@ Illegal val definitions
 ================================
 private val x = 1 /* only lazy and implicit are allowed as modifiers */
 --------------------------------
-(compilation_unit (ERROR) (val_definition (identifier) (number)) (comment))
+(compilation_unit (ERROR (modifiers (access_modifier))) (val_definition (identifier) (number)) (comment))
