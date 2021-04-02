@@ -58,6 +58,9 @@ val x: Int = 1
 Class definitions
 ====================================
 class Foo
+class Foo[T]
 ------------------------------------
-(compilation_unit (class_definition (identifier)))
+(compilation_unit
+  (class_definition (identifier))
+  (class_definition (identifier) (type_parameters (identifier))))
 
