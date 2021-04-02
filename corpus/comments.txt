@@ -21,6 +21,7 @@ Scaladoc comments
 val foo: Int = 1
 /**********
  * scaladoc style with extra *
+ * (nested) /**/ /******/ /****f****/
  */
 val foo: String = "foo"
 ------------------------------------

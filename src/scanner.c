@@ -98,6 +98,30 @@ static bool slurp_comment(TSLexer *lexer) {
       } while (lexer->lookahead && lexer->lookahead != '\n');
       lexer->advance(lexer, true);
       return true;
+    } else if (lexer->lookahead == '*') {
+      int depth = 1;
+      while (lexer->lookahead) {
+        char current_char;
+        do {
+          lexer->advance(lexer, true);
+          current_char = lexer->lookahead;
+        } while (current_char && current_char != '*' && current_char != '/');
+        if (current_char == '*') {
+          do {
+            lexer->advance(lexer, true);
+            current_char = lexer->lookahead;
+          } while (current_char && current_char == '*');
+          if (lexer->lookahead == '/') {
+            lexer->advance(lexer, true);
+            if (--depth == 0) return true;
+          }
+        } else if (current_char == '/') {
+          lexer->advance(lexer, true);
+          if (lexer->lookahead == '*') {
+            depth ++;
+          }
+        }
+      }
     }
   }
   return false;
@@ -109,7 +133,6 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   lexer->mark_end(lexer);
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
-  printf("WTF %d %d %d\n", valid_symbols[NEWLINE], valid_symbols[BLOCK_NEWLINES], lexer->lookahead);
   if (explicit_newlines && lexer->lookahead == '\n') {
     if (valid_symbols[NEWLINE]) {
       lexer->advance(lexer, true);
