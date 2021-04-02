@@ -24,12 +24,18 @@ rules:
                                  | 'null'
   topLevelStatementSeq         :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
   _top_level_statement         ::= 1(import_declaration
+                                 | _template_definition
                                  | package_clause
                                  | package_object)
-  ;templateStatementSeq                 :=  (_template_statement (_semicolon _template_statement)* _semicolon)
   _template_statement          ::= import_declaration
                                  | val_definition
                                  | literal
+  _template_definition         ::= _template_class_definition -> class_definition
+  _block_class_definition      ::= annotation* local_modifier* $classDef
+  _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
+  classDef                     :=  identifier type_parameters?
+    ; TypeParamClause? ConstrAnnotation* AccessModifier?
+                             ;$ClassParamClauses ($ClassTemplateOpt)
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
@@ -95,7 +101,7 @@ rules:
                                      (('=' (_expression: body)) | (block: body))
   function_declaration         ::= annotation* modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
                                      (parameters*: parameters) (':' (_type: return_type))?
-  local_modifier               ::= ('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
+  local_modifier               ::= 1('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
   access_modifier              ::= ('private' | 'protected') access_qualifier?
   access_qualifier             ::= '[' (identifier | 'this') ']'
   modifiers                    ::= (local_modifier | access_modifier | 'override')+

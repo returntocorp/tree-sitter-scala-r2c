@@ -53,3 +53,11 @@ Top level val definition
 val x: Int = 1
 --------------------------------
 (compilation_unit (val_definition (identifier) (type_identifier) (number)))
+
+====================================
+Class definitions
+====================================
+class Foo
+------------------------------------
+(compilation_unit (class_definition (identifier)))
+

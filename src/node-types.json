@@ -567,7 +567,7 @@
       },
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "identifier",
@@ -595,7 +595,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
           "named": true
         }
       ]
@@ -704,6 +712,10 @@
         },
         {
           "type": "character_literal",
+          "named": true
+        },
+        {
+          "type": "class_definition",
           "named": true
         },
         {
@@ -1958,6 +1970,10 @@
           {
             "type": ";",
             "named": false
+          },
+          {
+            "type": "class_definition",
+            "named": true
           },
           {
             "type": "import_declaration",
