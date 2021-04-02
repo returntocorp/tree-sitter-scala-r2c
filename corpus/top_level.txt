@@ -181,8 +181,21 @@ Class definition with newline
 ====================================
 class Foo
   { 7 }
-class Foo
+
+class Foo {
+  while (true)
+
+
+    // testing arbitrary count of newlines and dumb indentation
+
+println("loop forever")
+  val x = 1
+}
 ------------------------------------
 (compilation_unit
   (class_definition (identifier) (template_body (number)))
-  (class_definition (identifier)))
+  (class_definition (identifier) (template_body
+    (while_expression (boolean_literal)
+      (comment)
+      (call_expression (identifier) (arguments (string_literal))))
+      (val_definition (identifier) (number)))))

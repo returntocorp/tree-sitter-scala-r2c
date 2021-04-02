@@ -4,7 +4,8 @@
 
 enum TokenType {
   AUTOMATIC_SEMICOLON,
-  NEWLINE,
+  SINGLE_NEWLINE,
+  BLOCK_NEWLINE,
 };
 
 typedef struct keyword {
@@ -77,15 +78,19 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   while (iswspace(lexer->lookahead)) {
     if (lexer->lookahead == '\n') newline_count++;
     lexer->advance(lexer, true);
-    if (newline_count == 1) lexer->mark_end(lexer);
+    if (newline_count == 1 && valid_symbols[SINGLE_NEWLINE]) {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = SINGLE_NEWLINE;
+      return true;
+    }
   }
 
-  if (valid_symbols[NEWLINE] && newline_count == 1 &&
-    (lexer->lookahead == '{' || lexer->lookahead == '{')) {
-    lexer->result_symbol = NEWLINE;
+  if (valid_symbols[BLOCK_NEWLINE] && newline_count == 1 &&
+    (lexer->lookahead == '{' || lexer->lookahead == '(')) {
+    lexer->result_symbol = BLOCK_NEWLINE;
     return true;
   }
-  if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0) {
+  if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0 && lexer->lookahead) {
     lexer->mark_end(lexer);
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
 
@@ -111,7 +116,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
               lexer->advance(lexer, false);
               next_char = lexer->lookahead;
             }
-            if (iswspace(next_char)) return false; // a word that cannot start a statement was found
+            if (iswspace(next_char) || !next_char) return false; // a word that cannot start a statement was found
             else if (chars_read == 1 && current_char == '.') {
               // could be a floating point literal
               lexer->advance(lexer, false);
@@ -129,10 +134,6 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
         if (!iswspace(lexer->lookahead)) { next_char = lexer->lookahead; }
       }
     }
-    return true;
-  } else if (valid_symbols[AUTOMATIC_SEMICOLON] && !lexer->lookahead) {
-    lexer->mark_end(lexer);
-    lexer->result_symbol = AUTOMATIC_SEMICOLON;
     return true;
   }
 

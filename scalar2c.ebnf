@@ -2,7 +2,7 @@ extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= { _automatic_semicolon _newline }
+externals  ::= { _automatic_semicolon _single_newline _block_newline }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
@@ -11,8 +11,9 @@ conflicts  ::= { }
 word       ::= identifier
 
 rules:
-  compilation_unit             ::= ('package' 1(package_identifier _semicolon))* $topLevelStatementSeq?
+  compilation_unit             ::= ($packageDef _semicolon)* $packageDef? $topLevelStatementSeq?
                                  | $blockStatementSeq?
+  packageDef                   :=  ('package' package_identifier)
   _literal                     ::= number
                                  | boolean_literal
                                  | character_literal
@@ -20,21 +21,21 @@ rules:
                                  | string_literal
                                  | interpolated_string
                                  | 'null'
-  topLevelStatementSeq         :=  (_top_level_statement (_semicolon _top_level_statement)* _semicolon?)
+  topLevelStatementSeq         :=  (_top_level_statement (_semicolon _top_level_statement)*)
   _top_level_statement         ::= 1(import_declaration
                                  | _template_definition
                                  | package_clause
                                  | package_object)
   _template_statement          ::= import_declaration
                                  | val_definition
-                                 | literal
+                                 | _expression
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
-  _template_trait_definition  ::= annotation* modifiers? 'trait' $traitDef
+  _template_trait_definition   ::= annotation* modifiers? 'trait' $traitDef
   classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
                                      (constructor_annotation*: constructor_annotations)
                                      (access_modifier?: access_modifier)
@@ -51,9 +52,9 @@ rules:
   trait_parent_classes         ::= _annotated_type ('with' _annotated_type)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  template_body                ::= _newline? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
-  self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
-  blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
+  template_body                ::= _block_newline? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
+  self_type                    ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
+  blockStatementSeq            :=  _block_statement (_semicolon _block_statement)*
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
                                  | literal
@@ -174,13 +175,14 @@ rules:
                                  | match_expression
                                  | try_expression
                                  | for_expression
+                                 | while_expression
+                                 | do_expression
                                  | call_expression
                                  | generic_function
                                  | assignment_expression
                                  | infix_expression
                                  | _simple_expression
-  _simple_expression           ::= interpolated_string
-                                 | parenthesized_expression
+  _simple_expression           ::= parenthesized_expression
                                  | field_expression
                                  | instance_expression
                                  | prefix_expression
@@ -188,14 +190,10 @@ rules:
                                  | case_block
                                  | block
                                  | identifier
-                                 | number
-                                 | boolean_literal
-                                 | character_literal
-                                 | symbol_literal
-                                 | string_literal
+                                 | literal
   if_expression                ::= >('if' (parenthesized_expression: condition) (_expression: consequence)
                                      ('else' (_expression: alternative))?)
-  match_expression             ::= (_expression: value) 'match' (case_block: body)
+  match_expression             ::= 1(_expression: value) 'match' (case_block: body)
   try_expression               ::= >('try' (_expression: body) catch_clause? finally_clause?)
   catch_clause                 ::= >('catch' case_block)
   finally_clause               ::= >('finally' _expression)
@@ -205,7 +203,10 @@ rules:
 
   enumerators                  ::= <(generator (_semicolon generator)*)
   generator                    ::= <(_pattern '<-' _expression (_semicolon? guard | _semicolon _pattern '=' _expression)*)
-  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _newline* 'yield'? _expression)
+  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _single_newline* 'yield'? _expression)
+
+  while_expression             ::= 2('while' '(' _expression ')' _block_newline? _expression)
+  do_expression                ::= ('do' _expression _semicolon? 'while' '(' _expression ')')
 
   assignment_expression        ::= >1((_expression: left) '=' (_expression: right))
   generic_function             ::= 4((_expression: function) (type_arguments: type_arguments))
