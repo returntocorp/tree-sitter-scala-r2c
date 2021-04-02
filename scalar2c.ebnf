@@ -31,11 +31,13 @@ rules:
   _template_definition         ::= _template_class_definition -> class_definition
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
+  _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
   classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
                                      (constructor_annotation*: constructor_annotations)
                                      (access_modifier?: access_modifier)
                                      (class_parameters*: class_parameters)
                                      $class_template_opt
+  objectDef                    :=  (identifier: name) $class_template_opt
   class_template_opt           :=  ('extends' _class_template | ('extends'? _template_body)?)
   constructor                  ::= _annotated_type arguments*
   _class_template              ::= early_definitions? _class_parents _template_body?
