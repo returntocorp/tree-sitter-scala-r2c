@@ -73,7 +73,9 @@ class Foo[T] @foo() private ()
 class Foo(x: Int, y: Int)(z: String)(w: Double)
 class Foo(x: Int)(implicit z: String)
 @foo private final sealed implicit case class Foo(x: Int)
-class Foo extends { val x = 1 } with Bar
+class Foo extends { val x = 1 } with Bar with Baz {
+  val x = 1
+}
 
 ------------------------------------
 (compilation_unit
@@ -109,5 +111,24 @@ class Foo extends { val x = 1 } with Bar
     (class_parameters (class_parameter (identifier) (type_identifier))))
   (class_definition (identifier)
     (early_definitions (early_definition (val_definition (identifier) (number))))
-    (constructor (type_identifier))))
+    (parent_classes (type_identifier) (type_identifier))
+    (template_body (val_definition (identifier) (number)))))
+
+====================================
+object definitions
+====================================
+object Foo
+object Foo extends { val x = 1 } with Bar with Baz {
+  val x = 1
+}
+@foo private object Foo
+------------------------------------
+(compilation_unit
+  (object_definition (identifier))
+  (object_definition (identifier)
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (parent_classes (type_identifier) (type_identifier))
+    (template_body
+      (val_definition (identifier) (number))))
+  (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier)))
 

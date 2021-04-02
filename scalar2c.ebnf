@@ -29,6 +29,7 @@ rules:
                                  | val_definition
                                  | literal
   _template_definition         ::= _template_class_definition -> class_definition
+                                 | _template_object_definition -> object_definition
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
@@ -38,13 +39,13 @@ rules:
                                      (class_parameters*: class_parameters)
                                      $class_template_opt
   objectDef                    :=  (identifier: name) $class_template_opt
-  class_template_opt           :=  ('extends' _class_template | ('extends'? _template_body)?)
-  constructor                  ::= _annotated_type arguments*
-  _class_template              ::= early_definitions? _class_parents _template_body?
-  _class_parents               ::= constructor: parent_class_name ('with' _annotated_type: inherited_trait_name)*
+  class_template_opt           :=  ('extends' _class_template | ('extends'? template_body)?)
+  _constructor                  ::= _annotated_type arguments*
+  _class_template              ::= early_definitions? parent_classes template_body?
+  parent_classes               ::= _constructor: base_class ('with' _annotated_type: inherited_trait_name)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  _template_body               ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
+  template_body               ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
   _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
     ; TypeParamClause? ConstrAnnotation* AccessModifier?
                              ;$ClassParamClauses ($ClassTemplateOpt)

@@ -585,48 +585,12 @@
           }
         ]
       },
-      "inherited_trait_name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "annotation",
-            "named": true
-          },
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
-            "named": true
-          }
-        ]
-      },
       "name": {
         "multiple": false,
         "required": true,
         "types": [
           {
             "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "parent_class_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "constructor",
             "named": true
           }
         ]
@@ -651,43 +615,7 @@
           "named": true
         },
         {
-          "type": "boolean_literal",
-          "named": true
-        },
-        {
-          "type": "character_literal",
-          "named": true
-        },
-        {
-          "type": "compound_type",
-          "named": true
-        },
-        {
           "type": "early_definitions",
-          "named": true
-        },
-        {
-          "type": "function_type",
-          "named": true
-        },
-        {
-          "type": "generic_type",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "import_declaration",
-          "named": true
-        },
-        {
-          "type": "infix_type",
-          "named": true
-        },
-        {
-          "type": "interpolated_string",
           "named": true
         },
         {
@@ -695,31 +623,11 @@
           "named": true
         },
         {
-          "type": "number",
+          "type": "parent_classes",
           "named": true
         },
         {
-          "type": "projected_type",
-          "named": true
-        },
-        {
-          "type": "stable_type_identifier",
-          "named": true
-        },
-        {
-          "type": "string_literal",
-          "named": true
-        },
-        {
-          "type": "symbol_literal",
-          "named": true
-        },
-        {
-          "type": "type_identifier",
-          "named": true
-        },
-        {
-          "type": "val_definition",
+          "type": "template_body",
           "named": true
         }
       ]
@@ -847,6 +755,10 @@
           "named": true
         },
         {
+          "type": "object_definition",
+          "named": true
+        },
+        {
           "type": "package_clause",
           "named": true
         },
@@ -929,41 +841,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "constructor",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "annotation",
-          "named": true
-        },
-        {
-          "type": "arguments",
-          "named": true
-        },
-        {
-          "type": "generic_type",
-          "named": true
-        },
-        {
-          "type": "projected_type",
-          "named": true
-        },
-        {
-          "type": "stable_type_identifier",
-          "named": true
-        },
-        {
-          "type": "type_identifier",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -2172,7 +2049,19 @@
           "named": true
         },
         {
+          "type": "early_definitions",
+          "named": true
+        },
+        {
           "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "parent_classes",
+          "named": true
+        },
+        {
+          "type": "template_body",
           "named": true
         }
       ]
@@ -2196,6 +2085,10 @@
           },
           {
             "type": "import_declaration",
+            "named": true
+          },
+          {
+            "type": "object_definition",
             "named": true
           },
           {
@@ -2417,6 +2310,68 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "parent_classes",
+    "named": true,
+    "fields": {
+      "base_class": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "arguments",
+            "named": true
+          },
+          {
+            "type": "generic_type",
+            "named": true
+          },
+          {
+            "type": "projected_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "inherited_trait_name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "generic_type",
+            "named": true
+          },
+          {
+            "type": "projected_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
