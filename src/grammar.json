@@ -923,7 +923,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_self_type"
+              "name": "self_type"
             },
             {
               "type": "BLANK"
@@ -956,7 +956,7 @@
         }
       ]
     },
-    "_self_type": {
+    "self_type": {
       "type": "CHOICE",
       "members": [
         {

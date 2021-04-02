@@ -51,8 +51,8 @@ rules:
   trait_parent_classes         ::= _annotated_type ('with' _annotated_type)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  template_body                ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
-  _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
+  template_body                ::= '\n'? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
+  self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition

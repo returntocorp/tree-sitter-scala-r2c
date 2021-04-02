@@ -280,24 +280,24 @@ module.exports = grammar({
     early_definition: $ => prec(1, $.val_definition),
     /*
      * scalar2c.ebnf:54
-     * template_body                ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
+     * template_body                ::= '\n'? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
      */
     template_body: $ => seq(
                           optional('\n'),
                           '{',
-                          optional($._self_type),
+                          optional($.self_type),
                           $._template_statement,
                           repeat(seq($._semicolon, $._template_statement)),
                           '}'
                         ),
     /*
      * scalar2c.ebnf:55
-     * _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
+     * self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
      */
-    _self_type: $ => choice(
-                       seq($.identifier, optional(seq(':', $._type)), '=>'),
-                       seq('this', ':', $._type, '=>')
-                     ),
+    self_type: $ => choice(
+                      seq($.identifier, optional(seq(':', $._type)), '=>'),
+                      seq('this', ':', $._type, '=>')
+                    ),
     /*
      * scalar2c.ebnf:57-66
      * _block_statement             ::= import_declaration
