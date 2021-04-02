@@ -9,7 +9,7 @@ externals  ::= {
                  _block_newlines
                  }
 
-extras     ::= { _whitespace comment }
+extras     ::= { [ \r\t] _whitespace comment }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 

@@ -5247,6 +5247,10 @@
   },
   "extras": [
     {
+      "type": "PATTERN",
+      "value": "[ \\r\\t]"
+    },
+    {
       "type": "SYMBOL",
       "name": "_whitespace"
     },

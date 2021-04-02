@@ -89,9 +89,9 @@ module.exports = grammar({
   externals: $ => [$._whitespace, $._newline, $.comment, $._automatic_semicolon, $._block_newlines],
   /*
    * scalar2c.ebnf:12
-   * extras     ::= { _whitespace comment }
+   * extras     ::= { [ \r\t] _whitespace comment }
    */
-  extras: $ => [$._whitespace, $.comment],
+  extras: $ => [/[ \r\t]/, $._whitespace, $.comment],
   /*
    * scalar2c.ebnf:14
    * inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
