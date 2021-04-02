@@ -199,3 +199,21 @@ println("loop forever")
       (comment)
       (call_expression (identifier) (arguments (string_literal))))
       (val_definition (identifier) (number)))))
+
+====================================
+Annotated val
+====================================
+class Foo {
+  @foo
+  @bar
+  val x = 1
+}
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body
+    (val_definition
+      (annotation (type_identifier))
+      (annotation (type_identifier))
+      (identifier)
+      (number)))))
+
