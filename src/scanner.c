@@ -66,11 +66,18 @@ static keyword* invalid_begin_strings[] = {
   &RIGHT_CURLY
 };
 
-void *tree_sitter_scalar2c_external_scanner_create() { return NULL; }
-void tree_sitter_scalar2c_external_scanner_destroy(void *p) {}
-void tree_sitter_scalar2c_external_scanner_reset(void *p) {}
-unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) { return 0; }
-void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
+void *tree_sitter_scalar2c_external_scanner_create() { return malloc(sizeof(unsigned)); }
+void tree_sitter_scalar2c_external_scanner_destroy(void *p) { free(p); }
+void tree_sitter_scalar2c_external_scanner_reset(void *p) { *((unsigned *)p) = 0; }
+unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) {
+  *((unsigned *) buffer) = *((unsigned*)p);
+  return sizeof(unsigned);
+}
+void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {
+  if (p && b && n >= sizeof(unsigned)) {
+    *((unsigned *) p) = *((unsigned *)b);
+  }
+}
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
