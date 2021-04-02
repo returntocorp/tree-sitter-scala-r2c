@@ -59,8 +59,41 @@ Class definitions
 ====================================
 class Foo
 class Foo[T]
+class Foo[T] @bar()
+class Foo[T] private
+class Foo[T] protected
+class Foo[T] @bar() private
+class Foo[T]()
+class Foo[T] @foo(x = 1) ()
+class Foo[T] private ()
+class Foo[T] @foo() private ()
+class Foo(x: Int, y: Int)(z: String)(w: Double)
+class Foo(x: Int)(implicit z: String)
 ------------------------------------
 (compilation_unit
   (class_definition (identifier))
-  (class_definition (identifier) (type_parameters (identifier))))
+  (class_definition (identifier) (type_parameters (identifier)))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (type_identifier) (arguments)))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (type_identifier) (arguments)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier)) (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (type_identifier) (arguments
+      (assignment_expression (identifier) (number))))
+    (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier) (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (type_identifier) (arguments)) (access_modifier) (class_parameters))
+  (class_definition (identifier)
+    (class_parameters
+      (class_parameter (identifier) (type_identifier))
+      (class_parameter (identifier) (type_identifier)))
+    (class_parameters (class_parameter (identifier) (type_identifier)))
+    (class_parameters (class_parameter (identifier) (type_identifier))))
+  (class_definition (identifier)
+    (class_parameters (class_parameter (identifier) (type_identifier)))
+    (class_parameters (class_parameter (identifier) (type_identifier)))))
 

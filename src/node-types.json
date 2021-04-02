@@ -535,6 +535,16 @@
     "type": "class_definition",
     "named": true,
     "fields": {
+      "access_modifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "access_modifier",
+            "named": true
+          }
+        ]
+      },
       "body": {
         "multiple": false,
         "required": false,
@@ -551,6 +561,16 @@
         "types": [
           {
             "type": "class_parameters",
+            "named": true
+          }
+        ]
+      },
+      "constructor_annotations": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "constructor_annotation",
             "named": true
           }
         ]
@@ -787,6 +807,44 @@
             "type": "annotation",
             "named": true
           },
+          {
+            "type": "generic_type",
+            "named": true
+          },
+          {
+            "type": "projected_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "constructor_annotation",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "arguments",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
           {
             "type": "generic_type",
             "named": true

@@ -34,6 +34,9 @@ rules:
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
+                                   (constructor_annotation*: constructor_annotations)
+                                   (access_modifier?: access_modifier)
+                                   (class_parameters*: class_parameters)
     ; TypeParamClause? ConstrAnnotation* AccessModifier?
                              ;$ClassParamClauses ($ClassTemplateOpt)
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
@@ -87,6 +90,7 @@ rules:
   context_bound                ::= ':' (_type: type)
   template_body                ::= '{' _block? '}'
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
+  constructor_annotation     ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= annotation* ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
                                      'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
 
