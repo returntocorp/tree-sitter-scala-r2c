@@ -115,13 +115,14 @@ class Foo extends { val x = 1 } with Bar with Baz {
     (template_body (val_definition (identifier) (number)))))
 
 ====================================
-object definitions
+Object definitions
 ====================================
 object Foo
 object Foo extends { val x = 1 } with Bar with Baz {
   val x = 1
 }
 @foo private object Foo
+case object Foo
 ------------------------------------
 (compilation_unit
   (object_definition (identifier))
@@ -130,5 +131,32 @@ object Foo extends { val x = 1 } with Bar with Baz {
     (parent_classes (type_identifier) (type_identifier))
     (template_body
       (val_definition (identifier) (number))))
-  (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier)))
+  (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
+  (object_definition (identifier)))
+
+====================================
+Trait definitions
+====================================
+trait Foo
+trait Foo[R]
+trait Foo[R, T]
+trait Foo[R, T] extends { val x = 1} with Bar with Baz {
+  val x = 1
+}
+@foo private trait Foo
+@foo private[this] trait Foo
+private[foo] trait Foo
+------------------------------------
+(compilation_unit
+  (trait_definition (identifier))
+  (trait_definition (identifier) (type_parameters (identifier)))
+  (trait_definition (identifier) (type_parameters (identifier) (identifier)))
+  (trait_definition (identifier) (type_parameters (identifier) (identifier))
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (trait_parent_classes (type_identifier) (type_identifier))
+    (template_body
+      (val_definition (identifier) (number))))
+  (trait_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
+  (trait_definition (annotation (type_identifier)) (modifiers (access_modifier (access_qualifier))) (identifier))
+  (trait_definition (modifiers (access_modifier (access_qualifier (identifier)))) (identifier)))
 

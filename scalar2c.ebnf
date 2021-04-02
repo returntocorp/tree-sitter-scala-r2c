@@ -30,22 +30,28 @@ rules:
                                  | literal
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
+                                 | _template_trait_definition -> trait_definition
   _block_class_definition      ::= annotation* local_modifier* $classDef
   _template_class_definition   ::= annotation* modifiers? 'case'? 'class' $classDef
   _template_object_definition  ::= annotation* modifiers? 'case'? 'object' $objectDef
+  _template_trait_definition  ::= annotation* modifiers? 'trait' $traitDef
   classDef                     :=  (identifier: name) (type_parameters?: type_parameters)
                                      (constructor_annotation*: constructor_annotations)
                                      (access_modifier?: access_modifier)
                                      (class_parameters*: class_parameters)
-                                     $class_template_opt
-  objectDef                    :=  (identifier: name) $class_template_opt
-  class_template_opt           :=  ('extends' _class_template | ('extends'? template_body)?)
-  _constructor                  ::= _annotated_type arguments*
+                                     $classTemplateOpt
+  objectDef                    :=  (identifier: name) $classTemplateOpt
+  traitDef                     :=  (identifier: name) (type_parameters?: type_parameters) $traitTemplateOpt
+  classTemplateOpt             :=  ('extends' _class_template | ('extends'? template_body)?)
+  traitTemplateOpt             :=  ('extends' _trait_template | ('extends'? template_body)?)
+  _constructor                 ::= _annotated_type arguments*
   _class_template              ::= early_definitions? parent_classes template_body?
+  _trait_template              ::= early_definitions? trait_parent_classes template_body?
   parent_classes               ::= _constructor: base_class ('with' _annotated_type: inherited_trait_name)*
+  trait_parent_classes         ::= _annotated_type ('with' _annotated_type)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  template_body               ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
+  template_body                ::= '\n'? '{' _self_type? _template_statement (_semicolon _template_statement)* '}'
   _self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
     ; TypeParamClause? ConstrAnnotation* AccessModifier?
                              ;$ClassParamClauses ($ClassTemplateOpt)

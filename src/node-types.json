@@ -779,6 +779,10 @@
           "named": true
         },
         {
+          "type": "trait_definition",
+          "named": true
+        },
+        {
           "type": "val_definition",
           "named": true
         }
@@ -2098,6 +2102,10 @@
           {
             "type": "package_object",
             "named": true
+          },
+          {
+            "type": "trait_definition",
+            "named": true
           }
         ]
       },
@@ -2678,6 +2686,63 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "early_definitions",
+          "named": true
+        },
+        {
+          "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "template_body",
+          "named": true
+        },
+        {
+          "type": "trait_parent_classes",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "trait_parent_classes",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "generic_type",
+          "named": true
+        },
+        {
+          "type": "projected_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
