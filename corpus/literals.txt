@@ -221,7 +221,7 @@ baz"""
   (interpolated_string (identifier) (identifier) (identifier)))
 
 ====================
-Interpolated strings2
+Erroneous Interpolated strings
 ====================
 a "" // this should be an error because of the space
 bar""

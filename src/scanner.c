@@ -96,7 +96,6 @@ static bool slurp_comment(TSLexer *lexer) {
       do {
         lexer->advance(lexer, true);
       } while (lexer->lookahead && lexer->lookahead != '\n');
-      lexer->advance(lexer, true);
       return true;
     } else if (lexer->lookahead == '*') {
       int depth = 1;
