@@ -906,8 +906,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "\n"
+              "type": "SYMBOL",
+              "name": "_newline"
             },
             {
               "type": "BLANK"
@@ -4352,8 +4352,8 @@
           {
             "type": "REPEAT",
             "content": {
-              "type": "STRING",
-              "value": "\n"
+              "type": "SYMBOL",
+              "name": "_newline"
             }
           },
           {
@@ -5134,6 +5134,10 @@
     {
       "type": "SYMBOL",
       "name": "_automatic_semicolon"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_newline"
     }
   ],
   "inline": [

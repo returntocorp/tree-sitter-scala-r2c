@@ -2,7 +2,7 @@ extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= { _automatic_semicolon }
+externals  ::= { _automatic_semicolon _newline }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
@@ -51,7 +51,7 @@ rules:
   trait_parent_classes         ::= _annotated_type ('with' _annotated_type)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  template_body                ::= '\n'? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
+  template_body                ::= _newline? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
   self_type                   ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
   blockStatementSeq            :=  (_block_statement (_semicolon _block_statement)* _semicolon)
   _block_statement             ::= import_declaration
@@ -205,7 +205,7 @@ rules:
 
   enumerators                  ::= <(generator (_semicolon generator)*)
   generator                    ::= <(_pattern '<-' _expression (_semicolon? guard | _semicolon _pattern '=' _expression)*)
-  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') '\n'* 'yield'? _expression)
+  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _newline* 'yield'? _expression)
 
   assignment_expression        ::= >1((_expression: left) '=' (_expression: right))
   generic_function             ::= 4((_expression: function) (type_arguments: type_arguments))

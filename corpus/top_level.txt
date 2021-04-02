@@ -166,8 +166,6 @@ Self type definitions
 class Foo { self: Bar => val x = self }
 trait Foo extends Bar { self => val x = self }
 object Foo extends Bar { this: Bar => val x = this }
-class Foo
-  { self: Bar => val x = self }
 ------------------------------------
 (compilation_unit
   (class_definition (identifier) (template_body
@@ -176,7 +174,15 @@ class Foo
     (template_body
       (self_type (identifier)) (val_definition (identifier) (identifier))))
   (object_definition (identifier) (parent_classes (type_identifier)) (template_body
-    (self_type (type_identifier)) (val_definition (identifier) (identifier))))
-  (class_definition (identifier) (template_body
-    (self_type (identifier) (type_identifier)) (val_definition (identifier) (identifier)))))
+    (self_type (type_identifier)) (val_definition (identifier) (identifier)))))
 
+====================================
+Class definition with newline
+====================================
+class Foo
+  { 7 }
+class Foo
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body (number)))
+  (class_definition (identifier)))

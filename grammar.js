@@ -82,9 +82,9 @@ module.exports = grammar({
   supertypes: $ => [$._expression, $._definition, $._pattern],
   /*
    * scalar2c.ebnf:5
-   * externals  ::= { _automatic_semicolon }
+   * externals  ::= { _automatic_semicolon _newline }
    */
-  externals: $ => [$._automatic_semicolon],
+  externals: $ => [$._automatic_semicolon, $._newline],
   /*
    * scalar2c.ebnf:7
    * inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
@@ -280,10 +280,10 @@ module.exports = grammar({
     early_definition: $ => prec(1, $.val_definition),
     /*
      * scalar2c.ebnf:54
-     * template_body                ::= '\n'? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
+     * template_body                ::= _newline? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
      */
     template_body: $ => seq(
-                          optional('\n'),
+                          optional($._newline),
                           '{',
                           optional($.self_type),
                           $._template_statement,
@@ -1044,7 +1044,7 @@ module.exports = grammar({
                     ),
     /*
      * scalar2c.ebnf:208
-     * for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') '\n'* 'yield'? _expression)
+     * for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _newline* 'yield'? _expression)
      */
     for_expression: $ => prec.left(
                            3,
@@ -1054,7 +1054,7 @@ module.exports = grammar({
                                seq('(', $.enumerators, ')'),
                                seq('{', $.enumerators, optional($._semicolon), '}')
                              ),
-                             repeat('\n'),
+                             repeat($._newline),
                              optional('yield'),
                              $._expression
                            )
