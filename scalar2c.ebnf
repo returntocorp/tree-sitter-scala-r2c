@@ -33,9 +33,17 @@ rules:
                                  | _template_definition
                                  | package_clause
                                  | package_object)
+  ;TemplateStat         ::= 1(Import
+                         ;| (Annotation nl?)* Modifier* Def
+                         ;| (Annotation nl?)* Modifier* Dcl
+                         ;| Expr
+                         ;| empty)
   _template_statement          ::= import_declaration
                                  | val_definition
                                  | _expression
+                                 | _template_class_definition -> class_definition
+                                 | _template_object_definition -> object_definition
+                                 | _template_trait_definition -> trait_definition
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition

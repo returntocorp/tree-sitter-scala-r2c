@@ -135,40 +135,53 @@ static bool slurp_comment(TSLexer *lexer) {
 
 bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
-  unsigned newline_count = 0;
+  unsigned *newline_count = ((unsigned *) payload);
   lexer->mark_end(lexer);
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
   char init_char = lexer->lookahead;
   if (explicit_newlines && lexer->lookahead == '\n') {
-    if (valid_symbols[NEWLINE] && !valid_symbols[BLOCK_NEWLINES]) {
-      lexer->advance(lexer, true);
-      lexer->mark_end(lexer);
-      lexer->result_symbol = NEWLINE;
-      return true;
-    } else if (valid_symbols[BLOCK_NEWLINES]) {
-      slurp_whitespace(lexer, &newline_count);
+    if (valid_symbols[BLOCK_NEWLINES]) {
+      slurp_whitespace(lexer, newline_count);
       if (lexer->lookahead == '{' || lexer->lookahead == '(') {
         lexer->mark_end(lexer);
         lexer->result_symbol = BLOCK_NEWLINES;
+        *newline_count = 0;
+        return true;
+      } else {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = WHITESPACE;
         return true;
       }
+    } else {
+      lexer->advance(lexer, true);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = NEWLINE;
+      *newline_count = 0;
+      return true;
     }
-  } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : &newline_count)) {
+  } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : newline_count)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = WHITESPACE;
-    if (newline_count == 0 || !lexer->lookahead || !valid_symbols[AUTOMATIC_SEMICOLON]) return true;
+    if (*newline_count == 0 || !lexer->lookahead || !valid_symbols[AUTOMATIC_SEMICOLON]) {
+      if (!valid_symbols[AUTOMATIC_SEMICOLON]) *newline_count = 0;
+      *newline_count = 0;
+      return true;
+    }
   } else if (valid_symbols[COMMENT] && slurp_comment(lexer)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = COMMENT;
     return true;
   }
 
-  if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0 && lexer->lookahead) {
+  if (valid_symbols[AUTOMATIC_SEMICOLON] && *newline_count > 0 && lexer->lookahead) {
     lexer->mark_end(lexer);
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
 
-    if (newline_count > 1) return true;
+    if (*newline_count > 1) {
+      return true;
+    }
+    *newline_count = 0;
 
     int active_count = sizeof(invalid_begin_strings) / sizeof(keyword*);
     int active_automata[active_count];
@@ -214,5 +227,6 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
     return true;
   }
 
+  *newline_count = 0;
   return false;
 }

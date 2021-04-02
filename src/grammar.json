@@ -196,6 +196,33 @@
         {
           "type": "SYMBOL",
           "name": "_expression"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_template_class_definition"
+          },
+          "named": true,
+          "value": "class_definition"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_template_object_definition"
+          },
+          "named": true,
+          "value": "object_definition"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_template_trait_definition"
+          },
+          "named": true,
+          "value": "trait_definition"
         }
       ]
     },

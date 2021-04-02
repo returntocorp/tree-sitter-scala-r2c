@@ -123,6 +123,19 @@ object Foo extends { val x = 1 } with Bar with Baz {
 }
 @foo private object Foo
 case object Foo
+// test that comments
+// can precede the template body
+{
+  val x = 1
+}
+case object Foo
+// comment
+val x = 1 // error because val def can't be top level here but the object def should be ok
+object Foo {
+  object Bar
+  // make sure that val definition below is separate from object def above
+  val x = 1
+}
 ------------------------------------
 (compilation_unit
   (object_definition (identifier))
@@ -132,7 +145,12 @@ case object Foo
     (template_body
       (val_definition (identifier) (number))))
   (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
-  (object_definition (identifier)))
+  (object_definition (identifier) (comment) (comment) (template_body (val_definition (identifier) (number))))
+  (object_definition (identifier)) (comment) (ERROR (identifier)) (comment)
+  (object_definition (identifier) (template_body
+    (object_definition (identifier))
+    (comment)
+    (val_definition (identifier) (number)))))
 
 ====================================
 Trait definitions

@@ -2714,11 +2714,23 @@
           "named": true
         },
         {
+          "type": "class_definition",
+          "named": true
+        },
+        {
           "type": "import_declaration",
           "named": true
         },
         {
+          "type": "object_definition",
+          "named": true
+        },
+        {
           "type": "self_type",
+          "named": true
+        },
+        {
+          "type": "trait_definition",
           "named": true
         },
         {
