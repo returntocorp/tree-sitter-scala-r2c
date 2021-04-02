@@ -1947,25 +1947,8 @@
       "content": {
         "type": "REPEAT1",
         "content": {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "annotation"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_newline"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "annotation"
         }
       }
     },

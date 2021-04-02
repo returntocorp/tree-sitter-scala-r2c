@@ -517,9 +517,9 @@ module.exports = grammar({
     context_bound: $ => seq(':', field('type', $._type)),
     /*
      * scalar2c.ebnf:114
-     * _annotations                 ::= 2((annotation _newline?)+)
+     * _annotations                 ::= 2((annotation )+)
      */
-    _annotations: $ => prec(2, repeat1(seq($.annotation, optional($._newline)))),
+    _annotations: $ => prec(2, repeat1($.annotation)),
     /*
      * scalar2c.ebnf:115
      * annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))

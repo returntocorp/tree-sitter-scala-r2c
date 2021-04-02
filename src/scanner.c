@@ -132,20 +132,20 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   lexer->mark_end(lexer);
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
+  char init_char = lexer->lookahead;
   if (explicit_newlines && lexer->lookahead == '\n') {
-    if (valid_symbols[NEWLINE]) {
+    if (valid_symbols[NEWLINE] && !valid_symbols[BLOCK_NEWLINES]) {
       lexer->advance(lexer, true);
       lexer->mark_end(lexer);
       lexer->result_symbol = NEWLINE;
       return true;
-    }
-    do {
-      lexer->advance(lexer, true);
-    } while (iswspace(lexer->lookahead));
-    if (lexer->lookahead == '{' || lexer->lookahead == '(') {
-      lexer->mark_end(lexer);
-      lexer->result_symbol = BLOCK_NEWLINES;
-      return true;
+    } else if (valid_symbols[BLOCK_NEWLINES]) {
+      slurp_whitespace(lexer, &newline_count);
+      if (lexer->lookahead == '{' || lexer->lookahead == '(') {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = BLOCK_NEWLINES;
+        return true;
+      }
     }
   } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : &newline_count)) {
     lexer->mark_end(lexer);

@@ -111,7 +111,7 @@ rules:
   view_bound                   ::= '<%' (_type: type)
   context_bound                ::= ':' (_type: type)
   ; template_body                ::= '{' _block? '}'
-  _annotations                 ::= 2((annotation _newline?)+)
+  _annotations                 ::= 2((annotation )+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= 1(_annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
