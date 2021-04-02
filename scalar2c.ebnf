@@ -1,8 +1,15 @@
-extras     ::= { /\s/ comment }
 
 supertypes ::= { _expression _definition _pattern }
 
-externals  ::= { _automatic_semicolon _single_newline _block_newline _at_most_one_newline }
+externals  ::= {
+                 _whitespace
+                 _newline
+                 comment
+                 _automatic_semicolon
+                 _block_newlines
+                 }
+
+extras     ::= { _whitespace comment }
 
 inline     ::= { _pattern _semicolon _definition _type_identifier _param_type }
 
@@ -52,7 +59,7 @@ rules:
   trait_parent_classes         ::= _annotated_type ('with' _annotated_type)*
   early_definitions            ::= ('{' (early_definition (_semicolon early_definition)*)? '}' 'with')
   early_definition             ::= 1(val_definition)
-  template_body                ::= _block_newline? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
+  template_body                ::= _block_newlines? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
   self_type                    ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
   blockStatementSeq            :=  _block_statement (_semicolon _block_statement)*
   _block_statement             ::= import_declaration
@@ -104,7 +111,7 @@ rules:
   view_bound                   ::= '<%' (_type: type)
   context_bound                ::= ':' (_type: type)
   ; template_body                ::= '{' _block? '}'
-  _annotations                 ::= 2((annotation _at_most_one_newline _single_newline?)+)
+  _annotations                 ::= 2((annotation _newline?)+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
   _local_val_definition        ::= 1(_annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
@@ -204,9 +211,9 @@ rules:
 
   enumerators                  ::= <(generator (_semicolon generator)*)
   generator                    ::= <(_pattern '<-' _expression (_semicolon? guard | _semicolon _pattern '=' _expression)*)
-  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _single_newline* 'yield'? _expression)
+  for_expression               ::= 3<('for' ('(' enumerators ')' | '{' enumerators _semicolon?  '}') _newline* 'yield'? _expression)
 
-  while_expression             ::= 2('while' '(' _expression ')' _block_newline? _expression)
+  while_expression             ::= 2('while' '(' _expression ')' _newline* _expression)
   do_expression                ::= ('do' _expression _semicolon? 'while' '(' _expression ')')
 
   assignment_expression        ::= >1((_expression: left) '=' (_expression: right))
@@ -267,5 +274,3 @@ rules:
   escapeSeq                    :=  ($unicodeEscape|$charEscapeSeq)
   string_literal               ::= _simple_string | _raw_string
   _semicolon                   ::= ';' | _automatic_semicolon
-  ;comment ::= '/*' (/[^*]*\*+([^/*][^*]*\*+)*/ | comment)* '/'
-  comment                      ::= @(('//' /.*/) | '/*' /[^*]*\*+([^/*][^*]*\*+)*/ '/')

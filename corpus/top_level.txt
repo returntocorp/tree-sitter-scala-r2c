@@ -201,28 +201,20 @@ println("loop forever")
       (val_definition (identifier) (number)))))
 
 ====================================
+Class definition with newline2
+====================================
+class Foo
+  { 7 }
+------------------------------------
+
+====================================
 Annotated val
 ====================================
 class Foo {
-  @foo // should be an error because only one newline is allowed
-
+  @foo
+  // cool
   @bar
   val x = 1
-  @foo
-  @bar
-  val y = 1
-  @foo @bar val w = 1
-  @foo @bar @baz val z = 1
-  @foo private val zw = 1
+  val x = 2
 }
 ------------------------------------
-(compilation_unit
-  (class_definition (identifier) (template_body
-    (ERROR (annotation (type_identifier))) (comment)
-    (val_definition (annotation (type_identifier)) (identifier) (number))
-    (val_definition
-      (annotation (type_identifier))
-      (annotation (type_identifier))
-      (identifier)
-      (number)))))
-

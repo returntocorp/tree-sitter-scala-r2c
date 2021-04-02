@@ -2,12 +2,13 @@
 #include <wctype.h>
 #include <stdio.h>
 
-enum TokenType {
+typedef enum TokenType {
+  WHITESPACE,
+  NEWLINE,
+  COMMENT,
   AUTOMATIC_SEMICOLON,
-  SINGLE_NEWLINE,
-  BLOCK_NEWLINE,
-  AT_MOST_ONE_NEWLINE,
-};
+  BLOCK_NEWLINES,
+} TokenType;
 
 typedef struct keyword {
   int len;
@@ -73,38 +74,66 @@ void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, u
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
+static bool slurp_whitespace(TSLexer *lexer, unsigned *newline_count) {
+  bool result = false;
+  while (lexer->lookahead && iswspace(lexer->lookahead)) {
+    if (lexer->lookahead == '\n') {
+      if (!newline_count) {
+        return result;
+      }
+      *newline_count = *newline_count + 1;
+    }
+    lexer->advance(lexer, true);
+    result = true;
+  }
+  return result;
+}
+
+static bool slurp_comment(TSLexer *lexer) {
+  if (lexer->lookahead == '/') {
+    lexer->advance(lexer, true);
+    if (lexer->lookahead == '/') {
+      do {
+        lexer->advance(lexer, true);
+      } while (lexer->lookahead && lexer->lookahead != '\n');
+      lexer->advance(lexer, true);
+      return true;
+    }
+  }
+  return false;
+}
+
 bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
   unsigned newline_count = 0;
   lexer->mark_end(lexer);
-  while (iswspace(lexer->lookahead)) {
-    if (lexer->lookahead == '\n') newline_count++;
-    lexer->advance(lexer, true);
-    if (newline_count == 1) {
-      if (valid_symbols[AT_MOST_ONE_NEWLINE]) {
-        lexer->result_symbol = AT_MOST_ONE_NEWLINE;
-        while (iswspace(lexer->lookahead)) {
-          if (lexer->lookahead == '\n') return false;
-          lexer->advance(lexer, true);
-        }
-        return true;
-      } else if (valid_symbols[SINGLE_NEWLINE]) {
-        lexer->mark_end(lexer);
-        lexer->result_symbol = SINGLE_NEWLINE;
-        return true;
-      }
+  TokenType token;
+  bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
+  if (explicit_newlines && lexer->lookahead == '\n') {
+    if (valid_symbols[NEWLINE]) {
+      lexer->advance(lexer, true);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = NEWLINE;
+      return true;
     }
-  }
-  if (valid_symbols[AT_MOST_ONE_NEWLINE]) {
-    lexer->result_symbol = AT_MOST_ONE_NEWLINE;
-    return newline_count <= 1;
-  }
-
-  if (valid_symbols[BLOCK_NEWLINE] && newline_count == 1 &&
-    (lexer->lookahead == '{' || lexer->lookahead == '(')) {
-    lexer->result_symbol = BLOCK_NEWLINE;
+    do {
+      lexer->advance(lexer, true);
+    } while (lexer->lookahead == '\n');
+    if (lexer->lookahead == '{' || lexer->lookahead == '(') {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = BLOCK_NEWLINES;
+      return true;
+    }
+  } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : &newline_count)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = WHITESPACE;
+    if (newline_count == 0 || !valid_symbols[AUTOMATIC_SEMICOLON]) return true;
+  } else if (valid_symbols[COMMENT] && slurp_comment(lexer)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = COMMENT;
     return true;
   }
+
   if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0 && lexer->lookahead) {
     lexer->mark_end(lexer);
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
@@ -131,7 +160,10 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
               lexer->advance(lexer, false);
               next_char = lexer->lookahead;
             }
-            if (iswspace(next_char) || !next_char) return false; // a word that cannot start a statement was found
+            if (iswspace(next_char) || !next_char) {
+              lexer->result_symbol = WHITESPACE;
+              return true; // a word that cannot start a statement was found
+            }
             else if (chars_read == 1 && current_char == '.') {
               // could be a floating point literal
               lexer->advance(lexer, false);
