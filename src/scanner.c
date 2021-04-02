@@ -109,6 +109,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   lexer->mark_end(lexer);
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
+  printf("WTF %d %d %d\n", valid_symbols[NEWLINE], valid_symbols[BLOCK_NEWLINES], lexer->lookahead);
   if (explicit_newlines && lexer->lookahead == '\n') {
     if (valid_symbols[NEWLINE]) {
       lexer->advance(lexer, true);
@@ -118,7 +119,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
     }
     do {
       lexer->advance(lexer, true);
-    } while (lexer->lookahead == '\n');
+    } while (iswspace(lexer->lookahead));
     if (lexer->lookahead == '{' || lexer->lookahead == '(') {
       lexer->mark_end(lexer);
       lexer->result_symbol = BLOCK_NEWLINES;
@@ -127,7 +128,7 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : &newline_count)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = WHITESPACE;
-    if (newline_count == 0 || !valid_symbols[AUTOMATIC_SEMICOLON]) return true;
+    if (newline_count == 0 || !lexer->lookahead || !valid_symbols[AUTOMATIC_SEMICOLON]) return true;
   } else if (valid_symbols[COMMENT] && slurp_comment(lexer)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = COMMENT;

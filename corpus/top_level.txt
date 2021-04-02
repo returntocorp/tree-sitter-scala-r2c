@@ -180,7 +180,7 @@ object Foo extends Bar { this: Bar => val x = this }
 Class definition with newline
 ====================================
 class Foo
-  { 7 }
+  { 7 } // TODO make empty template work
 
 class Foo {
   while (true)
@@ -193,7 +193,7 @@ println("loop forever")
 }
 ------------------------------------
 (compilation_unit
-  (class_definition (identifier) (template_body (number)))
+  (class_definition (identifier) (template_body (number))) (comment)
   (class_definition (identifier) (template_body
     (while_expression (boolean_literal)
       (comment)
@@ -201,20 +201,31 @@ println("loop forever")
       (val_definition (identifier) (number)))))
 
 ====================================
-Class definition with newline2
-====================================
-class Foo
-  { 7 }
-------------------------------------
-
-====================================
 Annotated val
 ====================================
 class Foo {
-  @foo
-  // cool
+  @foo // this should be an error
+
   @bar
   val x = 1
-  val x = 2
+  @foo
+  // this is not an error because a comment only line is ok
+  @bar
+  val y = 2
+  @foo val z = 3
 }
 ------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body
+    (val_definition
+      (annotation (type_identifier)) (comment)
+      (annotation (type_identifier))
+      (identifier)
+      (number))
+    (val_definition
+      (annotation (type_identifier))
+      (comment) (annotation (type_identifier))
+      (identifier)
+      (number))
+    (val_definition (annotation (type_identifier)) (identifier) (number)))))
+
