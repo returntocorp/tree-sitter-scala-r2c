@@ -2718,6 +2718,14 @@
           "named": true
         },
         {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        },
+        {
           "type": "import_declaration",
           "named": true
         },
@@ -2734,7 +2742,27 @@
           "named": true
         },
         {
+          "type": "type_declaration",
+          "named": true
+        },
+        {
+          "type": "type_definition",
+          "named": true
+        },
+        {
+          "type": "val_declaration",
+          "named": true
+        },
+        {
           "type": "val_definition",
+          "named": true
+        },
+        {
+          "type": "var_declaration",
+          "named": true
+        },
+        {
+          "type": "var_definition",
           "named": true
         }
       ]
@@ -2929,6 +2957,120 @@
         },
         {
           "type": "infix_type",
+          "named": true
+        },
+        {
+          "type": "projected_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_declaration",
+    "named": true,
+    "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "compound_type",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "generic_type",
+          "named": true
+        },
+        {
+          "type": "infix_type",
+          "named": true
+        },
+        {
+          "type": "modifiers",
           "named": true
         },
         {

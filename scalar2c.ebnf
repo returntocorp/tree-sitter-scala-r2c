@@ -34,22 +34,28 @@ rules:
                                  | _template_definition
                                  | package_clause
                                  | package_object)
-  ;TemplateStat         ::= 1(Import
+  ;TemplateStat         ::= Import
                          ;| (Annotation nl?)* Modifier* Def
                          ;| (Annotation nl?)* Modifier* Dcl
                          ;| Expr
-                         ;| empty)
+                         ;| empty
   _template_statement          ::= import_declaration
                                  | val_definition
-                                 | _expression
+                                 | var_definition
+                                 | function_definition
+                                 | type_definition
                                  | _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
+                                 | val_declaration
+                                 | var_declaration
+                                 | function_declaration
+                                 | type_declaration
+                                 | _expression
                                  | _empty
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
-  _block_class_definition      ::= _annotations? local_modifier* $classDef
   _template_class_definition   ::= _annotations? modifiers? 'case'? 'class' $classDef
   _template_object_definition  ::= _annotations? modifiers? 'case'? 'object' $objectDef
   _template_trait_definition   ::= _annotations? modifiers? 'trait' $traitDef
@@ -77,6 +83,7 @@ rules:
                                  | _local_var_definition -> var_definition
                                  | _local_function_definition -> function_definition
                                  | _local_type_definition -> type_definition
+                                 | _template_definition
                                  | _expression
   ;BlockStat            ::= Import
                          ;| Annotation* 'implicit'? 'lazy'? Def
@@ -122,8 +129,8 @@ rules:
   _variant_type_parameter      ::= _annotations? (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
   covariant_type_parameter     ::= '+' _type_parameter
   contravariant_type_parameter ::= '-' _type_parameter
-  _type_parameter              ::= ((wildcard | identifier): name) (type_parameters?: type_parameters)
-                                     (upper_bound?: bound) (lower_bound?: bound) (view_bound*?: bound) (context_bound*?: bound)
+  _type_parameter              ::= 1>(((wildcard | identifier): name) (type_parameters?: type_parameters)
+                                     (upper_bound?: bound) (lower_bound?: bound) (view_bound*?: bound) (context_bound*?: bound))
   upper_bound                  ::= '<:' (_type: type)
   lower_bound                  ::= '>:' (_type: type)
   view_bound                   ::= '<%' (_type: type)
@@ -132,6 +139,7 @@ rules:
   _annotations                 ::= 2((annotation )+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
+
   localDefPrefix               :=  _annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
   patternVarDefinition         :=  (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
   functionDef                  :=  'def' (identifier: name) (type_parameters?: type_parameters)
@@ -139,7 +147,8 @@ rules:
                                      (('=' (_expression: body)) | (block: body))
   typeDef                      :=  'type' _newline* (_type_identifier: name)
                                      (type_parameters?: type_parameters) '=' (_type: type)
-
+  typeDcl                      :=  'type' _newline* (_type_parameter: name)
+                                     (type_parameters?: type_parameters) ('>:' type)? ('<:' type)?
 
   _local_val_definition        ::= 1($localDefPrefix 'val' $patternVarDefinition)
   _local_var_definition        ::= 1($localDefPrefix 'var' $patternVarDefinition)
@@ -151,6 +160,7 @@ rules:
   var_declaration              ::= _annotations? modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
   var_definition               ::= _annotations? modifiers? 'var' $patternVarDefinition
   type_definition              ::= _annotations? modifiers? $typeDef
+  type_declaration             ::= _annotations? modifiers? $typeDcl
   function_definition          ::= _annotations? modifiers? $functionDef
   function_declaration         ::= _annotations? modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
                                      (parameters*: parameters) (':' (_type: return_type))?
