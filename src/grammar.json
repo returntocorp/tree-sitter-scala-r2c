@@ -2887,17 +2887,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ">:"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_type"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "lower_bound"
             },
             {
               "type": "BLANK"
@@ -2908,17 +2899,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "<:"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_type"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "upper_bound"
             },
             {
               "type": "BLANK"

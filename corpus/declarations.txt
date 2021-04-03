@@ -1,0 +1,112 @@
+================================
+Val declarations
+================================
+object foo {
+  val x: Int
+}
+--------------------------------
+(compilation_unit
+  (object_definition (identifier) (template_body
+    (val_declaration (identifier) (type_identifier)))))
+
+================================
+Var declarations
+================================
+object foo {
+  var x: Int
+  var x, y, z: String
+}
+--------------------------------
+(compilation_unit
+  (object_definition (identifier) (template_body
+    (var_declaration (identifier) (type_identifier))
+    (var_declaration (identifier) (identifier) (identifier) (type_identifier)))))
+
+================================
+Type declarations
+================================
+object foo {
+  type X
+  type X >: A
+  type X <: B
+  type X >: A <: B
+  type X[A, B]
+  type
+
+    // check that arbitrary newlines after type keyword and identifer are allowed
+
+      X
+}
+--------------------------------
+(compilation_unit
+  (object_definition (identifier) (template_body
+    (type_declaration (identifier))
+    (type_declaration (identifier) (lower_bound (type_identifier)))
+    (type_declaration (identifier) (upper_bound (type_identifier)))
+    (type_declaration (identifier) (lower_bound (type_identifier)) (upper_bound (type_identifier)))
+    (type_declaration (identifier) (type_parameters (identifier) (identifier)))
+    (type_declaration (comment) (identifier)))))
+
+================================
+Function declarations
+================================
+object foo {
+  def foo
+  def foo()
+  def foo: Unit
+  def foo(): Unit
+  def foo(x: A): B
+  def foo[T](x: T): T
+  def foo[T <: R](x: T): T
+  def foo[T <: R, A >: B](x: T): T
+  def foo[T <: R, A >: B : Foo](x: T): T
+  def foo[A <% B](implicit a: A): Z
+  def foo(a: A, b: B)(c: C)(d: D, e: E)(implicit f: F, g: G): Z
+}
+--------------------------------
+(compilation_unit
+  (object_definition (identifier) (template_body
+    (function_declaration (identifier))
+    (function_declaration (identifier) (parameters))
+    (function_declaration (identifier) (type_identifier))
+    (function_declaration (identifier) (parameters) (type_identifier))
+    (function_declaration
+      (identifier)
+      (parameters (parameter (identifier) (type_identifier)))
+      (type_identifier))
+    (function_declaration
+      (identifier)
+      (type_parameters (identifier))
+      (parameters (parameter (identifier) (type_identifier)))
+      (type_identifier))
+    (function_declaration (identifier)
+      (type_parameters (identifier) (upper_bound (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier)))
+      (type_identifier))
+    (function_declaration (identifier)
+      (type_parameters (identifier)
+        (upper_bound (type_identifier)) (identifier)
+        (lower_bound (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier))) (type_identifier))
+    (function_declaration (identifier)
+      (type_parameters (identifier)
+        (upper_bound (type_identifier)) (identifier)
+        (lower_bound (type_identifier))
+        (context_bound (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier)))
+      (type_identifier))
+    (function_declaration (identifier)
+      (type_parameters (identifier) (view_bound (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier)))
+      (type_identifier))
+    (function_declaration (identifier)
+      (parameters
+        (parameter (identifier) (type_identifier))
+        (parameter (identifier) (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier)))
+      (parameters (parameter (identifier) (type_identifier))
+      (parameter (identifier) (type_identifier)))
+      (parameters
+        (parameter (identifier) (type_identifier))
+        (parameter (identifier) (type_identifier)))
+      (type_identifier)))))

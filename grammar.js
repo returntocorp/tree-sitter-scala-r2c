@@ -64,7 +64,7 @@
  * traitDef                 := (identifier: name) (type_parameters?: type_parameters) $traitTemplateOpt
  *     ((identifier: name) (type_parameters?: type_parameters) ('extends' _trait_template | ('extends'? template_body)?))
  * traitTemplateOpt         := ('extends' _trait_template | ('extends'? template_body)?)
- * typeDcl                  := 'type' _newline* (_type_parameter: name) (type_parameters?: type_parameters) ('>:' type)? ('<:' type)?
+ * typeDcl                  := 'type' _newline* (_type_parameter: name) (type_parameters?: type_parameters) lower_bound? upper_bound?
 
  * typeDef                  := 'type' _newline* (_type_identifier: name) (type_parameters?: type_parameters) '=' (_type: type)
 
@@ -726,8 +726,8 @@ module.exports = grammar({
                              repeat($._newline),
                              field('name', $._type_parameter),
                              field('type_parameters', optional($.type_parameters)),
-                             optional(seq('>:', $._type)),
-                             optional(seq('<:', $._type))
+                             optional($.lower_bound),
+                             optional($.upper_bound)
                            ),
     /*
      * scalar2c.ebnf:164
