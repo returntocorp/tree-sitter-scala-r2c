@@ -30,7 +30,7 @@ rules:
                                  | interpolated_string
                                  | 'null'
   topLevelStatementSeq         :=  (_top_level_statement (_semicolon _top_level_statement)*)
-  _top_level_statement         ::= 1(import_declaration
+  _top_level_statement         ::= 1(import
                                  | _template_definition
                                  | package_clause
                                  | package_object)
@@ -39,7 +39,7 @@ rules:
                          ;| (Annotation nl?)* Modifier* Dcl
                          ;| Expr
                          ;| empty
-  _template_statement          ::= import_declaration
+  _template_statement          ::= import
                                  | val_definition
                                  | var_definition
                                  | function_definition
@@ -78,13 +78,17 @@ rules:
   template_body                ::= _block_newlines? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
   self_type                    ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
   blockStatementSeq            :=  _block_statement (_semicolon _block_statement)* _semicolon?
-  _block_statement             ::= import_declaration
+  _block_statement             ::= import
                                  | _local_val_definition -> val_definition
                                  | _local_var_definition -> var_definition
                                  | _local_function_definition -> function_definition
                                  | _local_type_definition -> type_definition
                                  | _template_definition
                                  | _expression
+  import                       ::= 'import' _import_expr (',' _import_expr)*
+  _import_expr                   ::= stable_identifier '.' (identifier | '_' -> wildcard | import_selectors)
+  import_selectors              ::= '{' (_import_selector ',')* (_import_selector | '_' -> wildcard) '}'
+  _import_selector               ::= identifier ('=>' identifier | '=>' '_' -> wildcard)?
   ;BlockStat            ::= Import
                          ;| Annotation* 'implicit'? 'lazy'? Def
                          ;| Annotation* LocalModifier* TmplDef
@@ -102,7 +106,7 @@ rules:
   _definition                  ::= package_clause
                                  | package_object
                                  | class_definition
-                                 | import_declaration
+                                 | import
                                  | object_definition
                                  | trait_definition
                                  | val_definition
@@ -114,9 +118,6 @@ rules:
                                  | function_declaration
   package_clause               ::= 'package' (package_identifier: name) '{' ($topLevelStatementSeq?: body) '}'
   package_object               ::= 'package' 'object' _object_definition
-  import_declaration           ::= 'import' (_import_expression (',' _import_expression)*)
-  _import_expression           ::= ((stable_identifier | identifier): path) ('.' (wildcard | import_selectors))?
-  import_selectors             ::= '{' ((identifier | renamed_identifier) (',' (identifier | renamed_identifier))*) '}'
   renamed_identifier           ::= (identifier: name) '=>' ((identifier | wildcard): alias)
   object_definition            ::= _annotations? modifiers? 'case'? 'object' _object_definition
   _object_definition           ::= (identifier: name) (extends_clause?: extend) (template_body?: body)
@@ -207,7 +208,7 @@ rules:
   ;_type                        ::= <(_infix_type '=>' _type
                                  ;| _infix_type _existential_clause?)
 
-  _type ::= 2(function_arg_types '=>' _type | _infix_type)
+  _type                        ::= 2(function_arg_types '=>' _type | _infix_type)
 
   ;FunctionArgTypes  ::= InfixType
                       ;| '(' (ParamType (',' ParamType )*)? ')'
@@ -234,8 +235,8 @@ rules:
   _infix_type                  ::= <(_compound_type (identifier _newline? _compound_type)*)
   ;CompoundType      ::=  AnnotType ('with' AnnotType)* Refinement?
                       ;|  Refinement
-  _compound_type      ::=  <(_annotated_type ('with' _annotated_type)* _refinement?
-                      |  _refinement)
+  _compound_type               ::= <(_annotated_type ('with' _annotated_type)* _refinement?
+                                 | _refinement)
   _refinement                  ::= _block_newlines? '{' _refinement_statement (_semicolon _refinement_statement)* '}'
   ;Dcl               ::=  ‘val’ ValDcl
                       ;|  ‘var’ VarDcl
@@ -253,8 +254,8 @@ rules:
   singleton_type               ::= _path '.' 'type'
   type_projection              ::= _simple_type '#' identifier
   tuple_types                  ::= '(' $types ')'
-  types                       := _type (',' _type)*
-  stableTypeIdentifer := (_type_identifier | stable_identifier -> stable_type_identifier)
+  types                        :=  _type (',' _type)*
+  stableTypeIdentifer          :=  (_type_identifier | stable_identifier -> stable_type_identifier)
   _simple_type                 ::= $stableTypeIdentifer
                                  | singleton_type
                                  | type_projection

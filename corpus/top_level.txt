@@ -3,15 +3,16 @@ Top level imports
 ================================
 package foo
 
-import foo._
 import foo.bar
+import foo._
 import foo.{ x => _, _ }
 --------------------------------
 (compilation_unit
   (package_identifier (identifier))
-  (import_declaration (identifier) (wildcard))
-  (import_declaration (stable_identifier (identifier) (identifier)))
-  (import_declaration (identifier) (import_selectors (renamed_identifier (identifier) (wildcard)) (identifier))))
+  (import (stable_identifier (identifier)) (identifier))
+  (import (stable_identifier (identifier)) (wildcard))
+  (import (stable_identifier (identifier)) (import_selectors
+    (identifier) (wildcard) (wildcard))))
 
 ================================
 Empty

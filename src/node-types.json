@@ -16,7 +16,7 @@
         "named": true
       },
       {
-        "type": "import_declaration",
+        "type": "import",
         "named": true
       },
       {
@@ -1011,7 +1011,7 @@
           "named": true
         },
         {
-          "type": "import_declaration",
+          "type": "import",
           "named": true
         },
         {
@@ -3103,30 +3103,23 @@
     }
   },
   {
-    "type": "import_declaration",
+    "type": "import",
     "named": true,
-    "fields": {
-      "path": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "stable_identifier",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "import_selectors",
+          "named": true
+        },
+        {
+          "type": "stable_identifier",
           "named": true
         },
         {
@@ -3149,7 +3142,7 @@
           "named": true
         },
         {
-          "type": "renamed_identifier",
+          "type": "wildcard",
           "named": true
         }
       ]
@@ -3853,7 +3846,7 @@
             "named": true
           },
           {
-            "type": "import_declaration",
+            "type": "import",
             "named": true
           },
           {
@@ -4439,36 +4432,6 @@
     }
   },
   {
-    "type": "renamed_identifier",
-    "named": true,
-    "fields": {
-      "alias": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "wildcard",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "self_type",
     "named": true,
     "fields": {
@@ -4903,7 +4866,7 @@
           "named": true
         },
         {
-          "type": "import_declaration",
+          "type": "import",
           "named": true
         },
         {
@@ -8343,6 +8306,11 @@
     }
   },
   {
+    "type": "wildcard",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -8440,6 +8408,10 @@
   },
   {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "_",
     "named": false
   },
   {
@@ -8609,10 +8581,6 @@
   {
     "type": "while",
     "named": false
-  },
-  {
-    "type": "wildcard",
-    "named": true
   },
   {
     "type": "with",
