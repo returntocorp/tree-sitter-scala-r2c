@@ -146,7 +146,8 @@ object Foo {
       (val_definition (identifier) (number))))
   (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
   (object_definition (identifier) (comment) (comment) (template_body (val_definition (identifier) (number))))
-  (object_definition (identifier)) (comment) (ERROR (identifier)) (comment)
+  (object_definition (identifier)) (comment)
+	(ERROR (identifier)) (comment)
   (object_definition (identifier) (template_body
     (object_definition (identifier))
     (comment)

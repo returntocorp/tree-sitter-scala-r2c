@@ -264,4 +264,3 @@ bar""""""
 	(comment)
 	(interpolated_string) (ERROR (identifier)) (string_literal) (comment)
 	(interpolated_string))
-

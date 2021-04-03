@@ -19,6 +19,7 @@ class a {
   t(" d") {}
   a() {}
 
+
   a(" d") {}
 }
 -------------------------------------
@@ -27,5 +28,4 @@ class a {
 		(call_expression (identifier) (arguments) (block))
 		(call_expression (identifier) (arguments (string_literal)) (block))
 		(call_expression (identifier) (arguments) (block))
-		(identifier) (parenthesized_expression (string_literal)) (block))))
-
+		(call_expression (identifier) (arguments (string_literal)) (block)))))

@@ -193,6 +193,7 @@ bool tree_sitter_scala_external_scanner_scan(void *payload, TSLexer *lexer,
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
 
     if (*newline_count > 1) {
+      *newline_count = 0;
       return true;
     }
     *newline_count = 0;
