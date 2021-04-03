@@ -125,17 +125,6 @@ rules:
                                      (extends_clause?: extend) (template_body?: body)
   trait_definition             ::= 'trait' (identifier: name) (type_parameters?: type_parameters)
                                      (extends_clause?: extend) (template_body?: body)
-  type_parameters              ::= '[' (_variant_type_parameter (',' _variant_type_parameter)*) ']'
-  _variant_type_parameter      ::= _annotations? (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
-  covariant_type_parameter     ::= '+' _type_parameter
-  contravariant_type_parameter ::= '-' _type_parameter
-  _type_parameter              ::= 1>(((wildcard | identifier): name) (type_parameters?: type_parameters)
-                                     (upper_bound?: bound) (lower_bound?: bound) (view_bound*?: bound) (context_bound*?: bound))
-  upper_bound                  ::= '<:' (_type: type)
-  lower_bound                  ::= '>:' (_type: type)
-  view_bound                   ::= '<%' (_type: type)
-  context_bound                ::= ':' (_type: type)
-  ; template_body                ::= '{' _block? '}'
   _annotations                 ::= 2((annotation )+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
@@ -172,15 +161,8 @@ rules:
   access_modifier              ::= ('private' | 'protected') access_qualifier?
   access_qualifier             ::= '[' (identifier | 'this') ']'
   modifiers                    ::= (local_modifier | access_modifier | 'override')+
-  extends_clause               ::= 'extends' (_type: type) arguments?
-  class_parameters             ::= '(' 'implicit'? (class_parameter (',' class_parameter)*)? ')'
-  parameters                   ::= '(' 'implicit'? (parameter (',' parameter)*)? ')'
-  class_parameter              ::= annotation* ('val' | 'var')? (identifier: name) (':' (_type: type))?
-                                     ('=' (_expression: default_value))?
-  parameter                    ::= annotation* (identifier: name) (':' (_param_type: type))? ('=' (_expression: default_value))?
-  _block                       ::= <(((_expression | _definition) (_semicolon (_expression | _definition))*) _semicolon?)
-  block                        ::= '{' _block? '}'
 
+; ******************************* TYPE SECTION *************************************
 ; Type related patterns follow
   ;TypeArgs          ::=  '[' Types ']'
   ;Types             ::=  Type (',' Type)*
@@ -189,7 +171,6 @@ rules:
   ;Ascription        ::=  ':' InfixType
                       ;|  ':' Annotation Annotation*
                       ;|  ':' '_' '*'
-  ;TypeParamClause   ::=  '[' VariantTypeParam (',' VariantTypeParam)* ']'
   ;FunTypeParamClause::=  '[' TypeParam (',' TypeParam)* ']'
   ;VariantTypeParam  ::=  Annotation* ('+' | '-')? TypeParam
   ;TypeParam         ::=  (id | '_') TypeParamClause? ('>:' Type)? ('<:' Type)?
@@ -226,9 +207,7 @@ rules:
   ;_type                        ::= <(_infix_type '=>' _type
                                  ;| _infix_type _existential_clause?)
 
-  _type ::= 20(function_arg_types '=>' _type | _infix_type)
-
-
+  _type ::= 2(function_arg_types '=>' _type | _infix_type)
 
   ;FunctionArgTypes  ::= InfixType
                       ;| '(' (ParamType (',' ParamType )*)? ')'
@@ -283,6 +262,31 @@ rules:
   ;AnnotType         ::=  SimpleType Annotation*
   _annotated_type              ::= 1(_simple_type annotation*)
   ;_simple_type                 ::= generic_type | projected_type | stable_type_identifier | _type_identifier
+  ;TypeParamClause   ::=  '[' VariantTypeParam (',' VariantTypeParam)* ']'
+
+; ************************* BELOW THIS IS CODE I INTEND TO KILL UNTIL LEXICAL SECTION *************************
+  type_parameters              ::= '[' (_variant_type_parameter (',' _variant_type_parameter)*) ']'
+  _variant_type_parameter      ::= _annotations? (covariant_type_parameter | contravariant_type_parameter | _type_parameter)
+  covariant_type_parameter     ::= '+' _type_parameter
+  contravariant_type_parameter ::= '-' _type_parameter
+  _type_parameter              ::= 1>(((wildcard | identifier): name) (type_parameters?: type_parameters)
+                                     (upper_bound?: bound) (lower_bound?: bound) (view_bound*?: bound) (context_bound*?: bound))
+  upper_bound                  ::= '<:' (_type: type)
+  lower_bound                  ::= '>:' (_type: type)
+  view_bound                   ::= '<%' (_type: type)
+  context_bound                ::= ':' (_type: type)
+  ; template_body                ::= '{' _block? '}'
+  extends_clause               ::= 'extends' (_type: type) arguments?
+  class_parameters             ::= '(' 'implicit'? (class_parameter (',' class_parameter)*)? ')'
+  parameters                   ::= '(' 'implicit'? (parameter (',' parameter)*)? ')'
+  class_parameter              ::= annotation* ('val' | 'var')? (identifier: name) (':' (_type: type))?
+                                     ('=' (_expression: default_value))?
+  parameter                    ::= annotation* (identifier: name) (':' (_param_type: type))? ('=' (_expression: default_value))?
+  _block                       ::= <(((_expression | _definition) (_semicolon (_expression | _definition))*) _semicolon?)
+  block                        ::= '{' _block? '}'
+
+
+
   compound_type                ::= 3((_annotated_type: base) ('with' (_annotated_type: extra))+)
   infix_type                   ::= <2(((compound_type | infix_type | _annotated_type): left)
                                      ((identifier): operator)
@@ -358,6 +362,9 @@ rules:
   tuple_expression             ::= '(' _expression (',' _expression)+ ')'
   parenthesized_expression     ::= '(' _expression ')'
   arguments                    ::= '(' (_expression (',' _expression)*)? ')'
+
+
+; *************** LEXICAL SECTION ************************************
   charEscapeSeq                :=  \\[btnfr"'\\]
   hexDigit                     :=  [0-9a-fA-F]
   unicodeEscape                :=  \\u+$hexDigit$hexDigit$hexDigit$hexDigit
