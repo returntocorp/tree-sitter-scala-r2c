@@ -20,7 +20,7 @@ word       ::= identifier
 
 rules:
   compilation_unit             ::= ($packageDef _semicolon)* $packageDef? $topLevelStatementSeq?
-                                 | $blockStatementSeq?
+                                 | $blockStatementSeq
   packageDef                   :=  ('package' package_identifier)
   _literal                     ::= number
                                  | boolean_literal
@@ -71,9 +71,12 @@ rules:
   early_definition             ::= 1(val_definition)
   template_body                ::= _block_newlines? '{' self_type? _template_statement (_semicolon _template_statement)* '}'
   self_type                    ::= (identifier (':' type)? '=>' | 'this' ':' type '=>')
-  blockStatementSeq            :=  _block_statement (_semicolon _block_statement)*
+  blockStatementSeq            :=  _block_statement (_semicolon _block_statement)* _semicolon?
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
+                                 | _local_var_definition -> var_definition
+                                 | _local_function_definition -> function_definition
+                                 | _local_type_definition -> type_definition
                                  | _expression
   ;BlockStat            ::= Import
                          ;| Annotation* 'implicit'? 'lazy'? Def

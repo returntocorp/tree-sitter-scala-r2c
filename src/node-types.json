@@ -751,6 +751,10 @@
           "named": true
         },
         {
+          "type": "function_definition",
+          "named": true
+        },
+        {
           "type": "import_declaration",
           "named": true
         },
@@ -775,7 +779,15 @@
           "named": true
         },
         {
+          "type": "type_definition",
+          "named": true
+        },
+        {
           "type": "val_definition",
+          "named": true
+        },
+        {
+          "type": "var_definition",
           "named": true
         }
       ]
@@ -1376,6 +1388,14 @@
       "types": [
         {
           "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
           "named": true
         },
         {
@@ -2998,6 +3018,14 @@
           "named": true
         },
         {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         }
@@ -3463,6 +3491,14 @@
       "types": [
         {
           "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
           "named": true
         },
         {
