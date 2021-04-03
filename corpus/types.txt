@@ -7,13 +7,15 @@ type x = foo.bar.Baz.type
 type x = foo.bar.Baz#Buzz
 ----------------------------
 (compilation_unit
-  (type_definition (type_identifier) (stable_type_identifier (identifier)))
-  (type_definition (type_identifier) (stable_type_identifier (identifier) (identifier) (identifier)))
-  (type_definition (type_identifier) (singleton_type (identifier) (identifier) (identifier)))
+  (type_definition (type_identifier) (type (stable_type_identifier (identifier))))
+  (type_definition (type_identifier) (type
+    (stable_type_identifier (identifier) (identifier) (identifier))))
+  (type_definition (type_identifier) (type
+    (singleton_type (identifier) (identifier) (identifier))))
   (type_definition (type_identifier)
-    (type_projection
+    (type (type_projection
       (stable_type_identifier (identifier) (identifier) (identifier))
-      (identifier))))
+      (identifier)))))
 
 ============================
 Function Types
@@ -62,4 +64,4 @@ type X[A] = List[A]
 (compilation_unit
   (type_definition
     (type_identifier) (type_parameters (identifier))
-    (stable_type_identifier (identifier)) (type_parameters (identifier))))
+    (type (stable_type_identifier (identifier)) (type_parameters (identifier)))))

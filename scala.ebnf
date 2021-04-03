@@ -137,7 +137,7 @@ rules:
                                      (parameters*: parameters) (':' (_type: return_type))?
                                      (('=' (_expression: body)) | (block: body))
   typeDef                      :=  (_type_identifier: name)
-                                     (type_parameters?: type_parameters) '=' (_type: type)
+                                     (type_parameters?: type_parameters) '=' (_type: type) -> type
   functionDcl                  :=  (identifier: name) (type_parameters?: type_parameters)
                                      (parameters*: parameters) (':' (_type: return_type))?
 

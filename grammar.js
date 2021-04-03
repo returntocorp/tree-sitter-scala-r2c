@@ -69,7 +69,7 @@
  * traitTemplateOpt         := ('extends' _trait_template | ('extends'? template_body)?)
  * typeDcl                  := (_type_parameter: name) (type_parameters?: type_parameters) lower_bound? upper_bound?
 
- * typeDef                  := (_type_identifier: name) (type_parameters?: type_parameters) '=' (_type: type)
+ * typeDef                  := (_type_identifier: name) (type_parameters?: type_parameters) '=' (_type: type) -> type
 
  * types                    := _type (',' _type)*
  * unicodeEscape            := \\u+$hexDigit$hexDigit$hexDigit$hexDigit
@@ -597,7 +597,7 @@ module.exports = grammar({
                                      field('name', $._type_identifier),
                                      field('type_parameters', optional($.type_parameters)),
                                      '=',
-                                     field('type', $._type)
+                                     alias(field('type', $._type), $.type)
                                    )
                                  ),
     /*
@@ -662,7 +662,7 @@ module.exports = grammar({
                             field('name', $._type_identifier),
                             field('type_parameters', optional($.type_parameters)),
                             '=',
-                            field('type', $._type)
+                            alias(field('type', $._type), $.type)
                           ),
     /*
      * scala.ebnf:159
@@ -907,7 +907,7 @@ module.exports = grammar({
                                     field('name', $._type_identifier),
                                     field('type_parameters', optional($.type_parameters)),
                                     '=',
-                                    field('type', $._type)
+                                    alias(field('type', $._type), $.type)
                                   ),
                                   $._empty
                                 ),

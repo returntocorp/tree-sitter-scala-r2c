@@ -2184,12 +2184,17 @@
             "value": "="
           },
           {
-            "type": "FIELD",
-            "name": "type",
+            "type": "ALIAS",
             "content": {
-              "type": "SYMBOL",
-              "name": "_type"
-            }
+              "type": "FIELD",
+              "name": "type",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_type"
+              }
+            },
+            "named": true,
+            "value": "type"
           }
         ]
       }
@@ -2573,12 +2578,17 @@
           "value": "="
         },
         {
-          "type": "FIELD",
-          "name": "type",
+          "type": "ALIAS",
           "content": {
-            "type": "SYMBOL",
-            "name": "_type"
-          }
+            "type": "FIELD",
+            "name": "type",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_type"
+            }
+          },
+          "named": true,
+          "value": "type"
         }
       ]
     },
@@ -3862,12 +3872,17 @@
               "value": "="
             },
             {
-              "type": "FIELD",
-              "name": "type",
+              "type": "ALIAS",
               "content": {
-                "type": "SYMBOL",
-                "name": "_type"
-              }
+                "type": "FIELD",
+                "name": "type",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_type"
+                }
+              },
+              "named": true,
+              "value": "type"
             }
           ]
         },

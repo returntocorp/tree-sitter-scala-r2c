@@ -11,6 +11,6 @@ type
 // Bar[(B, A)] TODO fix tuple types
 ---------------------------
 (compilation_unit
-  (type_definition (type_identifier) (stable_type_identifier (identifier)))
-  (type_definition (comment) (type_identifier) (stable_type_identifier (identifier)))
+  (type_definition (type_identifier) (type (stable_type_identifier (identifier))))
+  (type_definition (comment) (type_identifier) (type (stable_type_identifier (identifier))))
   (comment))
