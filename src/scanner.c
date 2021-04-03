@@ -160,7 +160,12 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
       *newline_count = 0;
       return true;
     }
-  } else if (valid_symbols[WHITESPACE] && slurp_whitespace(lexer, explicit_newlines ? NULL : newline_count)) {
+  } else if (valid_symbols[WHITESPACE] &&
+      // By passing in NULL to slurp_whitespace if a newline or block_newline
+      // rule is valid, we will only slurp up the whitespace that precedes the
+      // newline, but not the newline itself. This allows us to only need to handle
+      // the explicit newline case in the condition above this one.
+      slurp_whitespace(lexer, explicit_newlines ? NULL : newline_count)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = WHITESPACE;
     if (*newline_count == 0 || !lexer->lookahead || !valid_symbols[AUTOMATIC_SEMICOLON]) {
