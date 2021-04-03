@@ -231,6 +231,6 @@ bar""""""
 (compilation_unit
   (ERROR (identifier)) (string_literal) (comment)
   (interpolated_string)
-  (ERROR (identifier)) (string_literal) (comment)
+  (identifier) (ERROR) (comment)
   (interpolated_string))
 

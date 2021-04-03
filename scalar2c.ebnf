@@ -74,7 +74,12 @@ rules:
   blockStatementSeq            :=  _block_statement (_semicolon _block_statement)*
   _block_statement             ::= import_declaration
                                  | _local_val_definition -> val_definition
-                                 | literal
+                                 | _expression
+  ;BlockStat            ::= Import
+                         ;| Annotation* 'implicit'? 'lazy'? Def
+                         ;| Annotation* LocalModifier* TmplDef
+                         ;| Expr1
+                         ;| empty
   ;PatVarDef            ::= 'val' PatDef
                          ;| 'var' VarDef
   ;Def                  ::= 1(PatVarDef
@@ -124,18 +129,26 @@ rules:
   _annotations                 ::= 2((annotation )+)
   annotation                   ::= >('@' (_simple_type: name) (arguments*: arguments))
   constructor_annotation       ::= '@' (_simple_type: name) (arguments: arguments)
-  _local_val_definition        ::= 1(_annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
-                                     'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value))
-
-  val_definition               ::= _annotations? modifiers? 'val' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
-  val_declaration              ::= _annotations? modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
-  var_declaration              ::= _annotations? modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
-  var_definition               ::= _annotations? modifiers? 'var' (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
-  type_definition              ::= _annotations? modifiers? 'type' (_type_identifier: name)
-                                     (type_parameters?: type_parameters) '=' (_type: type)
-  function_definition          ::= _annotations? modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
+  localDefPrefix               :=  _annotations? ('implicit' -> implicit_modifier)? ('lazy' -> lazy_modifier)?
+  patternVarDefinition         :=  (_pattern: pattern) (':' (_type: type))? '=' (_expression: value)
+  functionDef                  :=  'def' (identifier: name) (type_parameters?: type_parameters)
                                      (parameters*: parameters) (':' (_type: return_type))?
                                      (('=' (_expression: body)) | (block: body))
+  typeDef                      :=  'type' _newline* (_type_identifier: name)
+                                     (type_parameters?: type_parameters) '=' (_type: type)
+
+
+  _local_val_definition        ::= 1($localDefPrefix 'val' $patternVarDefinition)
+  _local_var_definition        ::= 1($localDefPrefix 'var' $patternVarDefinition)
+  _local_function_definition   ::= 1($localDefPrefix $functionDef)
+  _local_type_definition       ::= 1($localDefPrefix $typeDef)
+
+  val_definition               ::= _annotations? modifiers? 'val' $patternVarDefinition
+  val_declaration              ::= _annotations? modifiers? 'val' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
+  var_declaration              ::= _annotations? modifiers? 'var' ((identifier: name) (',' (identifier: name))*) ':' (_type: type)
+  var_definition               ::= _annotations? modifiers? 'var' $patternVarDefinition
+  type_definition              ::= _annotations? modifiers? $typeDef
+  function_definition          ::= _annotations? modifiers? $functionDef
   function_declaration         ::= _annotations? modifiers? 'def' (identifier: name) (type_parameters?: type_parameters)
                                      (parameters*: parameters) (':' (_type: return_type))?
   local_modifier               ::= 2('abstract' | 'final' | 'sealed' | 'implicit' | 'lazy')
