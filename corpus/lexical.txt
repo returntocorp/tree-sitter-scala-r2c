@@ -1,0 +1,12 @@
+=====================================
+Newline after val definition
+=====================================
+object A {
+	val foo = 1
+
+}
+-------------------------------------
+(compilation_unit
+	(object_definition (identifier) (template_body
+		(val_definition (identifier) (number)))))
+

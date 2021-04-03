@@ -140,9 +140,14 @@ bool tree_sitter_scala_external_scanner_scan(void *payload, TSLexer *lexer,
   lexer->mark_end(lexer);
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
-  char init_char = lexer->lookahead;
-  if (valid_symbols[EMPTY] && lexer->lookahead == '}') {
+  bool allow_empty = valid_symbols[EMPTY];
+  if (*newline_count == -1) {
+    *newline_count = 0;
+    allow_empty = false;
+  }
+  if (allow_empty && lexer->lookahead == '}') {
     lexer->result_symbol = EMPTY;
+    *newline_count = -1;
     return true;
   } else if (explicit_newlines && lexer->lookahead == '\n') {
     if (valid_symbols[BLOCK_NEWLINES]) {
