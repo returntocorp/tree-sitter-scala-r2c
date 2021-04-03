@@ -184,6 +184,36 @@ null
 (compilation_unit)
 
 ====================
+String
+====================
+""
+"abc"
+" abc"
+"   abc   "
+""""""
+""" abc """
+"""
+
+
+abc"""
+// many " are allowed at the end of a raw sring
+"""
+abc
+""""""""""
+--------------------
+(compilation_unit
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (comment)
+  (string_literal))
+
+
+====================
 Interpolated strings
 ====================
 foo""
