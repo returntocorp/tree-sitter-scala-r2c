@@ -8,6 +8,7 @@ typedef enum TokenType {
   COMMENT,
   AUTOMATIC_SEMICOLON,
   BLOCK_NEWLINES,
+  EMPTY,
 } TokenType;
 
 typedef struct keyword {
@@ -140,7 +141,10 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
   TokenType token;
   bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
   char init_char = lexer->lookahead;
-  if (explicit_newlines && lexer->lookahead == '\n') {
+  if (valid_symbols[EMPTY] && lexer->lookahead == '}') {
+    lexer->result_symbol = EMPTY;
+    return true;
+  } else if (explicit_newlines && lexer->lookahead == '\n') {
     if (valid_symbols[BLOCK_NEWLINES]) {
       slurp_whitespace(lexer, newline_count);
       if (lexer->lookahead == '{' || lexer->lookahead == '(') {

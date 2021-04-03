@@ -223,6 +223,10 @@
           },
           "named": true,
           "value": "trait_definition"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_empty"
         }
       ]
     },
@@ -5291,6 +5295,10 @@
     {
       "type": "SYMBOL",
       "name": "_block_newlines"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_empty"
     }
   ],
   "inline": [

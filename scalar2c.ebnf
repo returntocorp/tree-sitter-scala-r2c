@@ -7,6 +7,7 @@ externals  ::= {
                  comment
                  _automatic_semicolon
                  _block_newlines
+                 _empty
                  }
 
 extras     ::= { [ \r\t] _whitespace comment }
@@ -44,6 +45,7 @@ rules:
                                  | _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
+                                 | _empty
   _template_definition         ::= _template_class_definition -> class_definition
                                  | _template_object_definition -> object_definition
                                  | _template_trait_definition -> trait_definition
