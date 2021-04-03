@@ -1343,13 +1343,17 @@ module.exports = grammar({
     _raw_string: $ => /"""("?"?[^"])*"*"""/,
     /*
      * scala.ebnf:307
-     * _simple_string               ::= '"' /[^"\n]|$escapeSeq/* '"' | '""'
+     * _simple_string               ::= !('"' /[^"\n]|$escapeSeq/* '"') | '""'
      */
     _simple_string: $ => choice(
-                           seq(
-                             '"',
-                             repeat(/[^"\n]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\])/),
-                             '"'
+                           token.immediate(
+                             seq(
+                               '"',
+                               repeat(
+                                 /[^"\n]|(\\u+[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|\\[btnfr"'\\])/
+                               ),
+                               '"'
+                             )
                            ),
                            '""'
                          ),

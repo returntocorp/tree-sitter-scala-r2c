@@ -304,7 +304,7 @@ rules:
                                  | _interpolation_string_prefix '""' ('"'? '"'? $charMinusQuoteDollar | _escape)* '"'? '"""'
   _escape                      ::= "$$" | "$" identifier | "$" block
   _raw_string                  ::= /"""("?"?[^"])*"*"""/
-  _simple_string               ::= '"' /[^"\n]|$escapeSeq/* '"' | '""'
+  _simple_string               ::= !('"' /[^"\n]|$escapeSeq/* '"') | '""'
   unicodeEscape                :=  \\u+$hexDigit$hexDigit$hexDigit$hexDigit
   charEscapeSeq                :=  \\[btnfr"'\\]
   escapeSeq                    :=  ($unicodeEscape|$charEscapeSeq)

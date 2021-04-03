@@ -259,8 +259,9 @@ foo """""" // this should be an error because of the space
 bar""""""
 --------------------
 (compilation_unit
-  (ERROR (identifier)) (string_literal) (comment)
-  (interpolated_string)
-  (identifier) (ERROR) (comment)
-  (interpolated_string))
+	(ERROR (identifier))
+	(string_literal)
+	(comment)
+	(interpolated_string) (ERROR (identifier)) (string_literal) (comment)
+	(interpolated_string))
 
