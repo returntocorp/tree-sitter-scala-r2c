@@ -3111,10 +3111,6 @@
       "required": true,
       "types": [
         {
-          "type": "identifier",
-          "named": true
-        },
-        {
           "type": "import_selectors",
           "named": true
         },

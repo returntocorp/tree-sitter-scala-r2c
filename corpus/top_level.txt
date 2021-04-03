@@ -6,13 +6,16 @@ package foo
 import foo.bar
 import foo._
 import foo.{ x => _, _ }
+import foo.bar.baz.buzz.{ x => _, _ }
 --------------------------------
 (compilation_unit
   (package_identifier (identifier))
-  (import (stable_identifier (identifier)) (identifier))
+  (import (stable_identifier (identifier) (identifier)))
   (import (stable_identifier (identifier)) (wildcard))
   (import (stable_identifier (identifier)) (import_selectors
-    (identifier) (wildcard) (wildcard))))
+    (identifier) (wildcard) (wildcard)))
+  (import (stable_identifier (identifier) (identifier) (identifier) (identifier))
+    (import_selectors (identifier) (wildcard) (wildcard))))
 
 ================================
 Empty
@@ -38,7 +41,7 @@ package bar {
 (compilation_unit
   (package_identifier (identifier))
   (package_clause (package_identifier (identifier))
-    (import_declaration (stable_identifier (identifier) (identifier)))))
+    (import (stable_identifier (identifier) (identifier)))))
 
 ================================
 Package object

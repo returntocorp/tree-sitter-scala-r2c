@@ -1049,36 +1049,84 @@
         }
       ]
     },
-    "_import_expr": {
+    "_import_stable_identifier": {
       "type": "SEQ",
       "members": [
         {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "STRING",
+                "value": "."
+              }
+            ]
+          }
+        },
+        {
           "type": "SYMBOL",
-          "name": "stable_identifier"
+          "name": "identifier"
+        }
+      ]
+    },
+    "_import_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_import_stable_identifier"
+          },
+          "named": true,
+          "value": "stable_identifier"
         },
         {
-          "type": "STRING",
-          "value": "."
-        },
-        {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            },
             {
               "type": "ALIAS",
               "content": {
-                "type": "STRING",
-                "value": "_"
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "identifier"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "."
+                    }
+                  ]
+                }
               },
               "named": true,
-              "value": "wildcard"
+              "value": "stable_identifier"
             },
             {
-              "type": "SYMBOL",
-              "name": "import_selectors"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "_"
+                  },
+                  "named": true,
+                  "value": "wildcard"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "import_selectors"
+                }
+              ]
             }
           ]
         }
