@@ -67,14 +67,14 @@ static keyword* invalid_begin_strings[] = {
   &RIGHT_CURLY
 };
 
-void *tree_sitter_scalar2c_external_scanner_create() { return malloc(sizeof(unsigned)); }
-void tree_sitter_scalar2c_external_scanner_destroy(void *p) { free(p); }
-void tree_sitter_scalar2c_external_scanner_reset(void *p) { *((unsigned *)p) = 0; }
-unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) {
+void *tree_sitter_scala_external_scanner_create() { return malloc(sizeof(unsigned)); }
+void tree_sitter_scala_external_scanner_destroy(void *p) { free(p); }
+void tree_sitter_scala_external_scanner_reset(void *p) { *((unsigned *)p) = 0; }
+unsigned tree_sitter_scala_external_scanner_serialize(void *p, char *buffer) {
   *((unsigned *) buffer) = *((unsigned*)p);
   return sizeof(unsigned);
 }
-void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {
+void tree_sitter_scala_external_scanner_deserialize(void *p, const char *b, unsigned n) {
   if (p && b && n >= sizeof(unsigned)) {
     *((unsigned *) p) = *((unsigned *)b);
   }
@@ -134,7 +134,7 @@ static bool slurp_comment(TSLexer *lexer) {
   return false;
 }
 
-bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
+bool tree_sitter_scala_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
   unsigned *newline_count = ((unsigned *) payload);
   lexer->mark_end(lexer);
