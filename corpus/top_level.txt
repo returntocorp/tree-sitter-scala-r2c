@@ -10,7 +10,7 @@ import foo.bar.baz.buzz.{ x => _, _ }
 --------------------------------
 (compilation_unit
   (package_identifier (identifier))
-  (import (stable_identifier (identifier) (identifier)))
+  (import (stable_identifier (identifier)) (identifier))
   (import (stable_identifier (identifier)) (wildcard))
   (import (stable_identifier (identifier)) (import_selectors
     (identifier) (wildcard) (wildcard)))
@@ -41,7 +41,7 @@ package bar {
 (compilation_unit
   (package_identifier (identifier))
   (package_clause (package_identifier (identifier))
-    (import (stable_identifier (identifier) (identifier)))))
+    (import (stable_identifier (identifier)) (identifier))))
 
 ================================
 Package object

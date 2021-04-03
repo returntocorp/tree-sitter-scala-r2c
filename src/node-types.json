@@ -273,7 +273,7 @@
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
@@ -290,6 +290,10 @@
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
             "named": true
           },
           {
@@ -1078,6 +1082,10 @@
             "named": true
           },
           {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
             "type": "type_projection",
             "named": true
           }
@@ -1108,6 +1116,10 @@
             "named": true
           },
           {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
             "type": "type_projection",
             "named": true
           }
@@ -1130,7 +1142,7 @@
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
@@ -1147,6 +1159,10 @@
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
             "named": true
           },
           {
@@ -2343,6 +2359,10 @@
           "named": true
         },
         {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
           "type": "type_projection",
           "named": true
         },
@@ -3105,21 +3125,32 @@
   {
     "type": "import",
     "named": true,
-    "fields": {},
+    "fields": {
+      "import_selection": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "import_selectors",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "import_selectors",
-          "named": true
-        },
-        {
           "type": "stable_identifier",
-          "named": true
-        },
-        {
-          "type": "wildcard",
           "named": true
         }
       ]
@@ -3305,6 +3336,10 @@
             "named": true
           },
           {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
             "type": "type_projection",
             "named": true
           }
@@ -3350,6 +3385,10 @@
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
             "named": true
           },
           {
@@ -4312,6 +4351,10 @@
             "named": true
           },
           {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
             "type": "type_projection",
             "named": true
           }
@@ -4339,6 +4382,10 @@
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
             "named": true
           },
           {
@@ -4777,6 +4824,10 @@
           "named": true
         },
         {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
           "type": "type_projection",
           "named": true
         },
@@ -5002,6 +5053,10 @@
         },
         {
           "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
           "named": true
         },
         {
@@ -5418,6 +5473,10 @@
         },
         {
           "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
           "named": true
         },
         {
@@ -5957,6 +6016,10 @@
         },
         {
           "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
           "named": true
         },
         {

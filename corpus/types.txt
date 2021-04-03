@@ -54,3 +54,12 @@ object Foo {
       (function_arg_types (stable_type_identifier (identifier)))
       (tuple_types (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))))))
 
+====================================
+Generic types
+====================================
+type X[A] = List[A]
+----------------------------
+(compilation_unit
+  (type_definition
+    (type_identifier) (type_parameters (identifier))
+    (stable_type_identifier (identifier)) (type_parameters (identifier))))

@@ -86,12 +86,10 @@ rules:
                                  | _template_definition
                                  | _expression
   import                       ::= 'import' _import_expr (',' _import_expr)*
-  importPrefix := (identifier '.')+
-  _import_stable_identifier ::= $importPrefix identifier
-  _import_expr                   ::= _import_stable_identifier -> stable_identifier
-      | $importPrefix -> stable_identifier ('_' -> wildcard | import_selectors)
-  import_selectors              ::= '{' (_import_selector ',')* (_import_selector | '_' -> wildcard) '}'
-  _import_selector               ::= identifier ('=>' identifier | '=>' '_' -> wildcard)?
+  _import_expr                 ::= (identifier '.')+ -> stable_identifier
+                                     (identifier | '_' -> wildcard | import_selectors): import_selection
+  import_selectors             ::= '{' (_import_selector ',')* (_import_selector | '_' -> wildcard) '}'
+  _import_selector             ::= identifier ('=>' identifier | '=>' '_' -> wildcard)?
   ;BlockStat            ::= Import
                          ;| Annotation* 'implicit'? 'lazy'? Def
                          ;| Annotation* LocalModifier* TmplDef
@@ -263,6 +261,7 @@ rules:
                                  | singleton_type
                                  | type_projection
                                  | tuple_types
+                                 | _simple_type type_parameters
   ;AnnotType         ::=  SimpleType Annotation*
   _annotated_type              ::= 1(_simple_type annotation*)
   ;TypeParamClause   ::=  '[' VariantTypeParam (',' VariantTypeParam)* ']'
