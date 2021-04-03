@@ -26,5 +26,5 @@ val foo: Int = 1
 val foo: String = "foo"
 ------------------------------------
 (compilation_unit
-  (comment) (val_definition (identifier) (type_identifier) (number))
-  (comment) (val_definition (identifier) (type_identifier) (string_literal)))
+  (comment) (val_definition (identifier) (stable_type_identifier (identifier)) (number))
+  (comment) (val_definition (identifier) (stable_type_identifier (identifier)) (string_literal)))

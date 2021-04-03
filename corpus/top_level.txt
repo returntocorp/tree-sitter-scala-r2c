@@ -55,7 +55,7 @@ Top level val definition
 ================================
 val x: Int = 1
 --------------------------------
-(compilation_unit (val_definition (identifier) (type_identifier) (number)))
+(compilation_unit (val_definition (identifier) (stable_type_identifier (identifier)) (number)))
 
 ====================================
 Class definitions
@@ -82,36 +82,36 @@ class Foo extends { val x = 1 } with Bar with Baz {
   (class_definition (identifier))
   (class_definition (identifier) (type_parameters (identifier)))
   (class_definition (identifier) (type_parameters (identifier))
-    (constructor_annotation (type_identifier) (arguments)))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)))
   (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
   (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
   (class_definition (identifier) (type_parameters (identifier))
-    (constructor_annotation (type_identifier) (arguments)) (access_modifier))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)) (access_modifier))
   (class_definition (identifier) (type_parameters (identifier)) (class_parameters))
   (class_definition (identifier) (type_parameters (identifier))
-    (constructor_annotation (type_identifier) (arguments
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments
       (assignment_expression (identifier) (number))))
     (class_parameters))
   (class_definition (identifier) (type_parameters (identifier)) (access_modifier) (class_parameters))
   (class_definition (identifier) (type_parameters (identifier))
-    (constructor_annotation (type_identifier) (arguments)) (access_modifier) (class_parameters))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)) (access_modifier) (class_parameters))
   (class_definition (identifier)
     (class_parameters
-      (class_parameter (identifier) (type_identifier))
-      (class_parameter (identifier) (type_identifier)))
-    (class_parameters (class_parameter (identifier) (type_identifier)))
-    (class_parameters (class_parameter (identifier) (type_identifier))))
+      (class_parameter (identifier) (stable_type_identifier (identifier)))
+      (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
   (class_definition (identifier)
-    (class_parameters (class_parameter (identifier) (type_identifier)))
-    (class_parameters (class_parameter (identifier) (type_identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
   (class_definition
-    (annotation (type_identifier))
+    (annotation (stable_type_identifier (identifier)))
     (modifiers (access_modifier) (local_modifier) (local_modifier) (local_modifier))
     (identifier)
-    (class_parameters (class_parameter (identifier) (type_identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
   (class_definition (identifier)
     (early_definitions (early_definition (val_definition (identifier) (number))))
-    (parent_classes (type_identifier) (type_identifier))
+    (parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
     (template_body (val_definition (identifier) (number)))))
 
 ====================================
@@ -141,10 +141,10 @@ object Foo {
   (object_definition (identifier))
   (object_definition (identifier)
     (early_definitions (early_definition (val_definition (identifier) (number))))
-    (parent_classes (type_identifier) (type_identifier))
+    (parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
     (template_body
       (val_definition (identifier) (number))))
-  (object_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
+  (object_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier)) (identifier))
   (object_definition (identifier) (comment) (comment) (template_body (val_definition (identifier) (number))))
   (object_definition (identifier)) (comment)
 	(ERROR (identifier)) (comment)
@@ -172,11 +172,11 @@ private[foo] trait Foo
   (trait_definition (identifier) (type_parameters (identifier) (identifier)))
   (trait_definition (identifier) (type_parameters (identifier) (identifier))
     (early_definitions (early_definition (val_definition (identifier) (number))))
-    (trait_parent_classes (type_identifier) (type_identifier))
+    (trait_parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
     (template_body
       (val_definition (identifier) (number))))
-  (trait_definition (annotation (type_identifier)) (modifiers (access_modifier)) (identifier))
-  (trait_definition (annotation (type_identifier)) (modifiers (access_modifier (access_qualifier))) (identifier))
+  (trait_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier)) (identifier))
+  (trait_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier (access_qualifier))) (identifier))
   (trait_definition (modifiers (access_modifier (access_qualifier (identifier)))) (identifier)))
 
 ====================================
@@ -188,12 +188,12 @@ object Foo extends Bar { this: Bar => val x = this }
 ------------------------------------
 (compilation_unit
   (class_definition (identifier) (template_body
-    (self_type (identifier) (type_identifier)) (val_definition (identifier) (identifier))))
-  (trait_definition (identifier) (trait_parent_classes (type_identifier))
+    (self_type (identifier) (stable_type_identifier (identifier))) (val_definition (identifier) (identifier))))
+  (trait_definition (identifier) (trait_parent_classes (stable_type_identifier (identifier)))
     (template_body
       (self_type (identifier)) (val_definition (identifier) (identifier))))
-  (object_definition (identifier) (parent_classes (type_identifier)) (template_body
-    (self_type (type_identifier)) (val_definition (identifier) (identifier)))))
+  (object_definition (identifier) (parent_classes (stable_type_identifier (identifier))) (template_body
+    (self_type (stable_type_identifier (identifier))) (val_definition (identifier) (identifier)))))
 
 ====================================
 Class definition with newline
@@ -257,14 +257,14 @@ class Foo {
 (compilation_unit
   (class_definition (identifier) (template_body
     (val_definition
-      (annotation (type_identifier)) (comment)
-      (annotation (type_identifier))
+      (annotation (stable_type_identifier (identifier))) (comment)
+      (annotation (stable_type_identifier (identifier)))
       (identifier)
       (number))
     (val_definition
-      (annotation (type_identifier))
-      (comment) (annotation (type_identifier))
+      (annotation (stable_type_identifier (identifier)))
+      (comment) (annotation (stable_type_identifier (identifier)))
       (identifier)
       (number))
-    (val_definition (annotation (type_identifier)) (identifier) (number)))))
+    (val_definition (annotation (stable_type_identifier (identifier))) (identifier) (number)))))
 

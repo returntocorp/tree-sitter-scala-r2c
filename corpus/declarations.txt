@@ -7,7 +7,7 @@ object foo {
 --------------------------------
 (compilation_unit
   (object_definition (identifier) (template_body
-    (val_declaration (identifier) (type_identifier)))))
+    (val_declaration (identifier) (stable_type_identifier (identifier))))))
 
 ================================
 Var declarations
@@ -19,8 +19,8 @@ object foo {
 --------------------------------
 (compilation_unit
   (object_definition (identifier) (template_body
-    (var_declaration (identifier) (type_identifier))
-    (var_declaration (identifier) (identifier) (identifier) (type_identifier)))))
+    (var_declaration (identifier) (stable_type_identifier (identifier)))
+    (var_declaration (identifier) (identifier) (identifier) (stable_type_identifier (identifier))))))
 
 ================================
 Type declarations
@@ -41,9 +41,9 @@ object foo {
 (compilation_unit
   (object_definition (identifier) (template_body
     (type_declaration (identifier))
-    (type_declaration (identifier) (lower_bound (type_identifier)))
-    (type_declaration (identifier) (upper_bound (type_identifier)))
-    (type_declaration (identifier) (lower_bound (type_identifier)) (upper_bound (type_identifier)))
+    (type_declaration (identifier) (lower_bound (stable_type_identifier (identifier))))
+    (type_declaration (identifier) (upper_bound (stable_type_identifier (identifier))))
+    (type_declaration (identifier) (lower_bound (stable_type_identifier (identifier))) (upper_bound (stable_type_identifier (identifier))))
     (type_declaration (identifier) (type_parameters (identifier) (identifier)))
     (type_declaration (comment) (identifier)))))
 
@@ -68,45 +68,45 @@ object foo {
   (object_definition (identifier) (template_body
     (function_declaration (identifier))
     (function_declaration (identifier) (parameters))
-    (function_declaration (identifier) (type_identifier))
-    (function_declaration (identifier) (parameters) (type_identifier))
+    (function_declaration (identifier) (stable_type_identifier (identifier)))
+    (function_declaration (identifier) (parameters) (stable_type_identifier (identifier)))
     (function_declaration
       (identifier)
-      (parameters (parameter (identifier) (type_identifier)))
-      (type_identifier))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier)))
     (function_declaration
       (identifier)
       (type_parameters (identifier))
-      (parameters (parameter (identifier) (type_identifier)))
-      (type_identifier))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier)))
     (function_declaration (identifier)
-      (type_parameters (identifier) (upper_bound (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier)))
-      (type_identifier))
-    (function_declaration (identifier)
-      (type_parameters (identifier)
-        (upper_bound (type_identifier)) (identifier)
-        (lower_bound (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier))) (type_identifier))
+      (type_parameters (identifier) (upper_bound (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier)))
     (function_declaration (identifier)
       (type_parameters (identifier)
-        (upper_bound (type_identifier)) (identifier)
-        (lower_bound (type_identifier))
-        (context_bound (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier)))
-      (type_identifier))
+        (upper_bound (stable_type_identifier (identifier))) (identifier)
+        (lower_bound (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier)))) (stable_type_identifier (identifier)))
     (function_declaration (identifier)
-      (type_parameters (identifier) (view_bound (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier)))
-      (type_identifier))
+      (type_parameters (identifier)
+        (upper_bound (stable_type_identifier (identifier))) (identifier)
+        (lower_bound (stable_type_identifier (identifier)))
+        (context_bound (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier)))
+    (function_declaration (identifier)
+      (type_parameters (identifier) (view_bound (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier)))
     (function_declaration (identifier)
       (parameters
-        (parameter (identifier) (type_identifier))
-        (parameter (identifier) (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier)))
-      (parameters (parameter (identifier) (type_identifier))
-      (parameter (identifier) (type_identifier)))
+        (parameter (identifier) (stable_type_identifier (identifier)))
+        (parameter (identifier) (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier))))
+      (parameters (parameter (identifier) (stable_type_identifier (identifier)))
+      (parameter (identifier) (stable_type_identifier (identifier))))
       (parameters
-        (parameter (identifier) (type_identifier))
-        (parameter (identifier) (type_identifier)))
-      (type_identifier)))))
+        (parameter (identifier) (stable_type_identifier (identifier)))
+        (parameter (identifier) (stable_type_identifier (identifier))))
+      (stable_type_identifier (identifier))))))

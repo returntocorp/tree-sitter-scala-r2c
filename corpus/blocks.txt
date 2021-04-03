@@ -2,8 +2,8 @@
 Type definitions
 ===========================
 type Foo = Int
-type Foo[A, B] = Bar[B, A]
 type
+
 
 // newlines are allowed between the type keyword and the identifer (for some reason)
 
@@ -11,9 +11,6 @@ type
 // Bar[(B, A)] TODO fix tuple types
 ---------------------------
 (compilation_unit
-  (type_definition (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
-  (type_definition (stable_type_identifier (identifier))
-    (type_parameters (identifier) (identifier))
-    (generic_type (stable_type_identifier (identifier)) (type_arguments (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))))
-  (type_definition (comment) (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
+  (type_definition (type_identifier) (stable_type_identifier (identifier)))
+  (type_definition (comment) (type_identifier) (stable_type_identifier (identifier)))
   (comment))

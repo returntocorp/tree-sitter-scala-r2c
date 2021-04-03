@@ -1,0 +1,56 @@
+============================
+Paths
+============================
+type x = foo
+type x = foo.bar.Baz
+type x = foo.bar.Baz.type
+type x = foo.bar.Baz#Buzz
+----------------------------
+(compilation_unit
+  (type_definition (type_identifier) (stable_type_identifier (identifier)))
+  (type_definition (type_identifier) (stable_type_identifier (identifier) (identifier) (identifier)))
+  (type_definition (type_identifier) (singleton_type (identifier) (identifier) (identifier)))
+  (type_definition (type_identifier)
+    (type_projection
+      (stable_type_identifier (identifier) (identifier) (identifier))
+      (identifier))))
+
+============================
+Function Types
+============================
+object Foo {
+  val x: A => B
+  val x: ((A.B.C.D, B), C) => Bar
+  val x: (A, B, C) => A => B
+  val x: (A, B, C) => A => (B, C)
+}
+----------------------------
+(compilation_unit
+  (object_definition (identifier) (template_body
+    (val_declaration (identifier)
+      (function_arg_types
+        (stable_type_identifier (identifier)))
+        (stable_type_identifier (identifier)))
+    (val_declaration (identifier)
+      (function_arg_types
+        (tuple_types
+          (stable_type_identifier (identifier) (identifier) (identifier) (identifier))
+          (stable_type_identifier (identifier)))
+          (stable_type_identifier (identifier)))
+        (stable_type_identifier (identifier)))
+    (val_declaration (identifier)
+      (function_arg_types
+        (stable_type_identifier (identifier))
+        (stable_type_identifier (identifier))
+        (stable_type_identifier (identifier)))
+      (function_arg_types
+        (stable_type_identifier (identifier)))
+      (stable_type_identifier (identifier)))
+    (val_declaration (identifier)
+      (function_arg_types
+        (stable_type_identifier (identifier))
+        (stable_type_identifier (identifier))
+        (stable_type_identifier (identifier)))
+      (function_arg_types (stable_type_identifier (identifier)))
+      (tuple_types (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))))))
+

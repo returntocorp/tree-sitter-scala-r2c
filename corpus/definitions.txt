@@ -10,11 +10,19 @@ implicit val x: Foo = ???
 --------------------------------
 (compilation_unit
   (val_definition (identifier) (number))
-  (val_definition (identifier) (type_identifier) (number))
-  (val_definition (tuple_pattern (identifier) (identifier)) (tuple_expression (number) (number)))
-  (val_definition (case_class_pattern (type_identifier) (identifier)) (identifier))
-  (val_definition (annotation (type_identifier)) (lazy_modifier) (identifier) (number))
-  (val_definition (implicit_modifier) (identifier) (type_identifier) (identifier)))
+  (val_definition (identifier) (stable_type_identifier (identifier)) (number))
+  (val_definition
+    (tuple_pattern (identifier) (identifier))
+    (tuple_expression (number) (number)))
+  (val_definition (case_class_pattern (stable_type_identifier (identifier)) (identifier)) (identifier))
+  (val_definition
+    (annotation (stable_type_identifier (identifier)))
+    (lazy_modifier)
+    (identifier)
+    (number))
+  (val_definition (implicit_modifier) (identifier) (stable_type_identifier (identifier)) (identifier)))
+
+
 
 ================================
 Illegal val definitions

@@ -234,9 +234,8 @@ rules:
   _infix_type                  ::= <(_compound_type (identifier _newline? _compound_type)*)
   ;CompoundType      ::=  AnnotType ('with' AnnotType)* Refinement?
                       ;|  Refinement
-  _compound_type               ::= _annotated_type
-  ;_compound_type      ::=  <(_annotated_type ('with' _annotated_type)* _refinement?
-                      ;|  _refinement)
+  _compound_type      ::=  <(_annotated_type ('with' _annotated_type)* _refinement?
+                      |  _refinement)
   _refinement                  ::= _block_newlines? '{' _refinement_statement (_semicolon _refinement_statement)* '}'
   ;Dcl               ::=  ‘val’ ValDcl
                       ;|  ‘var’ VarDcl
@@ -255,13 +254,13 @@ rules:
   type_projection              ::= _simple_type '#' identifier
   tuple_types                  ::= '(' $types ')'
   types                       := _type (',' _type)*
-  _simple_type                 ::= stable_identifier -> stable_type_identifier
+  stableTypeIdentifer := (_type_identifier | stable_identifier -> stable_type_identifier)
+  _simple_type                 ::= $stableTypeIdentifer
                                  | singleton_type
                                  | type_projection
                                  | tuple_types
   ;AnnotType         ::=  SimpleType Annotation*
   _annotated_type              ::= 1(_simple_type annotation*)
-  ;_simple_type                 ::= generic_type | projected_type | stable_type_identifier | _type_identifier
   ;TypeParamClause   ::=  '[' VariantTypeParam (',' VariantTypeParam)* ']'
 
 ; ************************* BELOW THIS IS CODE I INTEND TO KILL UNTIL LEXICAL SECTION *************************
@@ -292,8 +291,6 @@ rules:
                                      ((identifier): operator)
                                      ((compound_type | infix_type | _annotated_type): right))
 
-  projected_type               ::= (_simple_type: type) '#' (_type_identifier: selector)
-  function_type                ::= >((parameter_types: parameter_types) '=>' (_type: return_type))
   parameter_types              ::= -1(_annotated_type
                                  | ~1('(' (_param_type (',' _param_type)*)? ')')
                                  | compound_type
@@ -304,6 +301,7 @@ rules:
   _pattern                     ::= identifier
                                  | capture_pattern
                                  | tuple_pattern
+                                 | case_class_pattern
                                  | infix_pattern
                                  | alternative_pattern
                                  | typed_pattern
@@ -313,6 +311,7 @@ rules:
                                  | symbol_literal
                                  | string_literal
                                  | wildcard
+  case_class_pattern           ::= ($stableTypeIdentifer: type) '(' ((_pattern (',' _pattern)*)?: pattern) ')'
   infix_pattern                ::= <2((_pattern: left) ((identifier): operator) (_pattern: right))
   capture_pattern              ::= 1((identifier: name) '@' (_pattern: pattern))
   typed_pattern                ::= -1((_pattern: pattern) ':' (_type: type))
