@@ -1,5 +1,5 @@
 {
-  "name": "tree-sitter-scala",
+  "name": "tree-sitter-scalar2c",
   "version": "0.1.0",
   "description": "Scala grammar for tree-sitter",
   "main": "bindings/node",
