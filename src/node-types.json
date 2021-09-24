@@ -16,7 +16,7 @@
         "named": true
       },
       {
-        "type": "import_declaration",
+        "type": "import",
         "named": true
       },
       {
@@ -86,15 +86,11 @@
         "named": true
       },
       {
-        "type": "field_expression",
+        "type": "do_expression",
         "named": true
       },
       {
         "type": "for_expression",
-        "named": true
-      },
-      {
-        "type": "generic_function",
         "named": true
       },
       {
@@ -114,12 +110,16 @@
         "named": true
       },
       {
-        "type": "interpolated_string_expression",
+        "type": "interpolated_string",
         "named": true
       },
       {
         "type": "match_expression",
         "named": true
+      },
+      {
+        "type": "null",
+        "named": false
       },
       {
         "type": "number",
@@ -134,7 +134,7 @@
         "named": true
       },
       {
-        "type": "string",
+        "type": "string_literal",
         "named": true
       },
       {
@@ -147,6 +147,10 @@
       },
       {
         "type": "tuple_expression",
+        "named": true
+      },
+      {
+        "type": "while_expression",
         "named": true
       }
     ]
@@ -188,7 +192,7 @@
         "named": true
       },
       {
-        "type": "string",
+        "type": "string_literal",
         "named": true
       },
       {
@@ -269,15 +273,11 @@
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -285,11 +285,19 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
             "named": true
           }
         ]
@@ -539,6 +547,16 @@
     "type": "class_definition",
     "named": true,
     "fields": {
+      "access_modifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "access_modifier",
+            "named": true
+          }
+        ]
+      },
       "body": {
         "multiple": false,
         "required": false,
@@ -555,6 +573,16 @@
         "types": [
           {
             "type": "class_parameters",
+            "named": true
+          }
+        ]
+      },
+      "constructor_annotations": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "constructor_annotation",
             "named": true
           }
         ]
@@ -599,7 +627,19 @@
           "named": true
         },
         {
+          "type": "early_definitions",
+          "named": true
+        },
+        {
           "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "parent_classes",
+          "named": true
+        },
+        {
+          "type": "template_body",
           "named": true
         }
       ]
@@ -609,6 +649,28 @@
     "type": "class_parameter",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
       "default_value": {
         "multiple": false,
         "required": false,
@@ -620,12 +682,168 @@
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
@@ -634,27 +852,55 @@
         "required": false,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -662,11 +908,69 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -707,7 +1011,51 @@
       "required": false,
       "types": [
         {
-          "type": "_definition",
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "class_definition",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        },
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "object_definition",
+          "named": true
+        },
+        {
+          "type": "package_clause",
+          "named": true
+        },
+        {
+          "type": "package_identifier",
+          "named": true
+        },
+        {
+          "type": "package_object",
+          "named": true
+        },
+        {
+          "type": "trait_definition",
+          "named": true
+        },
+        {
+          "type": "type_definition",
+          "named": true
+        },
+        {
+          "type": "val_definition",
+          "named": true
+        },
+        {
+          "type": "var_definition",
           "named": true
         }
       ]
@@ -726,11 +1074,7 @@
             "named": true
           },
           {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -738,11 +1082,19 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
             "named": true
           }
         ]
@@ -756,11 +1108,7 @@
             "named": true
           },
           {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -768,11 +1116,65 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "constructor_annotation",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "arguments",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
             "named": true
           }
         ]
@@ -783,32 +1185,130 @@
     "type": "context_bound",
     "named": true,
     "fields": {
-      "type": {
+      "bound": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -816,11 +1316,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -932,6 +1608,51 @@
     }
   },
   {
+    "type": "do_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "early_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "val_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "early_definitions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "early_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "enumerators",
     "named": true,
     "fields": {},
@@ -950,32 +1671,130 @@
     "type": "extends_clause",
     "named": true,
     "fields": {
-      "type": {
+      "bound": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -983,11 +1802,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -1002,32 +1997,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "field_expression",
-    "named": true,
-    "fields": {
-      "field": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_expression",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1065,15 +2034,65 @@
     }
   },
   {
-    "type": "function_declaration",
+    "type": "function_arg_types",
     "named": true,
     "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
+      "bound": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
             "named": true
           }
         ]
@@ -1093,27 +2112,55 @@
         "required": false,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -1121,17 +2168,555 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
             "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
       "type_parameters": {
-        "multiple": false,
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "function_arg_types",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lower_bound",
+          "named": true
+        },
+        {
+          "type": "singleton_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "tuple_types",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        },
+        {
+          "type": "upper_bound",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_declaration",
+    "named": true,
+    "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -1170,12 +2755,62 @@
           }
         ]
       },
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
             "named": true
           }
         ]
@@ -1195,27 +2830,55 @@
         "required": false,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -1223,17 +2886,183 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
             "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
       "type_parameters": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -1252,68 +3081,18 @@
           "named": true
         },
         {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "function_type",
-    "named": true,
-    "fields": {
-      "parameter_types": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "parameter_types",
-            "named": true
-          }
-        ]
-      },
-      "return_type": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "annotation",
-            "named": true
-          },
-          {
-            "type": "compound_type",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "infix_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1337,74 +3116,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "generic_function",
-    "named": true,
-    "fields": {
-      "function": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_expression",
-            "named": true
-          }
-        ]
-      },
-      "type_arguments": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type_arguments",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "generic_type",
-    "named": true,
-    "fields": {
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
-            "named": true
-          }
-        ]
-      },
-      "type_arguments": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type_arguments",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1460,10 +3171,10 @@
     }
   },
   {
-    "type": "import_declaration",
+    "type": "import",
     "named": true,
     "fields": {
-      "path": {
+      "import_selection": {
         "multiple": true,
         "required": true,
         "types": [
@@ -1472,7 +3183,11 @@
             "named": true
           },
           {
-            "type": "stable_identifier",
+            "type": "import_selectors",
+            "named": true
+          },
+          {
+            "type": "wildcard",
             "named": true
           }
         ]
@@ -1480,14 +3195,10 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "import_selectors",
-          "named": true
-        },
-        {
-          "type": "wildcard",
+          "type": "stable_identifier",
           "named": true
         }
       ]
@@ -1506,7 +3217,7 @@
           "named": true
         },
         {
-          "type": "renamed_identifier",
+          "type": "wildcard",
           "named": true
         }
       ]
@@ -1537,10 +3248,6 @@
             "named": true
           },
           {
-            "type": "field_expression",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -1549,8 +3256,12 @@
             "named": true
           },
           {
-            "type": "interpolated_string_expression",
+            "type": "interpolated_string",
             "named": true
+          },
+          {
+            "type": "null",
+            "named": false
           },
           {
             "type": "number",
@@ -1565,7 +3276,7 @@
             "named": true
           },
           {
-            "type": "string",
+            "type": "string_literal",
             "named": true
           },
           {
@@ -1653,15 +3364,11 @@
             "named": true
           },
           {
-            "type": "generic_type",
-            "named": true
-          },
-          {
             "type": "infix_type",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -1669,11 +3376,19 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
             "named": true
           }
         ]
@@ -1701,15 +3416,11 @@
             "named": true
           },
           {
-            "type": "generic_type",
-            "named": true
-          },
-          {
             "type": "infix_type",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -1717,11 +3428,19 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
             "named": true
           }
         ]
@@ -1752,40 +3471,6 @@
       "required": false,
       "types": [
         {
-          "type": "interpolation",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "interpolated_string_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "interpolated_string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "interpolation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
           "type": "block",
           "named": true
         },
@@ -1797,54 +3482,6 @@
     }
   },
   {
-    "type": "lazy_parameter_type",
-    "named": true,
-    "fields": {
-      "type": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "annotation",
-            "named": true
-          },
-          {
-            "type": "compound_type",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "infix_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "local_modifier",
     "named": true,
     "fields": {}
@@ -1853,32 +3490,130 @@
     "type": "lower_bound",
     "named": true,
     "fields": {
-      "type": {
+      "bound": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -1886,11 +3621,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -1991,7 +3902,19 @@
           "named": true
         },
         {
+          "type": "early_definitions",
+          "named": true
+        },
+        {
           "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "parent_classes",
+          "named": true
+        },
+        {
+          "type": "template_body",
           "named": true
         }
       ]
@@ -2002,11 +3925,35 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "template_body",
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "class_definition",
+            "named": true
+          },
+          {
+            "type": "import",
+            "named": true
+          },
+          {
+            "type": "object_definition",
+            "named": true
+          },
+          {
+            "type": "package_clause",
+            "named": true
+          },
+          {
+            "type": "package_object",
+            "named": true
+          },
+          {
+            "type": "trait_definition",
             "named": true
           }
         ]
@@ -2078,6 +4025,28 @@
     "type": "parameter",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
       "default_value": {
         "multiple": false,
         "required": false,
@@ -2089,12 +4058,168 @@
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
@@ -2103,35 +4228,59 @@
         "required": false,
         "types": [
           {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "lazy_parameter_type",
+            "type": "parameters",
             "named": true
           },
           {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "repeated_parameter_type",
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -2139,11 +4288,69 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -2155,61 +4362,6 @@
       "types": [
         {
           "type": "annotation",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "parameter_types",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "annotation",
-          "named": true
-        },
-        {
-          "type": "compound_type",
-          "named": true
-        },
-        {
-          "type": "function_type",
-          "named": true
-        },
-        {
-          "type": "generic_type",
-          "named": true
-        },
-        {
-          "type": "infix_type",
-          "named": true
-        },
-        {
-          "type": "lazy_parameter_type",
-          "named": true
-        },
-        {
-          "type": "projected_type",
-          "named": true
-        },
-        {
-          "type": "repeated_parameter_type",
-          "named": true
-        },
-        {
-          "type": "stable_type_identifier",
-          "named": true
-        },
-        {
-          "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "type_identifier",
           "named": true
         }
       ]
@@ -2228,6 +4380,84 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "parent_classes",
+    "named": true,
+    "fields": {
+      "base_class": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "arguments",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          }
+        ]
+      },
+      "inherited_trait_name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2251,7 +4481,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "block",
@@ -2270,10 +4500,6 @@
           "named": true
         },
         {
-          "type": "field_expression",
-          "named": true
-        },
-        {
           "type": "identifier",
           "named": true
         },
@@ -2282,7 +4508,7 @@
           "named": true
         },
         {
-          "type": "interpolated_string_expression",
+          "type": "interpolated_string",
           "named": true
         },
         {
@@ -2298,7 +4524,7 @@
           "named": true
         },
         {
-          "type": "string",
+          "type": "string_literal",
           "named": true
         },
         {
@@ -2313,57 +4539,61 @@
     }
   },
   {
-    "type": "projected_type",
+    "type": "self_type",
     "named": true,
     "fields": {
-      "selector": {
-        "multiple": false,
-        "required": true,
+      "bound": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "type_identifier",
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
             "named": true
           }
         ]
       },
-      "type": {
-        "multiple": false,
-        "required": true,
+      "name": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "generic_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
+            "type": "lower_bound",
             "named": true
           },
           {
             "type": "type_identifier",
             "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "renamed_identifier",
-    "named": true,
-    "fields": {
-      "alias": {
-        "multiple": false,
-        "required": true,
-        "types": [
+          },
           {
-            "type": "identifier",
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
             "named": true
           },
           {
@@ -2372,48 +4602,70 @@
           }
         ]
       },
-      "name": {
-        "multiple": false,
-        "required": true,
+      "parameters": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "identifier",
+            "type": "parameters",
             "named": true
           }
         ]
-      }
-    }
-  },
-  {
-    "type": "repeated_parameter_type",
-    "named": true,
-    "fields": {
-      "type": {
+      },
+      "return_type": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -2421,15 +4673,256 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
             "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "function_arg_types",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lower_bound",
+          "named": true
+        },
+        {
+          "type": "singleton_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "tuple_types",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        },
+        {
+          "type": "upper_bound",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "singleton_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2442,10 +4935,6 @@
       "types": [
         {
           "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "stable_identifier",
           "named": true
         }
       ]
@@ -2462,20 +4951,12 @@
         {
           "type": "identifier",
           "named": true
-        },
-        {
-          "type": "stable_identifier",
-          "named": true
-        },
-        {
-          "type": "type_identifier",
-          "named": true
         }
       ]
     }
   },
   {
-    "type": "string",
+    "type": "string_literal",
     "named": true,
     "fields": {}
   },
@@ -2488,11 +4969,59 @@
       "required": false,
       "types": [
         {
-          "type": "_definition",
+          "type": "_expression",
           "named": true
         },
         {
-          "type": "_expression",
+          "type": "class_definition",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        },
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "object_definition",
+          "named": true
+        },
+        {
+          "type": "self_type",
+          "named": true
+        },
+        {
+          "type": "trait_definition",
+          "named": true
+        },
+        {
+          "type": "type_declaration",
+          "named": true
+        },
+        {
+          "type": "type_definition",
+          "named": true
+        },
+        {
+          "type": "val_declaration",
+          "named": true
+        },
+        {
+          "type": "val_definition",
+          "named": true
+        },
+        {
+          "type": "var_declaration",
+          "named": true
+        },
+        {
+          "type": "var_definition",
           "named": true
         }
       ]
@@ -2542,6 +5071,71 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "early_definitions",
+          "named": true
+        },
+        {
+          "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "template_body",
+          "named": true
+        },
+        {
+          "type": "trait_parent_classes",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "trait_parent_classes",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "singleton_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "tuple_types",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2605,9 +5199,326 @@
     }
   },
   {
-    "type": "tuple_type",
+    "type": "tuple_types",
     "named": true,
-    "fields": {},
+    "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -2617,23 +5528,19 @@
           "named": true
         },
         {
-          "type": "compound_type",
+          "type": "function_arg_types",
           "named": true
         },
         {
-          "type": "function_type",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "generic_type",
+          "type": "lower_bound",
           "named": true
         },
         {
-          "type": "infix_type",
-          "named": true
-        },
-        {
-          "type": "projected_type",
+          "type": "singleton_type",
           "named": true
         },
         {
@@ -2641,20 +5548,349 @@
           "named": true
         },
         {
-          "type": "tuple_type",
+          "type": "tuple_types",
           "named": true
         },
         {
           "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        },
+        {
+          "type": "upper_bound",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "type_arguments",
+    "type": "type",
     "named": true,
-    "fields": {},
+    "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -2664,23 +5900,19 @@
           "named": true
         },
         {
-          "type": "compound_type",
+          "type": "function_arg_types",
           "named": true
         },
         {
-          "type": "function_type",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "generic_type",
+          "type": "lower_bound",
           "named": true
         },
         {
-          "type": "infix_type",
-          "named": true
-        },
-        {
-          "type": "projected_type",
+          "type": "singleton_type",
           "named": true
         },
         {
@@ -2688,11 +5920,117 @@
           "named": true
         },
         {
-          "type": "tuple_type",
+          "type": "tuple_types",
           "named": true
         },
         {
           "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        },
+        {
+          "type": "upper_bound",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_declaration",
+    "named": true,
+    "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "lower_bound",
+          "named": true
+        },
+        {
+          "type": "modifiers",
+          "named": true
+        },
+        {
+          "type": "upper_bound",
           "named": true
         }
       ]
@@ -2713,43 +6051,11 @@
         ]
       },
       "type": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "annotation",
-            "named": true
-          },
-          {
-            "type": "compound_type",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "infix_type",
-            "named": true
-          },
-          {
-            "type": "projected_type",
-            "named": true
-          },
-          {
-            "type": "stable_type_identifier",
-            "named": true
-          },
-          {
-            "type": "tuple_type",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
+            "type": "type",
             "named": true
           }
         ]
@@ -2771,6 +6077,14 @@
       "types": [
         {
           "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
           "named": true
         },
         {
@@ -2851,9 +6165,118 @@
     }
   },
   {
+    "type": "type_projection",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "singleton_type",
+          "named": true
+        },
+        {
+          "type": "stable_type_identifier",
+          "named": true
+        },
+        {
+          "type": "tuple_types",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        },
+        {
+          "type": "type_parameters",
+          "named": true
+        },
+        {
+          "type": "type_projection",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "typed_pattern",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
       "pattern": {
         "multiple": false,
         "required": true,
@@ -2864,32 +6287,60 @@
           }
         ]
       },
-      "type": {
+      "return_type": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -2897,11 +6348,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -2912,32 +6539,130 @@
     "type": "upper_bound",
     "named": true,
     "fields": {
-      "type": {
+      "bound": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -2945,11 +6670,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -2960,13 +6861,191 @@
     "type": "val_declaration",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
@@ -2975,27 +7054,55 @@
         "required": true,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -3003,11 +7110,69 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -3032,6 +7197,76 @@
     "type": "val_definition",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
       "pattern": {
         "multiple": false,
         "required": true,
@@ -3042,32 +7277,60 @@
           }
         ]
       },
-      "type": {
+      "return_type": {
         "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -3075,11 +7338,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -3104,6 +7543,14 @@
           "named": true
         },
         {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         }
@@ -3114,13 +7561,191 @@
     "type": "var_declaration",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "context_bound",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
           }
         ]
       },
@@ -3129,27 +7754,55 @@
         "required": true,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -3157,11 +7810,69 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -3186,6 +7897,76 @@
     "type": "var_definition",
     "named": true,
     "fields": {
+      "bound": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
       "pattern": {
         "multiple": false,
         "required": true,
@@ -3196,32 +7977,60 @@
           }
         ]
       },
-      "type": {
+      "return_type": {
         "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -3229,11 +8038,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -3258,6 +8243,14 @@
           "named": true
         },
         {
+          "type": "implicit_modifier",
+          "named": true
+        },
+        {
+          "type": "lazy_modifier",
+          "named": true
+        },
+        {
           "type": "modifiers",
           "named": true
         }
@@ -3268,32 +8261,130 @@
     "type": "view_bound",
     "named": true,
     "fields": {
-      "type": {
+      "bound": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
           {
             "type": "annotation",
             "named": true
           },
           {
-            "type": "compound_type",
+            "type": "context_bound",
             "named": true
           },
           {
-            "type": "function_type",
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
             "named": true
           },
           {
-            "type": "generic_type",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "infix_type",
+            "type": "lower_bound",
             "named": true
           },
           {
-            "type": "projected_type",
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
             "named": true
           },
           {
@@ -3301,11 +8392,187 @@
             "named": true
           },
           {
-            "type": "tuple_type",
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
             "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "=>",
+            "named": false
+          },
+          {
+            "type": "annotation",
+            "named": true
+          },
+          {
+            "type": "context_bound",
+            "named": true
+          },
+          {
+            "type": "def",
+            "named": false
+          },
+          {
+            "type": "function_arg_types",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lower_bound",
+            "named": true
+          },
+          {
+            "type": "parameters",
+            "named": true
+          },
+          {
+            "type": "singleton_type",
+            "named": true
+          },
+          {
+            "type": "stable_type_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple_types",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": false
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "type_parameters",
+            "named": true
+          },
+          {
+            "type": "type_projection",
+            "named": true
+          },
+          {
+            "type": "upper_bound",
+            "named": true
+          },
+          {
+            "type": "val",
+            "named": false
+          },
+          {
+            "type": "var",
+            "named": false
+          },
+          {
+            "type": "view_bound",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
             "named": true
           }
         ]
@@ -3313,11 +8580,39 @@
     }
   },
   {
-    "type": "\n",
-    "named": false
+    "type": "while_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "wildcard",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "!",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "\"\"",
+    "named": false
+  },
+  {
+    "type": "\"\"\"",
     "named": false
   },
   {
@@ -3326,6 +8621,10 @@
   },
   {
     "type": "$",
+    "named": false
+  },
+  {
+    "type": "$$",
     "named": false
   },
   {
@@ -3401,6 +8700,10 @@
     "named": false
   },
   {
+    "type": "_",
+    "named": false
+  },
+  {
     "type": "abstract",
     "named": false
   },
@@ -3429,6 +8732,10 @@
     "named": false
   },
   {
+    "type": "do",
+    "named": false
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -3453,6 +8760,10 @@
     "named": false
   },
   {
+    "type": "forSome",
+    "named": false
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -3465,6 +8776,10 @@
     "named": false
   },
   {
+    "type": "implicit_modifier",
+    "named": true
+  },
+  {
     "type": "import",
     "named": false
   },
@@ -3473,11 +8788,19 @@
     "named": false
   },
   {
+    "type": "lazy_modifier",
+    "named": true
+  },
+  {
     "type": "match",
     "named": false
   },
   {
     "type": "new",
+    "named": false
+  },
+  {
+    "type": "null",
     "named": false
   },
   {
@@ -3502,6 +8825,10 @@
   },
   {
     "type": "sealed",
+    "named": false
+  },
+  {
+    "type": "super",
     "named": false
   },
   {
@@ -3541,8 +8868,8 @@
     "named": false
   },
   {
-    "type": "wildcard",
-    "named": true
+    "type": "while",
+    "named": false
   },
   {
     "type": "with",

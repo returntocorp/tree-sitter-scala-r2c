@@ -1,0 +1,274 @@
+================================
+Top level imports
+================================
+package foo
+
+import foo.bar
+import foo._
+import foo.{ x => _, _ }
+import foo.bar.baz.buzz.{ x => _, _ }
+--------------------------------
+(compilation_unit
+  (package_identifier (identifier))
+  (import (stable_identifier (identifier)) (identifier))
+  (import (stable_identifier (identifier)) (wildcard))
+  (import (stable_identifier (identifier)) (import_selectors
+    (identifier) (wildcard) (wildcard)))
+  (import (stable_identifier (identifier) (identifier) (identifier) (identifier))
+    (import_selectors (identifier) (wildcard) (wildcard))))
+
+================================
+Empty
+================================
+--------------------------------
+(compilation_unit)
+
+================================
+Top level package only
+================================
+package foo
+--------------------------------
+(compilation_unit (package_identifier (identifier)))
+
+================================
+Packaging
+================================
+package foo
+package bar {
+  import foo.bar
+}
+--------------------------------
+(compilation_unit
+  (package_identifier (identifier))
+  (package_clause (package_identifier (identifier))
+    (import (stable_identifier (identifier)) (identifier))))
+
+================================
+Package object
+================================
+package object bar {
+  val x = 1
+}
+
+--------------------------------
+(compilation_unit (package_object (identifier)
+  (template_body (val_definition (identifier) (number)))))
+
+================================
+Top level val definition
+================================
+val x: Int = 1
+--------------------------------
+(compilation_unit (val_definition (identifier) (stable_type_identifier (identifier)) (number)))
+
+====================================
+Class definitions
+====================================
+class Foo
+class Foo[T]
+class Foo[T] @bar()
+class Foo[T] private
+class Foo[T] protected
+class Foo[T] @bar() private
+class Foo[T]()
+class Foo[T] @foo(x = 1) ()
+class Foo[T] private ()
+class Foo[T] @foo() private ()
+class Foo(x: Int, y: Int)(z: String)(w: Double)
+class Foo(x: Int)(implicit z: String)
+@foo private final sealed implicit case class Foo(x: Int)
+class Foo extends { val x = 1 } with Bar with Baz {
+  val x = 1
+}
+
+------------------------------------
+(compilation_unit
+  (class_definition (identifier))
+  (class_definition (identifier) (type_parameters (identifier)))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)) (access_modifier))
+  (class_definition (identifier) (type_parameters (identifier)) (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments
+      (assignment_expression (identifier) (number))))
+    (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier)) (access_modifier) (class_parameters))
+  (class_definition (identifier) (type_parameters (identifier))
+    (constructor_annotation (stable_type_identifier (identifier)) (arguments)) (access_modifier) (class_parameters))
+  (class_definition (identifier)
+    (class_parameters
+      (class_parameter (identifier) (stable_type_identifier (identifier)))
+      (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
+  (class_definition (identifier)
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier))))
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
+  (class_definition
+    (annotation (stable_type_identifier (identifier)))
+    (modifiers (access_modifier) (local_modifier) (local_modifier) (local_modifier))
+    (identifier)
+    (class_parameters (class_parameter (identifier) (stable_type_identifier (identifier)))))
+  (class_definition (identifier)
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
+    (template_body (val_definition (identifier) (number)))))
+
+====================================
+Object definitions
+====================================
+object Foo
+object Foo extends { val x = 1 } with Bar with Baz {
+  val x = 1
+}
+@foo private object Foo
+case object Foo
+// test that comments
+// can precede the template body
+{
+  val x = 1
+}
+case object Foo
+// comment
+val x = 1 // error because val def can't be top level here but the object def should be ok
+object Foo {
+  object Bar
+  // make sure that val definition below is separate from object def above
+  val x = 1
+}
+------------------------------------
+(compilation_unit
+  (object_definition (identifier))
+  (object_definition (identifier)
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
+    (template_body
+      (val_definition (identifier) (number))))
+  (object_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier)) (identifier))
+  (object_definition (identifier) (comment) (comment) (template_body (val_definition (identifier) (number))))
+  (object_definition (identifier)) (comment)
+	(ERROR (identifier)) (comment)
+  (object_definition (identifier) (template_body
+    (object_definition (identifier))
+    (comment)
+    (val_definition (identifier) (number)))))
+
+====================================
+Trait definitions
+====================================
+trait Foo
+trait Foo[R]
+trait Foo[R, T]
+trait Foo[R, T] extends { val x = 1} with Bar with Baz {
+  val x = 1
+}
+@foo private trait Foo
+@foo private[this] trait Foo
+private[foo] trait Foo
+------------------------------------
+(compilation_unit
+  (trait_definition (identifier))
+  (trait_definition (identifier) (type_parameters (identifier)))
+  (trait_definition (identifier) (type_parameters (identifier) (identifier)))
+  (trait_definition (identifier) (type_parameters (identifier) (identifier))
+    (early_definitions (early_definition (val_definition (identifier) (number))))
+    (trait_parent_classes (stable_type_identifier (identifier)) (stable_type_identifier (identifier)))
+    (template_body
+      (val_definition (identifier) (number))))
+  (trait_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier)) (identifier))
+  (trait_definition (annotation (stable_type_identifier (identifier))) (modifiers (access_modifier (access_qualifier))) (identifier))
+  (trait_definition (modifiers (access_modifier (access_qualifier (identifier)))) (identifier)))
+
+====================================
+Self type definitions
+====================================
+class Foo { self: Bar => val x = self }
+trait Foo extends Bar { self => val x = self }
+object Foo extends Bar { this: Bar => val x = this }
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body
+    (self_type (identifier) (stable_type_identifier (identifier))) (val_definition (identifier) (identifier))))
+  (trait_definition (identifier) (trait_parent_classes (stable_type_identifier (identifier)))
+    (template_body
+      (self_type (identifier)) (val_definition (identifier) (identifier))))
+  (object_definition (identifier) (parent_classes (stable_type_identifier (identifier))) (template_body
+    (self_type (stable_type_identifier (identifier))) (val_definition (identifier) (identifier)))))
+
+====================================
+Class definition with newline
+====================================
+class Foo
+  { 7 }
+
+class Foo {
+  while (true)
+
+
+    // testing arbitrary count of newlines and dumb indentation
+
+println("loop forever")
+  val x = 1
+}
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body (number)))
+  (class_definition (identifier) (template_body
+    (while_expression (boolean_literal)
+      (comment)
+      (call_expression (identifier) (arguments (string_literal))))
+      (val_definition (identifier) (number)))))
+
+====================================
+Class definition with empty template
+====================================
+class Foo
+  {}
+class Foo{}
+class Foo
+  {         /*   */      }
+class Foo
+  {         // foo
+
+
+}
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body))
+  (class_definition (identifier) (template_body))
+  (class_definition (identifier) (template_body (comment)))
+  (class_definition (identifier) (template_body (comment))))
+
+====================================
+Annotated val
+====================================
+class Foo {
+  @foo // this should be an error
+
+  @bar
+  val x = 1
+  @foo
+  // this is not an error because a comment only line is ok
+  @bar
+  val y = 2
+  @foo val z = 3
+}
+------------------------------------
+(compilation_unit
+  (class_definition (identifier) (template_body
+    (val_definition
+      (annotation (stable_type_identifier (identifier))) (comment)
+      (annotation (stable_type_identifier (identifier)))
+      (identifier)
+      (number))
+    (val_definition
+      (annotation (stable_type_identifier (identifier)))
+      (comment) (annotation (stable_type_identifier (identifier)))
+      (identifier)
+      (number))
+    (val_definition (annotation (stable_type_identifier (identifier))) (identifier) (number)))))
+

@@ -1,0 +1,31 @@
+=====================================
+Newline after val definition
+=====================================
+object A {
+	val foo = 1
+
+}
+-------------------------------------
+(compilation_unit
+	(object_definition (identifier) (template_body
+		(val_definition (identifier) (number)))))
+
+=====================================
+Newline after function call
+=====================================
+// TODO fix the syntax tree so that the blocks are function arguments
+class a {
+  t() {}
+  t(" d") {}
+  a() {}
+
+
+  a(" d") {}
+}
+-------------------------------------
+(compilation_unit (comment)
+	(class_definition (identifier) (template_body
+		(call_expression (identifier) (arguments) (block))
+		(call_expression (identifier) (arguments (string_literal)) (block))
+		(call_expression (identifier) (arguments) (block))
+		(call_expression (identifier) (arguments (string_literal)) (block)))))

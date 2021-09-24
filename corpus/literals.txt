@@ -1,141 +1,266 @@
-==========================
-Simple strings
-==========================
+====================
+Numbers: Integer
+====================
+1
+123456789
+123456789L
+123456789l
+0x1234abcd
+0xABCDl
+0xABCDL
+0xDEADBEEF
+--------------------
+(compilation_unit (number) (number) (number) (number) (number) (number) (number) (number))
 
-val oneLineString = "I'm just on one line"
+====================
+Numbers: Float
+====================
+3.14159
+3.14159f
+2.71828F
+12345.2
+12345.2e1
+12345.2e123
+12345.2e+123
+12345.2e-1234
+12345.2e-1
+12345.2e123
+12345.2e-123
+12345.2e-123f
+12345.2e-123F
+12345.2F
+12345.2f
+.1234
+.1234f
+.1234F
+.12345e1
+.12345e123
+.12345e+123
+.12345e-12
+.12345e1f
+.12345e123f
+.12345e+123f
+.12345e-12f
+.12345e-1f
+.12345e1F
+.12345e123F
+.12345e+123F
+.12345e-12F
+.12345e1F
+.12345e123F
+.12345e-123F
+--------------------
+(compilation_unit
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number))
 
-val multiLineString = """
-  a
-  $thisIsntInterpolated
-  ${thisEither}
+====================
+Numbers: Double
+====================
+3.14159d
+2.71828D
+12345.2e-123d
+12345.2e-123D
+12345.2D
+12345.2d
+.1234d
+.1234D
+.12345e1d
+.12345e123d
+.12345e+123d
+.12345e-12d
+.12345e-1d
+.12345e1D
+.12345e123D
+.12345e+123D
+.12345e-12D
+.12345e1D
+.12345e123D
+.12345e-123D
+--------------------
+(compilation_unit
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number))
+
+====================
+Boolean
+====================
+true
+false
+--------------------
+(compilation_unit (boolean_literal) (boolean_literal))
+
+====================
+Character
+====================
+'a'
+'\t'
+--------------------
+(compilation_unit (character_literal) (character_literal))
+
+====================
+Normal strings
+====================
+"hello"
+"blah\n"
+"tabs\t spaces \"'"
+--------------------
+(compilation_unit (string_literal) (string_literal) (string_literal))
+
+====================
+Raw strings
+====================
+"""foo
+a bc
+    bac
+   """
+--------------------
+(compilation_unit (string_literal))
+
+====================
+Symbols
+====================
+'foo
+'foo_bar
+'foo_bar1
+--------------------
+(compilation_unit (symbol_literal) (symbol_literal) (symbol_literal))
+
+====================
+Null
+====================
+null
+--------------------
+(compilation_unit)
+
+====================
+String
+====================
+""
+"abc"
+" abc"
+"   abc   "
+""""""
+""" abc """
 """
 
----
 
+abc"""
+// many " are allowed at the end of a raw sring
+"""
+abc
+""""""""""
+--------------------
 (compilation_unit
-  (val_definition (identifier) (string))
-  (val_definition (identifier) (string)))
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (string_literal)
+  (comment)
+  (string_literal))
 
-==========================
+
+====================
 Interpolated strings
-==========================
-
-val string1 = s"a $b ${c}"
-
-val string2 = f"hi $name%s"
-
-val string3 = raw"Not a new line \n${ha}"
-
-val string4 = s"""
-works even in multiline strings, ${name}
+====================
+foo""
+foo"$bar"
+foo"a $bar "
+foo"a ${val x = "bar"; x }"
+foo"a ${
+  val x = "bar"
+  x
+}"
+foo""""""
+foo"""$bar"""
+foo"""a $bar """
+foo"""a ${val x = "bar"; x }"""
+foo"""a ${
+  val x = "bar"
+  x
+}"""
+baz"""
+  $foo $$ $bar
+    $baz
 """
-val string5 = s"foo$$"
----
-
+--------------------
 (compilation_unit
-  (val_definition
-    (identifier)
-    (interpolated_string_expression
-      (identifier) (interpolated_string
-        (interpolation (identifier))
-        (interpolation (block (identifier))))))
-  (val_definition
-    (identifier)
-    (interpolated_string_expression
-      (identifier) (interpolated_string
-        (interpolation (identifier)))))
-  (val_definition
-    (identifier)
-    (interpolated_string_expression
-      (identifier) (interpolated_string
-        (interpolation (block (identifier))))))
-  (val_definition
-    (identifier)
-    (interpolated_string_expression
-      (identifier) (interpolated_string
-        (interpolation (block (identifier))))))
-  (val_definition (identifier) (interpolated_string_expression
-    (identifier) (interpolated_string (interpolation)))))
+  (interpolated_string)
+  (interpolated_string (identifier))
+  (interpolated_string (identifier))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string)
+  (interpolated_string (identifier))
+  (interpolated_string (identifier))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string (block (val_definition (identifier) (string_literal)) (identifier)))
+  (interpolated_string (identifier) (identifier) (identifier)))
 
-==========================
-Floating point numbers
-==========================
-
-val string = 3.14
-val numWithFloatType = 2.71828f
-val numWithDoubleType = 2.71828D
-val numWithExponent = 1.234e456
-
----
-
+====================
+Erroneous Interpolated strings
+====================
+a "" // this should be an error because of the space
+bar""
+foo """""" // this should be an error because of the space
+bar""""""
+--------------------
 (compilation_unit
-  (val_definition (identifier) (number))
-  (val_definition (identifier) (number))
-  (val_definition (identifier) (number))
-  (val_definition (identifier) (number)))
-
-==========================
-Boolean literals
-==========================
-
-val myBool = true
-
-def foo(a: Boolean = false) = a && true
-
----
-
-(compilation_unit
-	(val_definition (identifier) (boolean_literal))
-	(function_definition
-		(identifier)
-		(parameters (parameter
-			(identifier)
-			(type_identifier)
-			(boolean_literal)))
-		(infix_expression
-			(identifier)
-			(identifier)
-			(boolean_literal))))
-
-==========================
-Character literals
-==========================
-
-val myChar = 'c'
-
-val otherChar = '\u0041'
-
-val anotherChar = '\n'
-
-def foo(a: Char = 'c') = a + 'd'
-
----
-
-(compilation_unit
-	(val_definition (identifier) (character_literal))
-	(val_definition (identifier) (character_literal))
-	(val_definition (identifier) (character_literal))
-	(function_definition
-		(identifier)
-		(parameters (parameter
-			(identifier)
-			(type_identifier)
-			(character_literal)))
-		(infix_expression
-			(identifier)
-			(identifier)
-			(character_literal))))
-
-==========================
-Symobl literals
-==========================
-
-val mySymbol = 'c
-
-val myOtherSymbol = 'thing
-
----
-
-(compilation_unit
-	(val_definition (identifier) (symbol_literal))
-	(val_definition (identifier) (symbol_literal)))
+	(ERROR (identifier))
+	(string_literal)
+	(comment)
+	(interpolated_string) (ERROR (identifier)) (string_literal) (comment)
+	(interpolated_string))

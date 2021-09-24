@@ -2,15 +2,14 @@
 #include <wctype.h>
 #include <stdio.h>
 
-enum TokenType {
+typedef enum TokenType {
+  WHITESPACE,
+  NEWLINE,
+  COMMENT,
   AUTOMATIC_SEMICOLON,
-  SIMPLE_STRING,
-  SIMPLE_MULTILINE_STRING,
-  INTERPOLATED_STRING_MIDDLE,
-  INTERPOLATED_STRING_END,
-  INTERPOLATED_MULTILINE_STRING_MIDDLE,
-  INTERPOLATED_MULTILINE_STRING_END,
-};
+  BLOCK_NEWLINES,
+  EMPTY,
+} TokenType;
 
 typedef struct keyword {
   int len;
@@ -68,71 +67,136 @@ static keyword* invalid_begin_strings[] = {
   &RIGHT_CURLY
 };
 
-void *tree_sitter_scalar2c_external_scanner_create() { return NULL; }
-void tree_sitter_scalar2c_external_scanner_destroy(void *p) {}
-void tree_sitter_scalar2c_external_scanner_reset(void *p) {}
-unsigned tree_sitter_scalar2c_external_scanner_serialize(void *p, char *buffer) { return 0; }
-void tree_sitter_scalar2c_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
-
-static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
-
-static bool scan_string_content(TSLexer *lexer, bool is_multiline, bool has_interpolation) {
-  unsigned closing_quote_count = 0;
-  for (;;) {
-    if (lexer->lookahead == '"') {
-      advance(lexer);
-      closing_quote_count++;
-      if (!is_multiline) {
-        lexer->result_symbol = has_interpolation ? INTERPOLATED_STRING_END : SIMPLE_STRING;
-        return true;
-      }
-      if (closing_quote_count == 3) {
-        lexer->result_symbol = has_interpolation ? INTERPOLATED_MULTILINE_STRING_END : SIMPLE_MULTILINE_STRING;
-        return true;
-      }
-    } else if (lexer->lookahead == '$') {
-      if (is_multiline && has_interpolation) {
-        lexer->result_symbol =  INTERPOLATED_MULTILINE_STRING_MIDDLE;
-        return true;
-      } else if (has_interpolation){
-        lexer->result_symbol = INTERPOLATED_STRING_MIDDLE;
-        return true;
-      } else {
-        advance(lexer);
-      }
-    } else {
-      closing_quote_count = 0;
-      if (lexer->lookahead == '\\') {
-        advance(lexer);
-        if (lexer->lookahead != 0) advance(lexer);
-      } else if (lexer->lookahead == '\n') {
-        if (is_multiline) {
-          advance(lexer);
-        } else {
-          return false;
-        }
-      } else if (lexer->lookahead == 0) {
-        return false;
-      } else {
-        advance(lexer);
-      }
-    }
+void *tree_sitter_scala_external_scanner_create() { return malloc(sizeof(unsigned)); }
+void tree_sitter_scala_external_scanner_destroy(void *p) { free(p); }
+void tree_sitter_scala_external_scanner_reset(void *p) { *((unsigned *)p) = 0; }
+unsigned tree_sitter_scala_external_scanner_serialize(void *p, char *buffer) {
+  *((unsigned *) buffer) = *((unsigned*)p);
+  return sizeof(unsigned);
+}
+void tree_sitter_scala_external_scanner_deserialize(void *p, const char *b, unsigned n) {
+  if (p && b && n >= sizeof(unsigned)) {
+    *((unsigned *) p) = *((unsigned *)b);
   }
 }
 
-bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
-                                             const bool *valid_symbols) {
-  unsigned newline_count = 0;
-  while (iswspace(lexer->lookahead)) {
-    if (lexer->lookahead == '\n') newline_count++;
+static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
+
+static bool slurp_whitespace(TSLexer *lexer, unsigned *newline_count) {
+  bool result = false;
+  while (lexer->lookahead && iswspace(lexer->lookahead)) {
+    if (lexer->lookahead == '\n') {
+      if (!newline_count) {
+        return result;
+      }
+      *newline_count = *newline_count + 1;
+    }
     lexer->advance(lexer, true);
+    result = true;
+  }
+  return result;
+}
+
+static bool slurp_comment(TSLexer *lexer) {
+  if (lexer->lookahead == '/') {
+    lexer->advance(lexer, true);
+    if (lexer->lookahead == '/') {
+      do {
+        lexer->advance(lexer, true);
+      } while (lexer->lookahead && lexer->lookahead != '\n');
+      return true;
+    } else if (lexer->lookahead == '*') {
+      int depth = 1;
+      while (lexer->lookahead) {
+        char current_char;
+        do {
+          lexer->advance(lexer, true);
+          current_char = lexer->lookahead;
+        } while (current_char && current_char != '*' && current_char != '/');
+        if (current_char == '*') {
+          do {
+            lexer->advance(lexer, true);
+            current_char = lexer->lookahead;
+          } while (current_char && current_char == '*');
+          if (lexer->lookahead == '/') {
+            lexer->advance(lexer, true);
+            if (--depth == 0) return true;
+          }
+        } else if (current_char == '/') {
+          lexer->advance(lexer, true);
+          if (lexer->lookahead == '*') {
+            depth ++;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+bool tree_sitter_scala_external_scanner_scan(void *payload, TSLexer *lexer,
+                                             const bool *valid_symbols) {
+  unsigned *newline_count = ((unsigned *) payload);
+  lexer->mark_end(lexer);
+  TokenType token;
+  bool explicit_newlines = valid_symbols[NEWLINE] || valid_symbols[BLOCK_NEWLINES];
+  bool allow_empty = valid_symbols[EMPTY];
+  if (*newline_count == -1) {
+    *newline_count = 0;
+    allow_empty = false;
+  }
+  if (allow_empty && lexer->lookahead == '}') {
+    lexer->result_symbol = EMPTY;
+    *newline_count = -1;
+    return true;
+  } else if (explicit_newlines && lexer->lookahead == '\n') {
+    if (valid_symbols[BLOCK_NEWLINES]) {
+      slurp_whitespace(lexer, newline_count);
+      if (lexer->lookahead == '{' || lexer->lookahead == '(') {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = BLOCK_NEWLINES;
+        *newline_count = 0;
+        return true;
+      } else {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = WHITESPACE;
+        return true;
+      }
+    } else {
+      lexer->advance(lexer, true);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = NEWLINE;
+      *newline_count = 0;
+      return true;
+    }
+  } else if (valid_symbols[WHITESPACE] &&
+      // By passing in NULL to slurp_whitespace if a newline or block_newline
+      // rule is valid, we will only slurp up the whitespace that precedes the
+      // newline, but not the newline itself. This allows us to only need to handle
+      // the explicit newline case in the condition above this one.
+      slurp_whitespace(lexer, explicit_newlines ? NULL : newline_count)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = WHITESPACE;
+    if (*newline_count == 0 || !lexer->lookahead || !valid_symbols[AUTOMATIC_SEMICOLON]) {
+      if (!valid_symbols[AUTOMATIC_SEMICOLON]) *newline_count = 0;
+      *newline_count = 0;
+      return true;
+    }
+  } else if (valid_symbols[COMMENT] && slurp_comment(lexer)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = COMMENT;
+    return true;
   }
 
-  if (valid_symbols[AUTOMATIC_SEMICOLON] && newline_count > 0) {
+  if (valid_symbols[AUTOMATIC_SEMICOLON] && *newline_count > 0 && lexer->lookahead) {
     lexer->mark_end(lexer);
     lexer->result_symbol = AUTOMATIC_SEMICOLON;
 
-    if (newline_count > 1) return true;
+    if (*newline_count > 1) {
+      *newline_count = 0;
+      return true;
+    }
+    *newline_count = 0;
 
     int active_count = sizeof(invalid_begin_strings) / sizeof(keyword*);
     int active_automata[active_count];
@@ -154,7 +218,10 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
               lexer->advance(lexer, false);
               next_char = lexer->lookahead;
             }
-            if (iswspace(next_char)) return false; // a word that cannot start a statement was found
+            if (iswspace(next_char) || !next_char) {
+              lexer->result_symbol = WHITESPACE;
+              return true; // a word that cannot start a statement was found
+            }
             else if (chars_read == 1 && current_char == '.') {
               // could be a floating point literal
               lexer->advance(lexer, false);
@@ -175,36 +242,6 @@ bool tree_sitter_scalar2c_external_scanner_scan(void *payload, TSLexer *lexer,
     return true;
   }
 
-  while (iswspace(lexer->lookahead)) {
-    if (lexer->lookahead == '\n') newline_count++;
-    lexer->advance(lexer, true);
-  }
-
-  if (valid_symbols[SIMPLE_STRING] && lexer->lookahead == '"') {
-    advance(lexer);
-
-    bool is_multiline = false;
-    if (lexer->lookahead == '"') {
-      advance(lexer);
-      if (lexer->lookahead == '"') {
-        advance(lexer);
-        is_multiline = true;
-      } else {
-        lexer->result_symbol = SIMPLE_STRING;
-        return true;
-      }
-    }
-
-    return scan_string_content(lexer, is_multiline, false);
-  }
-
-  if (valid_symbols[INTERPOLATED_STRING_MIDDLE]) {
-    return scan_string_content(lexer, false, true);
-  }
-
-  if (valid_symbols[INTERPOLATED_MULTILINE_STRING_MIDDLE]) {
-    return scan_string_content(lexer, true, true);
-  }
-
+  *newline_count = 0;
   return false;
 }

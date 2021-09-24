@@ -1,0 +1,16 @@
+===========================
+Type definitions
+===========================
+type Foo = Int
+type
+
+
+// newlines are allowed between the type keyword and the identifer (for some reason)
+
+  Foo = Bar
+// Bar[(B, A)] TODO fix tuple types
+---------------------------
+(compilation_unit
+  (type_definition (type_identifier) (type (stable_type_identifier (identifier))))
+  (type_definition (comment) (type_identifier) (type (stable_type_identifier (identifier))))
+  (comment))
